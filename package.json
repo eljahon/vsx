@@ -1,0 +1,83 @@
+{
+  "name": "vsx",
+  "author": "Abdumajid Rashidov",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@nivo/bar": "^0.83.0",
+    "@nivo/core": "^0.83.0",
+    "@nivo/pie": "^0.83.0",
+    "@tanstack/react-query": "^4.0.5",
+    "@tanstack/react-query-devtools": "^4.0.5",
+    "apexcharts": "^3.41.0",
+    "axios": "^0.27.2",
+    "classnames": "^2.3.1",
+    "dayjs": "^1.11.4",
+    "feather-icons": "^4.29.0",
+    "formik": "^2.2.9",
+    "html-react-parser": "^3.0.4",
+    "i18next": "^21.8.10",
+    "i18next-http-backend": "^1.4.1",
+    "lodash": "^4.17.21",
+    "object-to-formdata": "^4.4.2",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-dom": "^18.2.0",
+    "react-feather": "^2.0.10",
+    "react-i18next": "^11.17.2",
+    "react-multi-date-picker": "^3.3.1",
+    "react-number-format": "^5.0.1",
+    "react-paginate": "^8.1.4",
+    "react-redux": "^8.0.2",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.4.0",
+    "react-select-async-paginate": "^0.7.0",
+    "react-toastify": "^9.1.1",
+    "redux": "^4.2.0",
+    "redux-devtools-extension": "^2.13.9",
+    "sass": "^1.56.0",
+    "util": "^0.12.5",
+    "yup": "^0.32.11"
+  },
+  "scripts": {
+    "start": "cross-env NODE_ENV=development react-scripts start",
+    "build": "cross-env NODE_ENV=production react-scripts build",
+    "build-development": "cp ./.env.development .env && cross-env NODE_ENV=development CI=false react-scripts build",
+    "build-production": "cp ./.env.production .env && cross-env NODE_ENV=production CI=false react-scripts build",
+    "lint:scripts": "eslint src/**/*.{js,jsx,ts,tsx}",
+    "fix:scripts": "eslint --fix src/**/*.{js,jsx,ts,tsx}",
+    "lint:styles": "stylelint src/**/*.{css,scss}",
+    "fix:styles": "stylelint --fix src/**/*.{css,scss}",
+    "lint:prettier": "prettier --check src/**/*.{js,jsx,ts,tsx,css,scss}",
+    "fix:prettier": "prettier --write src/**/*.{js,jsx,ts,tsx,css,scss}",
+    "fix": "npm run fix:scripts & npm run fix:styles & npm run fix:prettier"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.4",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.7.1",
+    "prop-types": "^15.8.1",
+    "stylelint": "^14.11.0",
+    "stylelint-config-clean-order": "^0.9.0",
+    "stylelint-config-prettier": "^9.0.3",
+    "stylelint-config-standard-scss": "^5.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

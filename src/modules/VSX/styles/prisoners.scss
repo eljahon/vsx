@@ -1,0 +1,89 @@
+.user__avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+.seccess{
+  width: 20px;
+  height: 20px;
+  background: #5CC139;
+  border-radius: 50%;
+}
+.error{
+  width: 20px;
+  height: 20px;
+  background: red;
+  border-radius: 50%;
+
+}
+.prisoner__item {
+  &__header {
+  }
+  .prisoner__name {
+    color: #000;
+    font-family: "Roboto",sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .prisoner__pnfl {
+    color: #000;
+    font-family: "Roboto" ,sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+  }
+  .prisoner__data{
+    display: flex;
+    align-items: center;
+  }
+  .prisoner__item__btn {
+    border-radius: 11px;
+    border: 1px solid #D3D3D3;
+    padding: 14px 15px;
+    margin-left: 24px;
+    color: #000;
+    text-align: center;
+    font-family: "Roboto",sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  .prisoner__tab__wrapper {
+    .prisoner__tab__item{
+      font-size: 20px;
+      font-weight: 400;
+      color: #000;
+    }
+  }
+  .bg-edit {
+    background: #A1CADC;
+  }
+  .bg-expelling {
+    background: #00D909;
+  }
+}
+.forms__wrapper {
+  width: 80%;
+  margin: 50px auto 0 auto;
+  border-radius: 10px;
+  border: 1px solid #F1F1F1;
+  padding: 30px;
+}.formsm__wrapper {
+  max-width: 60%;
+  margin: 50px auto 0 0;
+  border-radius: 10px;
+  border: 1px solid #F1F1F1;
+  padding: 30px;
+  background-color: #F3F3F3;
+}
+ //.time__check{
+ //  padding: 10px;
+ //}

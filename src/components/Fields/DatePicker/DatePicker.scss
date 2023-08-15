@@ -1,0 +1,102 @@
+.date-picker {
+	&__control {
+		max-width: 180px;
+		height: 38px;
+
+		border-radius: 100px;
+	}
+
+	&__control input {
+		width: 100%;
+
+		color: var(--txt-secondary);
+	}
+
+	&__inner {
+		display: block !important;
+	}
+	&__inner .control__wrapper {
+		padding: 0 6px;
+	}
+
+	&__inner .dvdr {
+		user-select: none;
+	}
+
+	&__inner .rmdp-right .rmdp-arrow,
+	&__inner .rmdp-left .rmdp-arrow {
+		margin-top: 6px;
+	}
+
+	&__inner .rmdp-right .rmdp-arrow {
+		margin-right: 2px;
+	}
+
+	&__inner .rmdp-up .rmdp-arrow {
+		margin-top: 7.5px;
+	}
+
+	&__inner .rmdp-arrow {
+		border-color: var(--txt-primary);
+	}
+
+	&__inner .rmdp-down .rmdp-arrow {
+		margin-top: 6px;
+	}
+
+	&__inner .rmdp-arrow-container:hover {
+		background-color: var(--brand-blue);
+	}
+
+	&__inner .rmdp-header-values {
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	&__inner .rmdp-week-day {
+		font-size: 14px;
+		color: var(--triteary-txt);
+	}
+
+	&__inner .rmdp-calendar {
+		padding: 20px;
+	}
+
+	&__inner .rmdp-week:first-child {
+		border-bottom: 1px solid var(--stroke-input);
+	}
+
+	&__inner .rmdp-wrapper {
+		border-radius: 6px;
+	}
+
+	&__inner .rmdp-day-picker {
+		padding: 0;
+	}
+
+	&__inner .rmdp-week-day {
+		width: 36px;
+		height: 36px;
+	}
+
+	&__inner .rmdp-day {
+		width: 36px;
+		height: 36px;
+	}
+
+	&__inner .rmdp-range {
+		background-color: var(--brand-blue);
+	}
+
+	&__inner .rmdp-day:not(.rmdp-disabled, .rmdp-day-hidden) span:hover {
+		background-color: var(--brand-blue);
+	}
+
+	&__inner .rmdp-day.rmdp-selected span:not(.highlight) {
+		background-color: var(--brand-blue);
+	}
+
+	&__inner .rmdp-time-picker div input {
+		min-width: 100%;
+	}
+}

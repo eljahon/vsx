@@ -1,0 +1,41 @@
+.pagination {
+	&__inner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__item:not(:last-of-type) {
+		margin-right: 10px;
+	}
+
+	&__link {
+		cursor: pointer;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		width: 38px;
+		height: 38px;
+
+		color: var(--txt-primary);
+
+		background-color: #fff;
+		border: 1.5px solid var(--stroke-input);
+		border-radius: 4px;
+
+		transition: 0.2s ease-in-out;
+	}
+
+	&__link_active {
+		color: var(--brand-blue);
+
+		background: var(--light-blue);
+		border-color: var(--brand-blue);
+	}
+
+	&_disabled svg path {
+		fill: var(--txt-secondary);
+	}
+}

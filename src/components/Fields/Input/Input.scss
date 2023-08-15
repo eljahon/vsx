@@ -1,0 +1,82 @@
+.control {
+	&__wrapper.sm {
+		height: 55px !important;
+	}
+
+	&__wrapper {
+		cursor: pointer;
+
+		display: flex;
+		align-items: center;
+
+		background: #fff;
+		border: 2px solid var(--stroke-input);
+		border-radius: 6px;
+	}
+
+	&__wrapper:focus-within {
+		border-color: var(--brand-blue);
+		// box-shadow: 0 0 0 4px var(--secondary-light-blue);
+	}
+
+	&__wrapper:focus-within > svg:first-child path {
+		fill: var(--brand-blue);
+	}
+
+	&__wrapper > img {
+		min-width: max-content;
+		margin-right: 10px;
+	}
+
+	&__wrapper > svg:first-child {
+		min-width: max-content;
+		margin-right: 10px;
+	}
+
+	&__label {
+		margin-bottom: 8px;
+
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--txt-secondary);
+		//text-transform: uppercase;
+	}
+
+	&__wrapper > button{
+		margin-right: 10px;
+	}
+
+	&__input {
+		flex: 1 1 0;
+
+		height: 100%;
+		padding: 10px;
+		border-radius: 6px;
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+
+		color: var(--txt-primary);
+	}
+
+	&__input::placeholder {
+		color: var(--txt-secondary);
+	}
+
+	&_error &__wrapper {
+		border-color: var(--primary-red);
+		box-shadow: 0 0 0 4px var(--light-red);
+	}
+
+	&_error &__wrapper > svg:first-child path {
+		fill: var(--primary-red);
+	}
+
+	&__error {
+		display: block;
+
+		margin-top: 5px;
+
+		font-size: 14px;
+		color: var(--primary-red);
+	}
+}

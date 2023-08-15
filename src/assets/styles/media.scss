@@ -1,0 +1,21 @@
+@mixin media($breakpoint) {
+          @if $breakpoint == small {
+            @media (max-width: $small-screen) {
+              @content;
+            }
+          } @else if $breakpoint == medium {
+            @media (max-width: $medium-screen) {
+              @content;
+            }
+          } @else if $breakpoint == large {
+            @media (max-width: $large-screen) {
+              @content;
+            }
+          } @else if $breakpoint == x-large {
+            @media (max-width: $x-large-screen) {
+              @content;
+            }
+          } @else {
+            @error "Invalid breakpoint: #{$breakpoint}. Please use small, medium, large, or x-large.";
+          }
+        }

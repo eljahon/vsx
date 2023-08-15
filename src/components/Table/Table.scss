@@ -1,0 +1,134 @@
+.table-no-data {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&__inner {
+		max-width: 400px;
+	}
+
+	&__inner svg {
+		width: 100%;
+		max-height: 400px;
+
+		object-fit: cover;
+	}
+
+	&__text {
+		display: block;
+
+		font-weight: 500;
+		line-height: 30px;
+		color: var(--txt-primary);
+		text-align: center;
+	}
+}
+
+.table {
+	border-collapse: collapse;
+
+	width: 100%;
+
+	&__no-filter &__head tr:first-child &__th:first-child {
+		border-top-left-radius: 8px;
+	}
+
+	&__no-filter &__head tr:first-child &__th:last-child {
+		border-top-right-radius: 8px;
+	}
+
+	&-spinner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		width: 100%;
+		height: 100%;
+		padding: 100px 0;
+	}
+
+	&__wrapper {
+		overflow-x: auto;
+	}
+
+	&__th {
+		padding: 15px 25px;
+		font-size: 14px;
+		font-weight: 500;
+		color: var(--text-bck);
+		text-align: left;
+		text-transform: uppercase;
+		white-space: nowrap;
+
+		background-color: var(--stroke-input);
+	}
+
+	&__td {
+		height: 60px;
+		padding: 20px 30px;
+
+		font-weight: 400;
+		color: var(--txt-primary);
+
+		background-color: #fff;
+		border-bottom: 3px solid var(--background);
+	}
+
+	&__body &__tr:hover &__td {
+		background-color: var(--background);
+	}
+
+	&__body tr:last-child &__td:first-child {
+		border-bottom-left-radius: 8px;
+	}
+
+	&__body tr:last-child &__td:last-child {
+		border-bottom-right-radius: 8px;
+	}
+
+	&__actions-trigger {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		width: 30px;
+		height: 30px;
+
+		background-color: #fff;
+		border: 2px solid var(--stroke-input);
+		border-radius: 50%;
+	}
+
+	&__actions-trigger svg {
+		width: 100%;
+	}
+
+	&__actions-edit {
+		font-weight: 500;
+		color: var(--txt-primary);
+	}
+
+	&__actions-success {
+		color: var(--primary-green);
+	}
+
+	&__actions-edit:hover,
+	&__actions-success:hover {
+		background-color: var(--light-blue);
+	}
+
+	&__actions-delete {
+		font-weight: 500;
+		color: var(--primary-red);
+	}
+
+	&__actions-delete:hover {
+		background-color: var(--light-red);
+	}
+
+	&__actions-edit svg,
+	&__actions-success svg,
+	&__actions-delete svg {
+		margin-right: 8px;
+	}
+}

@@ -1,0 +1,44 @@
+.tab {
+	display: flex;
+	align-items: center;
+
+	height: 50px;
+	padding: 0 30px;
+
+	background: var(--background);
+	border-radius: 10px;
+
+	&__label {
+		position: relative;
+
+		height: 100%;
+
+		color: var(--triteary-txt);
+
+		transition: 0.2s ease-in-out;
+	}
+
+	&__label::after {
+		content: "";
+
+		position: absolute;
+		bottom: 0;
+		left: 0;
+
+		width: 0;
+		height: 2px;
+
+		background-color: var(--brand-blue);
+		border-radius: 2px;
+
+		transition: 0.2s ease-in-out;
+	}
+
+	&__label_active {
+		color: var(--brand-blue);
+	}
+
+	&__label_active::after {
+		width: 100%;
+	}
+}

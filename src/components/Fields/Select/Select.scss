@@ -1,0 +1,97 @@
+.select {
+	&__control {
+		cursor: pointer !important;
+
+		padding: 0 12px;
+
+		background-color: #fff !important;
+		border: 1.5px solid var(--stroke-input) !important;
+		border-radius: 6px !important;
+	}
+
+	&__indicator-separator {
+		background-color: var(--main-grey) !important;
+	}
+
+	&__placeholder {
+		color: var(--triteary-txt) !important;
+	}
+
+	&__indicators svg {
+		stroke: var(--main-grey);
+	}
+
+	&__input-container {
+		font-size: 14px !important;
+		font-weight: 500 !important;
+	}
+
+	&__menu {
+		padding: 8px;
+
+		background: #fff;
+		border: 1px solid var(--stroke-input);
+		border-radius: 6px !important;
+		box-shadow: 0 30px 50px rgb(90 119 149 / 12%) !important;
+	}
+
+	&__menu-list {
+		padding: 0 !important;
+	}
+
+	&__value-container {
+		display: flex !important;
+		align-items: center !important;
+	}
+
+	&__value-container > :not(input) {
+		margin-right: 10px;
+	}
+
+	&__value-container > :last-child {
+		margin-right: 0;
+	}
+
+	&__option {
+		cursor: pointer !important;
+
+		overflow: hidden;
+
+		padding: 10px 15px !important;
+
+		font-size: 18px !important;
+		font-weight: 500 !important;
+		color: var(--txt-secondary) !important;
+
+		border-radius: 6px;
+	}
+
+	&__control--is-disabled {
+		pointer-events: auto !important;
+		cursor: not-allowed !important;
+	}
+
+	&__control--is-focused {
+		border-color: var(--brand-blue) !important;
+		box-shadow: 0 0 0 4px var(--secondary-light-blue) !important;
+	}
+
+	//&__control:focus-within {
+	//	border-color: var(--brand-blue) !important;
+	//	box-shadow: 0 0 0 4px var(--secondary-light-blue) !important;
+	//}
+
+	&__option--is-focused &__value-container > svg:first-child {
+		fill: var(--brand-blue);
+	}
+
+	&__option--is-focused {
+		background-color: var(--secondary-light-blue) !important;
+	}
+
+	&__option--is-selected {
+		color: var(--txt-primary) !important;
+
+		background-color: var(--light-blue) !important;
+	}
+}
