@@ -50,7 +50,7 @@ const appRoutes = [
 ];
 const roleName = localStorage.getItem('roleName')
 const AllRoutes = ({ routes }) => {
-  console.log(routes)
+  // console.log(routes)
   return (
       <Routes>
         {routes.map((route, index) => (

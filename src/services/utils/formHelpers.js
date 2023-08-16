@@ -5,7 +5,6 @@ import * as yup from "yup";
 const createFormSchema = (fields, languages) => {
 	const initialValues = {};
 	const validationSchema = {};
-
 	fields.forEach((item, index) => {
 		if ("value" in item && item.value !== undefined) {
 			if (item.isLanguageSchema) {

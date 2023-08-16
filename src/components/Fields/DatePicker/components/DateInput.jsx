@@ -19,7 +19,7 @@ export const DateInput = ({
 	placeholder,
 	isOpen,
 	onClear,
-	format = "##.##.####",
+	format = "####-##-##",
 }) => {
 	return (
 		<label

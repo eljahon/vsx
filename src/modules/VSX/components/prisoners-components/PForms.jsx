@@ -14,7 +14,8 @@ import {
   Button,
   AvatarUpload,
 } from "components";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 export const PForms = (props) => {
   const {
@@ -25,12 +26,16 @@ export const PForms = (props) => {
   const { getLanguageValue } = useGetLanguage();
   const user = useSelector(userSelector);
   const navLink = useNavigate()
+    const {region}= useParams();
+  const {t} = useTranslation()
   return (
     <>
         <Containers.Form
             method={get(values, "id") ? "put" : "post"}
             url={get(values, "id") ? `/prisoners/${get(values, "id")}` : "/prisoners"}
-          onSuccess={() => get(values, "id") ? navLink(-1):navLink('/prisoner/medical/create')}
+          onSuccess={({data}) =>{
+            get(values, "id") ? navLink(-1):navLink(`/${region}/prisoner/medical/${data.id}/create`)
+          } }
           fields={[
             {
               name: "passport",
@@ -42,7 +47,6 @@ export const PForms = (props) => {
             },
             {
               name: "image",
-              validations: [{ type: "required" }],
               value: get(values, 'image'),
               onSubmitValue: (value) => {
                 return value
@@ -115,8 +119,9 @@ export const PForms = (props) => {
               validations: [{ type: "required" }],
               value: `${get(values, 'isLGBT')}` ?? false,
               onSubmitValue: (value) => {
-                if(value === "undefined"||"null") return false;
-                 return value
+                // console.log(value)
+                const _item = value === 'yes' ? true :  false
+                return _item;
               }
             },
             {
@@ -295,12 +300,14 @@ export const PForms = (props) => {
                         <FastField
                           name="isLGBT"
                           component={Fields.RadioButton}
-                          label="Ha"
+                          label={t('yes')}
+                          value={t('yes')}
                         />
                         <FastField
                           name="isLGBT"
                           component={Fields.RadioButton}
-                          label="Yo'q"
+                          label={t('no')}
+                          value={t('no')}
                         />
                       </div>
                     </div>

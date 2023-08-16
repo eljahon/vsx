@@ -21,7 +21,7 @@ export const queryBuilder = (url, config = {}) => {
 
 	 // if (include.length) queryObj.set("include", include.toString());
      if(populate) queryObj.set('populate',populate)
-	if (sort) queryObj.set("sort", sort);
+	if (sort) queryObj.set(`sort[id]`, sort.id);
 	if (pageSize) queryObj.set("pagination[pageSize]", pageSize);
 	queryObj.set("pagination[page]", page);
 

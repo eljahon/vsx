@@ -84,7 +84,7 @@ const Vsitors = () => {
             <InputSearch
                 placeholder={t('search')}
                 setValue={setFilters}
-                text={'ВСХда йўқловдаги фуқаролар'}
+                text={t('visitors-came-citizen')}
             />
             <PageHeading
                 links={[

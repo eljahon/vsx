@@ -32,7 +32,7 @@ const options = {
 			return response.data;
 		},
 		parsePayload: function(namespace, key, fallbackValue) {
-			console.log(namespace, key, fallbackValue)
+			// console.log(namespace, key, fallbackValue)
 		},
 		allowMultiLoading: false,
 		reloadInterval: false,

@@ -1,8 +1,7 @@
 import { lazy } from "react";
 
 import "./styles/Auth.scss";
-
-const Register = lazy(() => import("./pages/Register"));
+// const Register = lazy(() => import("./pages/Register"));
 const Login = lazy(() => import("./pages/Login"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const ConfirmPassword = lazy(() => import("./pages/ConfirmPassword"));

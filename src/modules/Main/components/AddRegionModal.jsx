@@ -52,7 +52,7 @@ export const AddRegionModal = ({
             validationType: "object",
             // value:get(values, 'responsibleUser.data.id') ?  {label: get(values, 'responsibleUser.data.attributes.username'),value:get(values, 'responsibleUser.data.id')} : '',
             onSubmitValue: (value) => {
-              console.log(value)
+              // console.log(value)
               return value.value
             },
           },

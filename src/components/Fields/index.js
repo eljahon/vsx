@@ -8,3 +8,4 @@ export { CheckBox } from "./CheckBox/CheckBox";
 export { RadioButton } from "./RadioButton/RadioButton";
 export { DatePicker } from "./DatePicker/DatePicker";
 export { RangePicker } from "./DatePicker/RangePicker";
+export {TimePickers} from "./TimePicker/TimePicker"

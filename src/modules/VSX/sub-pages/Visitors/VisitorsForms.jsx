@@ -29,7 +29,7 @@ const VisitorsForms = () => {
     return (
         <>
 
-            <InputSearch isInput   text={'ВСХда йўқловдаги фуқаролар'}/>
+            <InputSearch isInput   text={t('visitors-came-citizen')}/>
             <div className='forms__wrapper'>
                 <VForms values={data ?{id: data.id, ...data.attributes} : null}/>
             </div>

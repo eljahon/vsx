@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import {PForms} from '../../components/prisoners-components'
 import {useParams} from "react-router-dom";
 import '../../styles/prisoners.scss'
+import {EForms} from "../../components/employees-components";
 const EmployessForms = () => {
     const {t} = useTranslation()
     const navLink = useNavigate()
@@ -31,12 +32,13 @@ const EmployessForms = () => {
     return (
         <>
 
-            <InputSearch isInput   text={'ВСХда сақланаётган шахслар рўйхати'}/>
+            <InputSearch isInput   text={t('employees-list-add')}/>
             <div className='forms__wrapper'>
-                <PForms
-                    isUpdata={isUpdate}
-                    values={data ?{id: data.id, ...data.attributes} : null}
-                />
+                {/*<PForms*/}
+                {/*    isUpdata={isUpdate}*/}
+                {/*    values={data ?{id: data.id, ...data.attributes} : null}*/}
+                {/*/>*/}
+                <EForms/>
             </div>
         </>
     );

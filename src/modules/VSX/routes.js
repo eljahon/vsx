@@ -40,7 +40,7 @@ export const VSXRoutes = [
   },
   {
     id:28,
-    path: '/:region/prisoner/medical/:id',
+    path: '/:region/prisoner/medical/:pr_id/:id',
     element: <PrisonerMadicalForms/>,
     roles: new Set(["Superadmin"])
   },

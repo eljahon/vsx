@@ -44,7 +44,6 @@ export const VForms = (props) => {
               validations: [{ type: "required" }],
               value: get(values, 'birthDate'),
               onSubmitValue: (value) => {
-                console.log(value)
                 return time.timeFormater(value, 'YYYY-MM-DD')
               },
             },

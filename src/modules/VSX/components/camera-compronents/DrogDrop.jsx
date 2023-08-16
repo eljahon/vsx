@@ -1,85 +1,102 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {PrisonersPlaceNow} from './index'
 import './styles/main.scss'
+import { ReactComponent as DeleteIcon } from "assets/icons/delete.svg";
+import { ReactComponent as EditIcon } from "assets/icons/edit.svg";
 import {elementType} from "prop-types";
 import {DropData} from "../../../../mock-data";
+import {useFetchList} from "../../../../hooks";
+import config from "../../../../config";
+import {httpClient} from "../../../../services";
+import {useParams} from "react-router-dom";
+import {Button} from "../../../../components";
+import {useNotification} from "../../../../hooks";
 export const DrogDrop = (props) => {
-    const {isNewPrsonerAdd} = props;
-    const [boards, setBoards] = useState(DropData)
+    const {isNewPrsonerAdd, boardsList,refetch, boardItemRemove,boardItemUpdata} = props;
+    const notif = useNotification()
+    const {pr_id} = useParams()
     const [currentBoard, setCurrentBoard] = useState(null)
+    const [draggable, setDraggable] = useState(true)
     const [currentItem, setCurrentItem] = useState(null)
-    const dranOverHandler = (e, board, item)  => {
-        e.preventDefault()
-        if(e.target.className == 'item') {
-            e.target.style.boxShadow = '0 2px 3px gray'
+    const boardUpdata = async (boardPrisoner) => {
+        try {
+            setDraggable(false)
+          return await httpClient.put(`/rooms/change-prisoner-room`, {...boardPrisoner})
+        } catch (err) {
+            const {response:{data:{error: {message}}}} = err;
+            notif.error(message)
+            throw new Error(err)
+        }
+        finally {
+            setDraggable(true)
         }
     }
-    const dranLeaveHandler = (e, board, item)  => {
-        console.log("dranLeaveHandler")
-        // e.target.style.boxShadow = 'none'
+    const dragOverHandler = (e, board, item)  => {
+        e.preventDefault()
+        // console.log(board, item,'dranOverHandler')
     }
-    const dranStartHandler = (e, board, item)  => {
+    const dragLeaveHandler = (e, board, item)  => {
+        console.log(board,item, 'dranLeaveHandler')
+    }
+    const dragStartHandler = (e, board, item)  => {
         setCurrentBoard(board)
         setCurrentItem(item)
     }
-    const dranEndHandler = (e, board, item)  => {
-        console.log("dranEndHandler")
-        // e.target.style.boxShadow = 'none'
+    const dragEndHandler = (e, board, item)  => {
+        console.log(board,item,'dranEndHandler')
     }
-    const dranHandler = (e, board, item)  => {
+    const dragHandler = async (e, board, item)  => {
         e.preventDefault()
-        if(currentBoard.id === board.id) return
-        const  currentIndex = currentBoard.items.indexOf(currentItem)
-        const removeItem=currentBoard.items.splice(currentIndex, 1)
-        const dropIndex = board.items.indexOf(item)
-       const itemdrop =  board.items.splice(dropIndex+1, 1, currentItem)
-        console.log(board, item, removeItem, itemdrop)
-        setBoards(boards.map((b) => {
-            if(b.id == board.id) {
-                return board
-            }
-            if(b.id === currentBoard.id) {
-                return currentBoard
-            }
-            return b;
-        }))
+         try {
+             await boardUpdata({prisonerId: currentItem.id, fromRoomId: currentBoard.id, toRoomId:board.id})
+             await refetch()
+         } catch (err) {
+
+         }
 
     }
-    const itemAddUser = (board) => {
+    const itemAddUser =async (board) => {
         console.log(board)
-            const _Array = boards.map(el => {
-                if(el.id === board.id){
-                    el.items.push({id: Math.round(Math.random()*10000), title: `prisoners ${Math.round(Math.random()*10000)}`});
-                    return el;
-                }
-                return el;
+        const _items = [Number(pr_id)];
+        board.attributes.prisoners.data.forEach(el => {
+            _items.push(el.id)
+        })
+        await httpClient.put(`/rooms/${board.id}`,{data:{prisoners:_items,freePlace: board.attributes.capacity-_items.length}})
+            .then(res => {
+                refetch()
             })
-        setBoards(_Array)
     }
     return(<div className="row">
-        {boards.map((board, index) => {
+        {boardsList?.map((board, index) => {
                 return <div key={index} className='col-4 col-md-3 col-sm-6 col-lg-3'>
-                    <h2 className="board__title">
-                        {board.title} {index+1}
-                    </h2>
+                    <div className="board__title__wrapper">
+                        <div className="board__title">
+                            {board.attributes.name}{board.id}
+                        </div>
+                        {!isNewPrsonerAdd&&<div className="board__icon">
+                            <Button onClick={() => boardItemUpdata(board)}><EditIcon/></Button>
+                            <Button onClick={() => boardItemRemove(board)}><DeleteIcon/></Button>
+                        </div>}
+                    </div>
                    <div className='board'>
-                       {board.items.map((item, key) =>
+                       {board?.attributes?.prisoners?.data?.map((item,key) =>
                            <div
                                key={key}
-                               onDragOver={(e) => dranOverHandler(e, board, item)}
-                               onDragLeave={(e) => dranLeaveHandler(e, board, item)}
-                               onDragStart={(e) => dranStartHandler(e, board, item)}
-                               onDragEnd={(e) => dranEndHandler(e, board, item)}
-                               onDrop={(e) => dranHandler(e, board, item)}
-                               draggable={true}
+                               onDragOver={(e) => dragOverHandler(e, board, item)}
+                               onDragLeave={(e) => dragLeaveHandler(e, board, item)}
+                               onDragStart={(e) => dragStartHandler(e, board, item)}
+                               onDragEnd={(e) => dragEndHandler(e, board, item)}
+                               onDrop={(e) => dragHandler(e, board, item)}
+                               draggable={draggable}
                                className='item'
                            ><span className='item__text'>
-                               {key+1} {item.title} <PrisonersPlaceNow index={key+1} text={'Kamerda'}/>
+                               <img className='images' src={process.env.REACT_APP_IMAGE_BASE_URL+item.attributes.image} alt="dadsd"/>
+                               {item.attributes.sureName} {item.attributes.firstName} <PrisonersPlaceNow index={key+1} text={'Kamerada'}/>
                            </span>
                            </div>
                        )}
                    </div>
-                    {isNewPrsonerAdd&&<button className='boar__item__add__btn' onClick={() => itemAddUser(board)}>Add+</button>}
+                    {isNewPrsonerAdd && board.attributes.freePlace!==0&&<button className='boar__item__add__btn' onClick={() => itemAddUser(board)}>Add+</button>}
                 </div>;
             }
         )}

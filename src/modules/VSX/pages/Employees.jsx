@@ -27,14 +27,16 @@ const Employees = () => {
     let count =0;
     const removePrisonerModal = useOverlay({ uniqueName: "removePrisoner" });
     const prisonerList = useFetchList({
-        url: "/prisoners",
+        url: "/users",
         urlSearchParams:{
             pageSize: 10,
+            populate: "*"
         }
     });
+    console.log(prisonerList)
     const prisonerDelete = useDeleteWithConfirm({
         uniqueName: "removePrisonerModal",
-        url: "/prisoners",
+        url: "/users",
     });
     const handlaAction=  (items) => {
         tableCheckItemClick(items)
@@ -71,7 +73,7 @@ const Employees = () => {
             />
             <InputSearch
                 setValue={setFilters}
-                text={'ВСХда сақланаётган шахслар рўйхати'}
+                text={t('employees-list-get')}
             />
             <PageHeading
                 links={[
@@ -96,10 +98,10 @@ const Employees = () => {
                         },
                     },
                     {
-                        title: t('phone'),
+                        title: t('photo'),
                         dataKey: "attributes",
                         className: "white-space_no-wrap",
-                        render: (value, item) => Avatar(item.attributes.image)
+                        render: (value, item) => Avatar(item?.image)
                         // time?.timeFormater(item?.attributes?.createdAt, "DD.MM.YYYY"),
                     },
                     {
@@ -108,19 +110,19 @@ const Employees = () => {
                         dataKey: "attributes.sureName",
                         render: (value, item) =>
                         {
-                            return Span(item.attributes)
+                            return Span(item)
                         }
                     },
                     {
                         title: t('birthdate'),
                         dataKey: "amount",
                         className: "white-space_no-wrap",
-                        render: (value,items) => time.timeFormater(items.attributes.birthdate, "DD.MM.YYYY"),
+                        render: (value,items) => time.timeFormater(items?.birthdate, "DD.MM.YYYY"),
                     },
                     {
                         title: t("passport"),
                         dataKey: "currency",
-                        render: (value,items) => items.attributes.passport,
+                        render: (value,items) => items?.passport,
                     },
                     {
                         title: t("to-account"),
@@ -138,7 +140,7 @@ const Employees = () => {
                     {
                         title: t('isInvalid'),
                         dataKey: "user",
-                        render: (value,item) => IsInvalid(item.attributes.isInvalid),
+                        render: (value,item) => IsInvalid(item?.isInvalid),
                     },
                     {
                         title: t("camera"),

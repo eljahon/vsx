@@ -23,7 +23,15 @@ export const useFetchList = ({
 		{
 			select: (responseData) => {
 				meta = utils.apiHelpers.metaSelect(responseData, metaKey);
-				return utils.apiHelpers.dataSelect(responseData, dataKey);
+				if(responseData?.data?.length) {
+					return utils.apiHelpers.dataSelect(responseData, dataKey);
+				} else {
+					const data = {data:responseData}
+					return utils.apiHelpers.dataSelect(data, dataKey);
+				}
+				console.log(responseData)
+
+
 			},
 
 			...queryOptions,

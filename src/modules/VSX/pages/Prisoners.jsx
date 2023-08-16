@@ -16,8 +16,6 @@ const Prisoners = () => {
       const navLink = useNavigate()
       const {region} = useParams()
       const { getLanguageValue } = useGetLanguage();
-      const [isUpdate, setUpdate] = useState(false)
-      const [values, setValues] = useState({})
       const [filters, setFilters] = useState({
           start: '',
           end: '',
@@ -41,7 +39,6 @@ const handlaAction=  (items) => {
 
 }
     const remove = (id) => {
-        // console.log(itemdata, get(itemdata, "id"))
         prisonerDelete.setId(id);
         prisonerDelete.handleOverlayOpen();
 
@@ -83,7 +80,7 @@ const tableCheckItemClick = (item) =>{
         />
         <InputSearch
             setValue={setFilters}
-            text={'ВСХда сақланаётган шахслар рўйхати'}
+            text={t('prisoners-list-get')}
         />
       <PageHeading
         links={[
@@ -108,7 +105,7 @@ const tableCheckItemClick = (item) =>{
                 },
             },
           {
-            title: t('phone'),
+            title: t('photo'),
             dataKey: "attributes",
             className: "white-space_no-wrap",
             render: (value, item) => Avatar(item.attributes.image)

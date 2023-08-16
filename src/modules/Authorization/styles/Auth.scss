@@ -19,7 +19,7 @@
 		@media (max-width:884px) {
 			width: 100px;
 			height: 100px;
-			
+
 		}
 	}
 
@@ -40,7 +40,7 @@
 		width: 100%;
 		padding-inline: 7%;
 		padding-block: 15px;
-		margin-bottom: 30px;
+		//margin-bottom: 30px;
 	}
 
 	&__content {
@@ -70,14 +70,14 @@
 	&__title {
 		margin-bottom: 59px;
 		margin-top: 22px;
-		font-size: 24px;
+		font-size: 21px;
 		max-width: 350px;
 		font-weight: 700;
 		color: var(--txt-primary);
-		
+
 		// @media (max-width:884px) {
 		// 	font-size: 23px;
-			
+
 		// }
 	}
 
@@ -113,11 +113,11 @@
 // 		align-items: center;
 // 		flex-direction: column;
 // 		min-height: 100vh;
-	
+
 // 		& > * {
 // 			width: 50%;
 // 		}
-	
+
 // 		&__logo{
 // 			display: flex;
 // 			align-items: center;
@@ -127,7 +127,7 @@
 // 			width: 100px;
 // 			height: 100px;
 // 		}
-	
+
 // 		&__logo p{
 // 			font-family: 'Roboto', sans-serif;
 // 			font-style: normal;
@@ -137,8 +137,8 @@
 // 			color: #000000;
 // 			max-width: 450px;
 // 		}
-	
-	
+
+
 // 		// &__header {
 // 		// 	display: flex;
 // 		// 	background-color:#F3F3F3 ;
@@ -147,23 +147,23 @@
 // 		// 	padding-block: 15px;
 // 		// 	margin-bottom: 30px;
 // 		// }
-	
+
 // 		// &__content {
 // 		// 	display: flex;
 // 		// 	flex-direction: column;
 // 		// 	justify-content: center;
-	
+
 // 		// 	padding: 50px 8%;
 // 		// }
-	
+
 // 		// &__heading {
 // 		// 	max-width: 90%;
 // 		// 	margin-right: auto;
 // 		// 	margin-left: auto;
-	
+
 // 		// 	text-align: center;
 // 		// }
-	
+
 // 		// &__title {
 // 		// 	margin-bottom: 50px;
 // 		// 	margin-top: 20px;
@@ -172,28 +172,28 @@
 // 		// 	font-weight: 700;
 // 		// 	color: var(--txt-primary);
 // 		// }
-	
+
 // 		// &__subtitle {
 // 		// 	line-height: 25px;
 // 		// 	color: var(--txt-secondary);
 // 		// }
 // 	}
-	
+
 // 	// .code-timer {
 // 	// 	display: flex;
 // 	// 	align-items: center;
 // 	// 	justify-content: center;
-	
+
 // 	// 	width: 100px;
 // 	// 	height: 40px;
 // 	// 	padding: 8px 14px;
-	
+
 // 	// 	border: 1px solid var(--stroke-input);
 // 	// 	border-radius: 44px;
-	
+
 // 	// 	&__count {
 // 	// 		flex: 1 1 0;
-	
+
 // 	// 		font-weight: 600;
 // 	// 		color: var(--txt-primary);
 // 	// 		text-align: center;

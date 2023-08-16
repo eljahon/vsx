@@ -13,10 +13,11 @@ import { DateInput } from "./components/DateInput";
 import "./DatePicker.scss";
 
 export const DatePicker = ({
+                             maskformat,
   placeholder = "date",
   outerClass = "",
   label = "",
-  format = "DD.MM.YYYY",
+  format = "YYYY-DD-MM",
   size = "sm",
   isDisabled = false,
   hasTimeSelect = false,
@@ -24,6 +25,7 @@ export const DatePicker = ({
   prepend = true,
   field,
   form,
+
   onDateChange,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +33,7 @@ export const DatePicker = ({
   const classNames = cn("date-picker", outerClass, `control_${size}`);
 
   const handleChange = (date) => {
-    console.log(date)
+    // console.log(date)
     form.setFieldValue(field.name, date.toDate());
     onDateChange && onDateChange(date);
   };
@@ -58,7 +60,9 @@ export const DatePicker = ({
             placeholder={placeholder}
             isDisabled={isDisabled}
             isOpen={isOpen}
+            value={field.value}
             className={innerClass}
+            format={maskformat}
           />
         }
         locale={locale}
@@ -81,6 +85,7 @@ DatePicker.propTypes = {
   outerClass: PropTypes.string,
   innerClass: PropTypes.string,
   size: PropTypes.string,
+  maskformat: PropTypes.string,
   isDisabled: PropTypes.bool,
   hasTimeSelect: PropTypes.bool,
   onDateChange: PropTypes.func,

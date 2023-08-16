@@ -19,6 +19,7 @@ export const FormContainer = ({
 	onSuccess = () => {},
 	onError = () => {},
 	onFinal = () => {},
+	customData={},
 	onSubmit,
 	...formProps
 }) => {
@@ -41,7 +42,7 @@ export const FormContainer = ({
 		);
 		const requestUrl = params ? queryBuilder(url, params) : url;
 
-		httpClient[method](requestUrl, {data:formValues}, axiosConfig)
+		httpClient[method](requestUrl, {data: {...formValues,...customData}}, axiosConfig)
 			.then(({ data }) => {
 				formHelpers.resetForm();
 				onSuccess(data);
@@ -49,8 +50,10 @@ export const FormContainer = ({
 			})
 
 			.catch((error) =>{
-				formHelpers.setErrors(get(error, "response.data.errors"));
+				// console.log(error)
 				onError(error);
+				formHelpers.setErrors(get(error, "response.data.errors"));
+
 				notifier.error(utils.formHelpers.gerErrorMessage(error));
 			})
 
@@ -66,13 +69,16 @@ export const FormContainer = ({
 			validationSchema={validationSchema}
 			onSubmit={
 				(value,formHelpers) => {
-					console.log(value)
+					// console.log(value)
 					isFunction(onSubmit) ? onSubmit(value, formHelpers) : handleSubmit(value, formHelpers)
 				}
 			}
 			enableReinitialize={true}
 		>
-			{(formik) => <Form {...formProps}>{children(formik)}</Form>}
+			{(formik) => {
+				console.log(formik)
+				return <Form {...formProps}>{children(formik)}</Form>
+			}}
 		</Formik>
 	);
 };

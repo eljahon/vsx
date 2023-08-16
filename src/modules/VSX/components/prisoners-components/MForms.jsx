@@ -6,7 +6,7 @@ import { get } from "lodash";
 import { userSelector } from "store/selectors";
 import {useGetLanguage,} from "hooks";
 import { constants, time, utils } from "services";
-
+// import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import {useTranslation} from "react-i18next";
 import Containers from "containers";
 import {
@@ -14,141 +14,75 @@ import {
     Button,
     AvatarUpload,
 } from "components";
+import {useParams} from "react-router-dom";
 
 export const MForms = (props) => {
     const {
         values,
         handleOverlayClose,
         onAddedNewRecord,
+        setActive,
+        handleTab,
+        tablist
     } = props;
     const {t} = useTranslation()
     // console.log(get(values, 'responsibleUser.data.attributes.username'), isUpdate)
     const { getLanguageValue } = useGetLanguage();
     const user = useSelector(userSelector);
+    const {pr_id} = useParams()
+
     return (
         <>
             <Containers.Form
                 method={get(values, "id") ? "put" : "post"}
-                url={get(values, "id") ? `/prisoners/${get(values, "id")}` : "/prisoners"}
+                url={get(values, "id") ? `/med-exams/${get(values, "id")}` : "/med-exams"}
+                customData={{prisoner: Number(pr_id)}}
                 onSuccess={() => {
+                    handleTab(tablist)
+                }}
+                onError={(err) => {
+                    // console.log(err)
+
                 }}
                 fields={[
                     {
-                        name: "passport",
+                        name: "date",
                         validations: [{ type: "required" }],
                         value: get(values, 'passport'),
                         onSubmitValue: (value) => {
-                            return value
+                            return time.timeFormater(value, 'YYYY-MM-DD HH:mm')
                         },
                     },
                     {
-                        name: "image",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'image'),
-                        onSubmitValue: (value) => {
-                            return value
-                        },
-                    },
-                    {
-                        name: "birthdate",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'birthdate'),
-                        onSubmitValue: (value) => time.timeFormater(value, 'YYYY-MM-DD'),
-                    },
-                    {
-                        name: "firstName",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'firstName'),
-                        onSubmitValue: (value) => value,
-                    },
-                    {
-                        name: "sureName",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'sureName'),
-                        onSubmitValue: (value) => value,
-                    },
-                    {
-                        name: "middleName",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'middleName'),
-                        onSubmitValue: (value) => value
-                    },
-                    {
-                        name: "birthAddress",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'birthAddress'),
-                        onSubmitValue: (value) => value,
-                    },
-                    {
-                        name: "livingAddress",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'livingAddress'),
-                        onSubmitValue: (value) => value,
-                    },
-                    {
-                        name: "address",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'address'),
-                        onSubmitValue: (value) =>value,
-                    },
-                    {
-                        name: "nationality",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'nationality') ?? '',
-                        onSubmitValue: (value) => value,
-                    },
-                    {
-                        name: "citizenship",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'citizenship') ?? '',
-                        onSubmitValue: (value) => value,
-                    },
-                    {
-                        name: "isInvalid",
-                        validations: [{ type: "required" }],
-                        value: get(values, 'isInvalid')?? false,
-                        onSubmitValue: (value) => {
-                            return value
-                        },
-                    },
-                    {
-                        name: "isLGBT",
-                        validations: [{ type: "required" }],
-                        value: `${get(values, 'isLGBT')}` ?? false,
-                        onSubmitValue: (value) => {
-                            if(value === "undefined"||"null") return false;
-                            return value
-                        }
-                    },
-                    {
-                        name: "gender",
-
+                        name: "responsibleEmployee",
                         validations: [{ type: "required" }],
                         validationType: "object",
-                        value:get(values, 'gender.data.id') ?  {label: get(values, 'gender.data.attributes.name'),value:get(values, 'gender.data.id')} : '',
-                        onSubmitValue: (value) => {
-                            return value.value
-                        }
-                    },
-
-                    {
-                        name: "responsibleUser",
-                        validations: [{ type: "required" }],
-                        validationType: "object",
-                        value:get(values, 'responsibleUser.data.id') ?  {label: get(values, 'responsibleUser.data.attributes.username'),value:get(values, 'responsibleUser.data.id')} : '',
+                        value:get(values, 'responsibleEmployee.data.id') ?  {label: get(values, 'responsibleEmployee.data.attributes.username'),value:get(values, 'responsibleEmployee.data.id')} : '',
                         onSubmitValue: (value) => {
                             return  value.value
                         }
                     },
-                    // {
-                    //   name: "room",
-                    //   validations: [{ type: "required" }],
-                    //   value: get(values, 'room.id'),
-                    //   onSubmitValue: (value) => {
-                    //     console.log(value)
-                    //     return get(value, 'id')
-                    //   },
-                    // },
+                    {
+                        name: "responsibleMedEmployees",
+                        validations: [{ type: "required" }],
+                        value: get(values, 'responsibleMedEmployees'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "additionalNotes",
+                        validations: [{ type: "required" }],
+                        value: get(values, 'additionalNotes'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "isInjured",
+                        value:get(values, 'isInjured'),
+                        onSubmitValue: (value) => {
+                            const _item = value === 'yes' ? true :  false
+                            return _item;
+                        }
+                    },
+
                 ]}
             >
                 {({ isSubmitting }) => (
@@ -159,25 +93,18 @@ export const MForms = (props) => {
                                 <div className="row g-4">
                                     <div className="col-4">
                                         <FastField
-                                            name="birthdate"
+                                            name="date"
                                             component={Fields.DatePicker}
                                             label={t('medical-date')+"*"}
                                             placeholder={t('medical-date')}
+                                            maskformat={'####-##-## ##:##'}
+                                            format={'YYYY-MM-DD HH:mm'}
+                                            hasTimeSelect
                                         />
                                     </div>
                                     <div className="col-4">
                                         <FastField
-                                            name="firstName"
-                                            placeholder=''
-                                            component={Fields.DatePicker}
-                                            label={t('medical-time')+"*"}
-                                            // placeholder="Исми"
-                                        />
-                                    </div>
-                                    {/*sureName*/}
-                                    <div className="col-4">
-                                        <FastField
-                                            name="responsibleUser"
+                                            name="responsibleEmployee"
                                             loadOptionsUrl={'/users'}
                                             component={Fields.AsyncSelect}
                                             loadOptionsKey={(data) => data?.map((el) => ({label: el.username, value:el.id}))}
@@ -187,115 +114,92 @@ export const MForms = (props) => {
                                     </div>
                                     <div className="col-4">
                                         <FastField
-                                            name="sureName"
+                                            name="responsibleMedEmployees"
                                             component={Fields.InputText}
                                             label={t('medical-staff')}
                                             placeholder={t('medical-staff')}
                                         />
-                                    </div>
-                                    {/*middlename*/}
-                                    <div className="col-4">
-                                        {/*<FastField*/}
-                                        {/*    name="middleName"*/}
-                                        {/*    component={Fields.InputText}*/}
-                                        {/*    label="Отасининг исми *"*/}
-                                        {/*    // placeholder="Отасининг исми"*/}
-                                        {/*/>*/}
-                                    </div>
-                                    {/*birthAddress*/}
-                                    <div className="col-4">
-                                        {/*<FastField*/}
-                                        {/*    name="birthAddress"*/}
-                                        {/*    component={Fields.InputText}*/}
-                                        {/*    label="Тугилган жойи"*/}
-                                        {/*    // placeholder="Тугилган жойи"*/}
-                                        {/*/>*/}
                                     </div>
                                     {/*address*/}
                                     <div className="col-2">
                                         <p className="mb_20">{t('Injuries')}</p>
                                         <div className="d-flex justify-content-between">
                                             <FastField
-                                                name="Injuries"
+                                                name="isInjured"
                                                 component={Fields.RadioButton}
-                                                label="Ha"
+                                                label={t('yes')}
+                                                value={'yes'}
                                             />
                                             <FastField
-                                                name="Injuries"
+                                                name="isInjured"
                                                 component={Fields.RadioButton}
-                                                label="Yo'q"
+                                                label={t('no')}
+                                                value={'no'}
                                             />
                                         </div>
                                     </div>
                                     {/*livingAddress*/}
                                     <div className="col-8">
                                         <FastField
-                                            name="nationality"
+                                            name="additionalNotes"
                                             component={Fields.Textarea}
                                             label={t('additional-notes')}
                                             // placeholder="Исми"
                                         />
                                     </div>
-                                    <div className='col-12'><h1>{t('to-search')}</h1></div>
-                                    <div className="col-4">
-                                        <FastField
-                                            name="birthdate"
-                                            component={Fields.DatePicker}
-                                            label={t('to-search-date')+"*"}
-                                            placeholder={t('to-search-date')}
-                                        />
-                                    </div>
-                                    <div className="col-4">
-                                        <FastField
-                                            name="firstName"
-                                            placeholder=''
-                                            component={Fields.DatePicker}
-                                            label={t('to-search-time')}
-                                            // placeholder="Исми"
-                                        />
-                                    </div>
-                                    {/*sureName*/}
-                                    <div className="col-4">
-                                        <FastField
-                                            name="responsibleUser"
-                                            loadOptionsUrl={'/users'}
-                                            component={Fields.AsyncSelect}
-                                            loadOptionsKey={(data) => data?.map((el) => ({label: el.username, value:el.id}))}
-                                            label={t('responsible-employees')}
-                                            placeholder={t('responsible-employees')}
-                                        />
-                                    </div>
-                                    <div className="col-2">
-                                        <p className="mb_20">{t('available-items')}</p>
-                                        <div className="d-flex justify-content-between">
-                                            <FastField
-                                                name="isLGBT"
-                                                component={Fields.RadioButton}
-                                                label="Ha"
-                                            />
-                                            <FastField
-                                                name="isLGBT"
-                                                component={Fields.RadioButton}
-                                                label="Yo'q"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col-4">
-                                        <FastField
-                                            name="livingAddress"
-                                            component={Fields.InputText}
-                                            label={t('that-came')}
-                                            // placeholder="Яшаш жойи"
-                                        />
-                                    </div>
-                                    <div className="col-4">
-                                        <FastField
-                                            name="gender"
-                                            component={Fields.InputText}
-                                            label={''}
-                                            // placeholder="Отасининг исми"
-                                        />
-                                    </div>
+                                    {/*<div className='col-12'><h1>{t('to-search')}</h1></div>*/}
+                                    {/*<div className="col-4">*/}
+                                    {/*    <FastField*/}
+                                    {/*        name="birthdate"*/}
+                                    {/*        component={Fields.DatePicker}*/}
+                                    {/*        label={t('to-search-date')+"*"}*/}
+                                    {/*        placeholder={t('to-search-date')}*/}
+                                    {/*        maskformat={'####-##-## ##:##'}*/}
+                                    {/*        format={'YYYY-MM-DD HH:mm'}*/}
+                                    {/*        hasTimeSelect*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+                                    {/*<div className="col-4">*/}
+                                    {/*    <FastField*/}
+                                    {/*        name="responsibleUser"*/}
+                                    {/*        loadOptionsUrl={'/users'}*/}
+                                    {/*        component={Fields.AsyncSelect}*/}
+                                    {/*        loadOptionsKey={(data) => data?.map((el) => ({label: el.username, value:el.id}))}*/}
+                                    {/*        label={t('responsible-employees')}*/}
+                                    {/*        placeholder={t('responsible-employees')}*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+                                    {/*<div className="col-2">*/}
+                                    {/*    <p className="mb_20">{t('available-items')}</p>*/}
+                                    {/*    <div className="d-flex justify-content-between">*/}
+                                    {/*        <FastField*/}
+                                    {/*            name="isLGBT"*/}
+                                    {/*            component={Fields.RadioButton}*/}
+                                    {/*            label={t('yes')}*/}
+                                    {/*        />*/}
+                                    {/*        <FastField*/}
+                                    {/*            name="isLGBT"*/}
+                                    {/*            component={Fields.RadioButton}*/}
+                                    {/*            label={t('now')}*/}
+                                    {/*        />*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
+                                    {/*<div className="col-4">*/}
+                                    {/*    <FastField*/}
+                                    {/*        name="livingAddress"*/}
+                                    {/*        component={Fields.InputText}*/}
+                                    {/*        label={t('that-came')}*/}
+                                    {/*        // placeholder="Яшаш жойи"*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
+                                    {/*<div className="col-4">*/}
+                                    {/*    <FastField*/}
+                                    {/*        name="gender"*/}
+                                    {/*        component={Fields.InputText}*/}
+                                    {/*        label={''}*/}
+                                    {/*        // placeholder="Отасининг исми"*/}
+                                    {/*    />*/}
+                                    {/*</div>*/}
 
                                 </div>
                             </div>

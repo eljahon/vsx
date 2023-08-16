@@ -33,7 +33,7 @@ const BaseUrl = process.env.REACT_APP_IMAGE_BASE_URL;
     const formdata = new FormData()
     formdata.append('files', image)
     httpClient.post("/upload", formdata).then(({ data }) => {
-      console.log(data)
+      // console.log(data)
     	setImgSrc(get(data, "0.url"));
     	form.setFieldValue(
     		field.name,
