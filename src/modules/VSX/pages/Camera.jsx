@@ -58,6 +58,7 @@ const Prisoners = () => {
                 btnText={t("camera-add")}
             />
             <DrogDrop
+                draggable={true}
                 boardItemRemove={removeRoom}
                 boardItemUpdata={(item) => {}}
                 boardsList={cameraList.data}

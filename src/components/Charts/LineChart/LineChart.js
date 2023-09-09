@@ -6,7 +6,7 @@ const LineChart = (props) => {
     const chartData = LineChartOptions(props)
     return (
         <div>
-            <ReactApexChart options={chartData.options} series={chartData.series} type={_type} height={500} {...props.rest}/>
+            <ReactApexChart width={props?.width} options={chartData.options} series={chartData.series} type={_type} height={500} {...props.rest}/>
         </div>
     );
 };

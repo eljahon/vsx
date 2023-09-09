@@ -20,7 +20,7 @@ export const Profile = () => {
   const navigate = useNavigate();
   const user = useSelector(userSelector);
   const { getLanguageValue } = useGetLanguage();
-
+  console.log(user)
   const handleLogout = (event) => {
     storage.remove("token");
     dispatch(auth.failure());

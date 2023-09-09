@@ -14,9 +14,9 @@ export const useFetchOne = ({
 }) => {
 	const [id, setId] = useState("");
 		const single = useQuery(
-			utils.apiHelpers.getQueryKey("GET", id ? `${url}/${id}` : url, urlSearchParams),
+			    utils.apiHelpers.getQueryKey("GET", id ? `${url}/${id}` : url, urlSearchParams),
 
-			id ? utils.apiHelpers.ultimateQueryFn(customQueryFn, urlSearchParams) : '',
+			id ? utils.apiHelpers.ultimateQueryFn(customQueryFn, urlSearchParams) : true,
 
 			{
 				select: (data) => utils.apiHelpers.dataSelect(data, dataKey),

@@ -241,6 +241,7 @@ return chartdata;
             options: {
                 chart: {
                     type: 'donut',
+                    width: 200
                 },
                 labels: _labels,
                 colors: _colors,

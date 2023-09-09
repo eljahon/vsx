@@ -16,7 +16,7 @@ export const Sidebar = ({ setMini, mini }) => {
   const menuKey = pathname.split("/")[1];
     const roleName = localStorage.getItem('roleName')
   return (
-    <aside className={`sidebar ${mini ? "sidebar__mini" : ""} `}>
+    <aside className={`sidebar scroll-style ${mini ? "sidebar__mini" : ""} `}>
       <Button
         className="sidebar__btn"
         type="button"
@@ -29,7 +29,7 @@ export const Sidebar = ({ setMini, mini }) => {
         <div className="sidebar__admin-info">
           <Typography Type="p" className="sidebar__role" text={"Инспектор"} />
           <Typography
-            Type="h4"
+            Type="h5"
             className="sidebar__admin-name"
             text={"Маърупов Олимжон"}
           />

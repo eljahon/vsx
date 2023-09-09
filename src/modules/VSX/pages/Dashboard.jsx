@@ -40,12 +40,7 @@ const Dashboard = () => {
      <div>
          <div className="row">
              <div className="col-12 col-md-6 col-lg-3">
-                 {/* <PrisonersPieChart
 
-            className={"pie"}
-            data={data}
-            title={"Умумий сақланаётган махбуслар"}
-          /> */}
                  <PrisonersBarChart
                      bottom
                      data={[40]}
@@ -57,12 +52,6 @@ const Dashboard = () => {
 
              </div>
              <div className="col-12 col-md-6 col-lg-3">
-                 {/* <PrisonersPieChart
-
-            className={"pie"}
-            data={data}
-
-          /> */}
                  <PrisonersBarChart
                      bottom
                      colors={["#5BBA7C", "#000"]}
@@ -73,12 +62,6 @@ const Dashboard = () => {
                  />
              </div>
              <div className="col-12 col-md-6 col-lg-3">
-                 {/* <PrisonersPieChart
-            colors={[, "#E8E8E8"]}
-            className={"pie"}
-            data={data}
-            title="Ишлашга жўнатилганлар сони"
-          /> */}
                  <PrisonersBarChart
                      bottom
                      colors={["#223263", "#000"]}
@@ -89,12 +72,6 @@ const Dashboard = () => {
                  />
              </div>
              <div className="col-12 col-md-6 col-lg-3">
-                 {/* <PrisonersPieChart
-            colors={["#223263", "#E8E8E8"]}
-            className={"pie"}
-            data={data}
-            title="Озод этилганларлар сони"
-          /> */}
                  <PrisonersBarChart
                      bottom
                      colors={["#223263", "#000"]}
@@ -108,7 +85,7 @@ const Dashboard = () => {
      </div>
    <div className='line__chart'>
        <div className="row">
-           <div className="col-12 col-md-6 col-lg-6">
+           <div className="col-12 col-md-6 col-lg-10">
                <PrisonersLineChart/>
            </div>
    </div>
@@ -117,7 +94,7 @@ const Dashboard = () => {
         <div className='person'>
             <h1 className='person__title'>Шахслар бўйича статистика</h1>
             <div className="row">
-                <div className="col-12 col-md-6 col-lg-4">
+                <div className="col-12 col-md-6 col-lg-5">
                         <SamiChart type={'donut'} text={'Ёшлар кесимида'}/>
                 </div>  <div className="col-12 col-md-6 col-lg-4">
                         <SamiChart type={'donut'} text={'Ёшлар кесимида'}/>

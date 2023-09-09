@@ -9,7 +9,7 @@ const LineChart = (props) => {
     let chartData = chartType[_type](props)
 return (
         <div>
-            <ReactApexChart options={chartData.options} series={chartData.series} type={_type} height={500} {...props.rest}/>
+            <ReactApexChart options={chartData.options} series={chartData.series} type={_type} height={400} {...props.rest}/>
         </div>
     );
 };

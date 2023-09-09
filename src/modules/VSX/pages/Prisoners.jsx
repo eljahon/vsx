@@ -152,7 +152,11 @@ const tableCheckItemClick = (item) =>{
           {
             title: t("camera"),
             dataKey: "camera",
-            render: (value) => formatters.showDegree(value),
+            render: (value, items) => {
+                console.log(value,items)
+                // formatters.showDegree(value)
+                return items.attributes?.room?.data?.attributes?.name
+            },
           },
           {
             title: t('action'),

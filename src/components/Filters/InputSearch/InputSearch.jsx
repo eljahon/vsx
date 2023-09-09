@@ -2,7 +2,7 @@ import { ReactComponent as SearchIcon } from "assets/icons/search.svg";
 import './index.scss'
 import React from "react";
 export  const InputSearch = (props)=> {
-    const {text,isInput, value, setValue, time=2000, placeholder} = props;
+    const {text,isInput, value, setValue, time=2000, placeholder='search'} = props;
     const debounce = function (func, time){
         let timer;
         return (...args) => {

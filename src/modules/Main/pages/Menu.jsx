@@ -1,17 +1,17 @@
 import React from "react";
 
-import { AppLink, ListActions, Typography } from "components";
+import {AppLink, Button, ListActions, Typography} from "components";
 
 import Tashkent from "assets/images/tashkent.avif";
 import TashkentRegion from "assets/images/toshkentVil.jpeg";
 import Bukhara from "assets/images/bukhara.jpeg";
-import Kitchen from "assets/images/menu-kitchen.png";
-import Accounting from "assets/images/menu-accounting.png";
-import Hr from "assets/images/menu-hr.png";
-import Management from "assets/images/menu-management.png";
-import Inventory from "assets/images/menu-inventory.png";
-import Administration from "assets/images/menu-administration.png";
-import Settings from "assets/images/menu-settings.png";
+// import Kitchen from "assets/images/menu-kitchen.png";
+// import Accounting from "assets/images/menu-accounting.png";
+// import Hr from "assets/images/menu-hr.png";
+// import Management from "assets/images/menu-management.png";
+// import Inventory from "assets/images/menu-inventory.png";
+// import Administration from "assets/images/menu-administration.png";
+// import Settings from "assets/images/menu-settings.png";
 import {useFetchList, useOverlay} from "hooks";
 import { AddRegionModal } from "../components/AddRegionModal";
 
@@ -45,7 +45,7 @@ const Menu = () => {
       />
       <div className="row g-4">
         {regionList?.data?.map((item, index) => (
-          <div key={index} className="col-3">
+          <div key={index} className="col-3" >
 
             <AppLink link={`/${item.id}/dashboard`}>
               <div className="menu__item menu__item_granted">
@@ -58,6 +58,7 @@ const Menu = () => {
                 />
               </div>
             </AppLink>
+              {/*<div><Button>ok</Button></div>*/}
           </div>
         ))}
       </div>

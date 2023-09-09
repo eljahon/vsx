@@ -28,13 +28,13 @@ export const ActionDropDown = (props) => {
                 <Button
                     className='items'
                     onClick={handleMenuToggle}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 11 11" fill="none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 11 11" fill="none">
                         <circle cx="5.02734" cy="5.50146" r="5" fill="#7C7C7C"/>
                     </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 11 11" fill="none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 11 11" fill="none">
                         <circle cx="5.02734" cy="5.50146" r="5" fill="#7C7C7C"/>
                     </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 11 11" fill="none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 11 11" fill="none">
                         <circle cx="5.02734" cy="5.50146" r="5" fill="#7C7C7C"/>
                     </svg>
                 </Button>

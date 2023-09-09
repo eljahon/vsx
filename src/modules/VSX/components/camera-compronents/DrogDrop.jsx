@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {DragDropContext,Droppable,Draggable} from 'react-beautiful-dnd'
 import {PrisonersPlaceNow} from './index'
 import './styles/main.scss'
 import { ReactComponent as DeleteIcon } from "assets/icons/delete.svg";
@@ -17,6 +18,7 @@ export const DrogDrop = (props) => {
     const {pr_id} = useParams()
     const [currentBoard, setCurrentBoard] = useState(null)
     const [draggable, setDraggable] = useState(true)
+    const [fileurl, setFileUlr] = useState(config.FielUrl)
     const [currentItem, setCurrentItem] = useState(null)
     const boardUpdata = async (boardPrisoner) => {
         try {
@@ -67,38 +69,84 @@ export const DrogDrop = (props) => {
             })
     }
     return(<div className="row">
-        {boardsList?.map((board, index) => {
-                return <div key={index} className='col-4 col-md-3 col-sm-6 col-lg-3'>
-                    <div className="board__title__wrapper">
-                        <div className="board__title">
-                            {board.attributes.name}{board.id}
+        {/*{boardsList?.map((board, index) => {*/}
+        {/*        return <div key={index} className='col-4 col-md-3 col-sm-6 col-lg-3'>*/}
+        {/*            <div className="board__title__wrapper">*/}
+        {/*                <div className="board__title">*/}
+        {/*                    {board.attributes.name}{board.id}*/}
+        {/*                </div>*/}
+        {/*                {!isNewPrsonerAdd&&<div className="board__icon">*/}
+        {/*                    <Button onClick={() => boardItemUpdata(board)}><EditIcon/></Button>*/}
+        {/*                    <Button onClick={() => boardItemRemove(board)}><DeleteIcon/></Button>*/}
+        {/*                </div>}*/}
+        {/*            </div>*/}
+        {/*           <div className='board'>*/}
+        {/*               {board?.attributes?.prisoners?.data?.map((item,key) =>*/}
+        {/*                   <div*/}
+        {/*                       key={key}*/}
+        {/*                       onDragOver={(e) => dragOverHandler(e, board, item)}*/}
+        {/*                       onDragLeave={(e) => dragLeaveHandler(e, board, item)}*/}
+        {/*                       onDragStart={(e) => dragStartHandler(e, board, item)}*/}
+        {/*                       onDragEnd={(e) => dragEndHandler(e, board, item)}*/}
+        {/*                       onDrop={(e) => dragHandler(e, board, item)}*/}
+        {/*                       draggable={draggable}*/}
+        {/*                       className='item'*/}
+        {/*                   ><span className='item__text'>*/}
+        {/*                       <img className='images' src={process.env.REACT_APP_IMAGE_BASE_URL+item.attributes.image} alt="dadsd"/>*/}
+        {/*                       {item.attributes.sureName} {item.attributes.firstName} <PrisonersPlaceNow index={key+1} text={'Kamerada'}/>*/}
+        {/*                   </span>*/}
+        {/*                   </div>*/}
+        {/*               )}*/}
+        {/*           </div>*/}
+        {/*            {isNewPrsonerAdd && board.attributes.freePlace!==0&&<button className='boar__item__add__btn' onClick={() => itemAddUser(board)}>Add+</button>}*/}
+        {/*        </div>;*/}
+        {/*    }*/}
+        {/*)}*/}
+        <DragDropContext className='w_full' onDragEnd={(result) => dragEndHandler(result, column, setColumn)}>
+            <div className="row">
+                {boardsList?.map((board, index) => {
+                    return <div key={index} className='col-sm-12 col-md-6 col-lg-4 col-xl-4'>
+                        <div className="board__title__wrapper">
+                            <div className="board__title">
+                                {board.attributes.name}{board.id}
+                            </div>
+                            {!isNewPrsonerAdd && <div className="board__icon">
+                                <Button onClick={() => boardItemUpdata(board)}><EditIcon/></Button>
+                                <Button onClick={() => boardItemRemove(board)}><DeleteIcon/></Button>
+                            </div>}
                         </div>
-                        {!isNewPrsonerAdd&&<div className="board__icon">
-                            <Button onClick={() => boardItemUpdata(board)}><EditIcon/></Button>
-                            <Button onClick={() => boardItemRemove(board)}><DeleteIcon/></Button>
-                        </div>}
-                    </div>
-                   <div className='board'>
-                       {board?.attributes?.prisoners?.data?.map((item,key) =>
-                           <div
-                               key={key}
-                               onDragOver={(e) => dragOverHandler(e, board, item)}
-                               onDragLeave={(e) => dragLeaveHandler(e, board, item)}
-                               onDragStart={(e) => dragStartHandler(e, board, item)}
-                               onDragEnd={(e) => dragEndHandler(e, board, item)}
-                               onDrop={(e) => dragHandler(e, board, item)}
-                               draggable={draggable}
-                               className='item'
-                           ><span className='item__text'>
-                               <img className='images' src={process.env.REACT_APP_IMAGE_BASE_URL+item.attributes.image} alt="dadsd"/>
-                               {item.attributes.sureName} {item.attributes.firstName} <PrisonersPlaceNow index={key+1} text={'Kamerada'}/>
+                        <Droppable droppableId={`${board.id+Math.round()*1000}`}  index={index}>
+                            {(provided) => {
+                                console.log(provided)
+                                return<div {...provided.droppableProps}
+                                         ref={provided.innerRef} className='board'>
+                                        {board?.attributes?.prisoners?.data?.map((item, key) =>
+                                                <Draggable draggableId={`${key}`} key={item.id} index={key}>
+                                                    {(provided) => (
+                                                        <div
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            ref={provided.innerRef}
+                                                            className='item'
+                                                        ><span className='item__text'>
+                               <img className='images'
+                                    src={fileurl+item.attributes.image} alt="dadsd"/>
+                                                            {item.attributes.sureName} {item.attributes.firstName}
+                                                            <PrisonersPlaceNow index={key + 1} text={'Kamerada'}/>
                            </span>
-                           </div>
-                       )}
-                   </div>
-                    {isNewPrsonerAdd && board.attributes.freePlace!==0&&<button className='boar__item__add__btn' onClick={() => itemAddUser(board)}>Add+</button>}
-                </div>;
-            }
-        )}
+                                                        </div>
+                                                    )}
+                                                </Draggable>
+                                        )}
+                                    </div>
+                            }
+                            }
+                        </Droppable>
+                        {isNewPrsonerAdd && board.attributes.freePlace !== 0 &&
+                            <button className='boar__item__add__btn' onClick={() => itemAddUser(board)}>Add+</button>}
+                    </div>
+                })}
+            </div>
+        </DragDropContext>
     </div>)
 }

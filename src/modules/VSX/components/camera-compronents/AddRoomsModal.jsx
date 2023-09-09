@@ -44,18 +44,19 @@ const {t } = useTranslation()
                         onSubmitValue: (value) => {
                             return value
                         },
-                    },    {
-                        name: "prisoners",
-                        validations: [{ type: "required" }],
-                        validationType: 'array',
-                        onSubmitValue: (value) => {
-                            const _items =[]
-                                value.forEach(el => {
-                                    _items.push(el.value)
-                                })
-                            return _items
-                        },
                     },
+                    // {
+                    //     name: "prisoners",
+                    //     validations: [{ type: "required" }],
+                    //     validationType: 'array',
+                    //     onSubmitValue: (value) => {
+                    //         const _items =[]
+                    //             value.forEach(el => {
+                    //                 _items.push(el.value)
+                    //             })
+                    //         return _items
+                    //     },
+                    // },
                     {
                         name: "vsx",
                         validations: [{ type: "required" }],
@@ -123,20 +124,20 @@ const {t } = useTranslation()
                                     placeholder={t('responsible-employees')}
                                 />
                             </div>
-                            <div className="col-6">
-                                <FastField
-                                    name="prisoners"
-                                    loadOptionsUrl={'/prisoners'}
-                                    component={Fields.AsyncSelect}
-                                    isMulti={true}
-                                    loadOptionsKey={(data) => {
-                                        // console.log(data)
-                                        return data.data?.map((el) => ({label: el.attributes.sureName+" " +el.attributes.firstName, value:el.id}))
-                                    }}
-                                    label={t('prisoners')}
-                                    placeholder={t('prisoners')}
-                                />
-                            </div>
+                            {/*<div className="col-6">*/}
+                            {/*    <FastField*/}
+                            {/*        name="prisoners"*/}
+                            {/*        loadOptionsUrl={'/prisoners'}*/}
+                            {/*        component={Fields.AsyncSelect}*/}
+                            {/*        isMulti={true}*/}
+                            {/*        loadOptionsKey={(data) => {*/}
+                            {/*            // console.log(data)*/}
+                            {/*            return data.data?.map((el) => ({label: el.attributes.sureName+" " +el.attributes.firstName, value:el.id}))*/}
+                            {/*        }}*/}
+                            {/*        label={t('prisoners')}*/}
+                            {/*        placeholder={t('prisoners')}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
                             {/*<div className="col-12">*/}
                             {/*    <FastField*/}
                             {/*        name="files"*/}

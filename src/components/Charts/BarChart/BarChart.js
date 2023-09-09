@@ -4,10 +4,21 @@ const BarChart = ({data, colors,bottom, radius,size, type, text, ...rest}) => {
   const chartData = {
     options: {
           chart: {
-              height: 300,
+              height: 250,
               type: type,
           },
           labels: [text],
+        responsive: [{
+            breakpoint: 992,
+            options: {
+                radialBar: {
+                    hollow: {
+                        margin: 10,
+                        size: 40
+                    }
+                }
+            },
+        }],
           plotOptions: {
                     radialBar: {
                       hollow: {
@@ -17,14 +28,14 @@ const BarChart = ({data, colors,bottom, radius,size, type, text, ...rest}) => {
                       dataLabels: {
                         showOn: "always",
                         name: {
-                          offsetY: -10,
+                          offsetY: -20,
                           show: false,
                           color: colors[1],
-                          fontSize: "13px"
+                          fontSize: "12px"
                         },
                         value: {
                           color: colors[1],
-                          fontSize: "30px",
+                          fontSize: "20px",
                           show: true
                         }
                       }
@@ -46,13 +57,13 @@ const BarChart = ({data, colors,bottom, radius,size, type, text, ...rest}) => {
           }
         }
   };
-if(bottom) {
-          chartData.options.plotOptions.radialBar['track'] =  {
-                                background: '#E8E8E8',
-                                startAngle: -150,
-                                endAngle: 150,
-                              }
-}
+// if(bottom) {
+//           chartData.options.plotOptions.radialBar['track'] =  {
+//                                 background: '#E8E8E8',
+//                                 startAngle: -150,
+//                                 endAngle: 150,
+//                               }
+// }
   return (
     <div>
       <ReactApexChart options={chartData.options} series={chartData.series} type={type} height={300} {...rest}/>

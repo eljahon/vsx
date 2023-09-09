@@ -9,19 +9,22 @@ const PrisonersPieChart = ({ data, className, colors,text,count, size,type,title
   const _text = text ? text : 'Percent'
   const _title = title ? title : "title not props";
   return (
-          <div className="d-flex">
-          <div className="prisoners-count">
+          <div className="row">
+          <div className="prisoners-count col-2 col-md-12 col-sm-12 col-lg-2">
             <p>{_title}</p>
             <h1 style={{ color: h1Color }}>{count}</h1>
           </div>
-          <BarChart
-           data={_data}
-           colors={colors}
-           type={_type}
-           size={60}
-           text={_text}
-           {...rest}
-             />
+          <div className='col-10 col-md-12 col-lg-10'>
+              <BarChart
+                  // width={200}
+                  data={_data}
+                  colors={colors}
+                  type={_type}
+                  size={45}
+                  text={_text}
+                  {...rest}
+              />
+          </div>
         </div>
   );
 };

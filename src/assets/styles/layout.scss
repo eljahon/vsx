@@ -1,5 +1,5 @@
 .brand-logo {
-	max-width: 85px;
+	max-width: 65px;
 }
 
 .page {
@@ -39,7 +39,7 @@
 		flex: 1 1 0;
 
 		h1 {
-			font-size: 20px;
+			font-size: 16px;
 			font-weight: 700;
 			max-width: 410px;
 			margin-left: 10px;
@@ -65,6 +65,23 @@
 	}
 }
 
+.scroll-style::-webkit-scrollbar {
+	height: 0;
+	width: 3px;
+	border-radius: 24px;
+}
+
+.scroll-style::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+	background: #bcbcbc;
+}
+
+.scroll-style::-webkit-scrollbar-thumb:hover {
+	background: #a4a4a4;
+}
 .sidebar {
 	position: absolute;
 	z-index: var(--layout-z-index);
@@ -155,13 +172,10 @@
 	&__link {
 		display: flex;
 		align-items: center;
-
 		width: 100%;
-		padding: 16px 20px;
-
+		padding: 13px 20px;
 		font-weight: 400;
 		color: var(--txt-primary);
-
 		border-radius: 0px;
 		transition: all 0.3s ease;
 	}
