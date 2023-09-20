@@ -16,13 +16,13 @@ const Prisoners = () => {
       const navLink = useNavigate()
       const {region} = useParams()
       const { getLanguageValue } = useGetLanguage();
+      const [checkedList , setcheckedList] = useState([])
       const [filters, setFilters] = useState({
           start: '',
           end: '',
           search: '',
           region_id: null
       })
-      let count =0;
   const removePrisonerModal = useOverlay({ uniqueName: "removePrisoner" });
   const prisonerList = useFetchList({
     url: "/prisoners",
@@ -34,14 +34,17 @@ const Prisoners = () => {
         uniqueName: "removePrisonerModal",
         url: "/prisoners",
     });
-const handlaAction=  (items) => {
+    const handlaAction=  (items) => {
     tableCheckItemClick(items)
 
 }
-    const remove = (id) => {
-        prisonerDelete.setId(id);
+    const remove = (row, event) => {
+        prisonerDelete.setId(row.id);
         prisonerDelete.handleOverlayOpen();
 
+    }
+    const handelchecked =  (items) => {
+        // console.log(items)
     }
 const tableCheckItemClick = (item) =>{
     const {actionType, itemdata} = item;
@@ -51,22 +54,14 @@ const tableCheckItemClick = (item) =>{
         case 'delete': return remove(itemdata.id)
     }
 }
-  //   const prisonerList = fetchPrisonersList({pagination:{page:1, pageSize:10}})
-    // console.log(prisonerList)
+let count=0;
     const regionList = useFetchList({url:'/regions'});
   return (
     <>
-      {/*<AddPrisonerModal*/}
-      {/*  isOpen={addPrisoner.isOverlayOpen}*/}
-      {/*  isUpdate={isUpdate}*/}
-      {/*  values={isUpdate ? values : null}*/}
-      {/*  handleOverlayOpen={addPrisoner.handleOverlayOpen}*/}
-      {/*  handleOverlayClose={addPrisoner.handleOverlayClose}*/}
-      {/*  onAddedNewRecord={() => {*/}
-      {/*    prisonerList.refetch();*/}
-      {/*  }}*/}
-      {/*/>*/}
         <ConfirmModal
+            cancelText={t('cancel-text')}
+            successText={t('remove')}
+            title={t('prison-remove-modal-title')}
             isOpen={prisonerDelete.isOverlayOpen}
             cancelAction={prisonerDelete.handleOverlayClose}
             successAction={() => {
@@ -76,10 +71,11 @@ const tableCheckItemClick = (item) =>{
         />
         <HeaderFilters
             setFieldValue={setFilters}
-            items={regionList?.data?.map((el) => ({id:el.id, name: el.attributes.name}))}
+            items={regionList?.data?.map((el) => ({id:el.id, name: el.name}))}
         />
         <InputSearch
             setValue={setFilters}
+            placeholder={t('search')}
             text={t('prisoners-list-get')}
         />
       <PageHeading
@@ -94,8 +90,12 @@ const tableCheckItemClick = (item) =>{
       />
 
       <Table
-        emptyUiText="Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q"
+          emptyUiText={t('prisoner-list-emptey')}
         isLoading={prisonerList.isLoading}
+        setChecked={handelchecked}
+        editAction={(row) => {navLink(`/${region}/prisoner/${row.id}`)}}
+        deleteAction={remove}
+        seeAction={(row) => { navLink(`/${region}/prisoner/detail/${row.id}`)}}
         columns={[
             {
                 title: t('number'),
@@ -108,28 +108,28 @@ const tableCheckItemClick = (item) =>{
             title: t('photo'),
             dataKey: "attributes",
             className: "white-space_no-wrap",
-            render: (value, item) => Avatar(item.attributes.image)
+            render: (value, item) => Avatar(item.image)
                 // time?.timeFormater(item?.attributes?.createdAt, "DD.MM.YYYY"),
           },
           {
-            title: t('fullName'),
+            title: t('fullname'),
             className: "white-space_no-wrap",
             dataKey: "attributes.sureName",
             render: (value, item) =>
             {
-                return Span(item.attributes)
+                return Span(item)
             }
           },
           {
             title: t('birthdate'),
             dataKey: "amount",
             className: "white-space_no-wrap",
-            render: (value,items) => time.timeFormater(items.attributes.birthdate, "DD.MM.YYYY"),
+            render: (value,items) => time.timeFormater(items.birthdate, "DD.MM.YYYY"),
           },
           {
             title: t("passport"),
             dataKey: "currency",
-            render: (value,items) => items.attributes.passport,
+            render: (value,items) => items.passport,
           },
           {
             title: t("to-account"),
@@ -147,28 +147,28 @@ const tableCheckItemClick = (item) =>{
             {
                 title: t('isInvalid'),
                 dataKey: "user",
-                render: (value,item) => IsInvalid(item.attributes.isInvalid),
+                render: (value,item) => IsInvalid(item.isInvalid),
             },
           {
             title: t("camera"),
             dataKey: "camera",
             render: (value, items) => {
-                console.log(value,items)
+                // console.log(value,items)
                 // formatters.showDegree(value)
-                return items.attributes?.room?.data?.attributes?.name
+                return items?.room?.data
             },
           },
-          {
-            title: t('action'),
-            dataKey: "expired_at",
-            className: "white-space_no-wrap",
-            render: (value, items) => <ActionDropDown setMethod={handlaAction}  itemdata={items}/>,
-          },
+          // {
+          //   title: t('action'),
+          //   dataKey: "expired_at",
+          //   className: "white-space_no-wrap",
+          //   render: (value, items) => <ActionDropDown setMethod={handlaAction}  itemdata={items}/>,
+          // },
         ]}
         items={prisonerList.data}
       />
 {/*<span>salom</span>*/}
-        <span>{get(prisonerList, "meta.pagination.pageCount")}</span>
+{/*        <span>{get(prisonerList, "meta.pagination.pageCount")}</span>*/}
        <Pagination
         currentPage={prisonerList?.meta?.pagination?.page}
         pageCount={prisonerList?.meta?.pagination?.pageCount}

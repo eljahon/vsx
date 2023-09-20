@@ -55,6 +55,15 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    @media (max-width: 1300px) {
+      padding: 9px 11px;
+      margin-left: 15px;
+      font-size: 12px;
+    }
+    &:hover {
+      background-color: #A1CADC;
+      color: #fff
+    }
   }
   .prisoner__tab__wrapper {
     .prisoner__tab__item{
@@ -71,12 +80,13 @@
   }
 }
 .forms__wrapper {
-  width: 80%;
+  width: 100%;
   margin: 50px auto 0 auto;
   border-radius: 10px;
   border: 1px solid #F1F1F1;
   padding: 30px;
-}.formsm__wrapper {
+}
+.formsm__wrapper {
   max-width: 70%;
   margin: 50px auto 0 0;
   border-radius: 10px;
@@ -87,3 +97,29 @@
  //.time__check{
  //  padding: 10px;
  //}
+.statusItem{
+  //margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  &-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  &-isdisible {
+    background-color:#EFF2FF;
+    color: #000000;
+    cursor: pointer;
+  }
+  &-disible {
+    background-color:#DBDBDB;
+    color: #A09F9F;
+    cursor: no-drop;
+  }
+  &_bg-add {
+    background-color: #C4CDF4;
+  }
+}

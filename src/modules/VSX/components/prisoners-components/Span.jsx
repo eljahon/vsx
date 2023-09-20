@@ -1,5 +1,5 @@
 import React from "react";
 export  const Span = (item) => (<span>
-        {item.username} {item.firstName} <br/>{item.middleName}
+        {item?.person?.username} {item?.person?.firstName} <br/>{item?.person?.middleName}
 
     </span>);

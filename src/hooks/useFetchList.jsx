@@ -29,8 +29,6 @@ export const useFetchList = ({
 					const data = {data:responseData}
 					return utils.apiHelpers.dataSelect(data, dataKey);
 				}
-				console.log(responseData)
-
 
 			},
 

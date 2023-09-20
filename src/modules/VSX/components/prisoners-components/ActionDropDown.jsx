@@ -12,9 +12,9 @@ export const ActionDropDown = (props) => {
         {name: t('see'), type: 'see'},
         {name: t('updata'), type: 'updata'},
         {name: t('delete'), type: 'delete'},
-        {name: t('cheack'), type: 'cheack'},
-        {name: t('medical'), type: 'medical'},
-        {name: t('walk'), type: 'walk'},
+        // {name: t('cheack'), type: 'cheack'},
+        // {name: t('medical'), type: 'medical'},
+        // {name: t('walk'), type: 'walk'},
         {name: t('list-remove'), type: 'list-remove'},
     ])
     const handleLngChange = (item, handleMenuClose, event) => {

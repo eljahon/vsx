@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import cn from "classnames";
-
+import {useTranslation} from "react-i18next";
 import { Typography } from "components";
 import { Profile } from "./Profile";
 import { Messages } from "./Messages";
@@ -19,6 +19,7 @@ export const Header = ({
 	style,
 	containerClass = "",
 }) => {
+	const {t} = useTranslation()
 	const { pathname } = useLocation();
 	const menuKey = pathname.split("/")[1];
 
@@ -33,7 +34,7 @@ export const Header = ({
 								src={logo}
 								alt="logo"
 							/>
-							<h1 className="ml-10 fz_20">Вактинчалик саклаш хибcхоналаринииг назорат-мониторинги</h1>
+							<h1 className="ml-10 fz_20">{t('vsx-title')}</h1>
 						</div>
 					)}
 

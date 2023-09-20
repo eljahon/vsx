@@ -37,6 +37,7 @@ export const AsyncSelect = ({
 	field,
 	form,
 }) => {
+	// console.log(isDisabled)
 	const [isMenuOpened, setIsMenuOpened] = useState(false);
 
 	const handleChange = (option, action) => {

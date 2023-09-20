@@ -45,7 +45,7 @@ export const Button = ({
 };
 
 Button.propTypes = {
-	design: PropTypes.oneOf(["primary", "secondary", "circled", "grey"]),
+	design: PropTypes.oneOf(["primary", "secondary", "circled", "grey", "cancel", "greey"]),
 	type: PropTypes.oneOf(["submit", "reset", "button"]),
 	className: PropTypes.string,
 	style: PropTypes.object,

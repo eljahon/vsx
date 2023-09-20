@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import PropTypes from "prop-types";
 import { Form, Formik } from "formik";
 import { isFunction, get } from "lodash";
@@ -21,6 +21,8 @@ export const FormContainer = ({
 	onFinal = () => {},
 	customData={},
 	onSubmit,
+    validateOnMount=false,
+     validate,
 	...formProps
 }) => {
 	// console.log(method)
@@ -41,9 +43,10 @@ export const FormContainer = ({
 			languages
 		);
 		const requestUrl = params ? queryBuilder(url, params) : url;
-
+		console.log(formValues)
 		httpClient[method](requestUrl, {data: {...formValues,...customData}}, axiosConfig)
 			.then(({ data }) => {
+				console.log(data)
 				formHelpers.resetForm();
 				onSuccess(data);
 				notifier.success("Действие успешно завершено");
@@ -67,6 +70,8 @@ export const FormContainer = ({
 		<Formik
 			initialValues={initialValues}
 			validationSchema={validationSchema}
+			validateOnMount={validateOnMount}
+			validate={validate}
 			onSubmit={
 				(value,formHelpers) => {
 					// console.log(value)
@@ -76,7 +81,7 @@ export const FormContainer = ({
 			enableReinitialize={true}
 		>
 			{(formik) => {
-				// console.log(formik)
+				// const _formik = useMemo(() => formik, [formik])
 				return <Form {...formProps}>{children(formik)}</Form>
 			}}
 		</Formik>

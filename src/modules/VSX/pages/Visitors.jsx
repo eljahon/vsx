@@ -25,14 +25,13 @@ const Vsitors = () => {
         region_id: null
     })
     let count =0;
-    const removeVisitorsModal = useOverlay({ uniqueName: "removePrisoner" });
     const visitorsList = useFetchList({
         url: "/visitors",
         urlSearchParams:{
             pageSize: 10,
         }
     });
-    const prisonerDelete = useDeleteWithConfirm({
+    const visitorsDelete = useDeleteWithConfirm({
         uniqueName: "removeVisitorsModal",
         url: "/visitors",
     });
@@ -41,15 +40,14 @@ const Vsitors = () => {
 
     }
     const remove = (id) => {
-        // console.log(itemdata, get(itemdata, "id"))
-        prisonerDelete.setId(id);
-        prisonerDelete.handleOverlayOpen();
+        console.log(id)
+        visitorsDelete.setId(id);
+        visitorsDelete.handleOverlayOpen();
 
     }
     const tableCheckItemClick = (item) =>{
         const {actionType, itemdata} = item;
         switch (actionType) {
-            // case 'see': return navLink(`/prisoner-detail/${itemdata.id}`);
             case 'updata': return navLink(`/${region}/visitors/form/${itemdata.id}`)
             case 'delete': return remove(itemdata.id)
         }
@@ -70,16 +68,16 @@ const Vsitors = () => {
             {/*  }}*/}
             {/*/>*/}
             <ConfirmModal
-                isOpen={removeVisitorsModal.isOverlayOpen}
-                cancelAction={removeVisitorsModal.handleOverlayClose}
+                isOpen={visitorsDelete.isOverlayOpen}
+                cancelAction={visitorsDelete.handleOverlayClose}
                 successAction={() => {
-                    removeVisitorsModal.mutateAsync(removeVisitorsModal.id).then(() => visitorsList.refetch());
-                    removeVisitorsModal.handleOverlayClose();
+                    visitorsDelete.mutateAsync(visitorsDelete.id).then(() => visitorsList.refetch());
+                    visitorsDelete.handleOverlayClose();
                 }}
             />
             <HeaderFilters
                 setFieldValue={setFilters}
-                items={regionList?.data?.map((el) => ({id:el.id, name: el.attributes.name}))}
+                items={regionList?.data?.map((el) => ({id:el.id, name: el?.name}))}
             />
             <InputSearch
                 placeholder={t('search')}
@@ -109,31 +107,31 @@ const Vsitors = () => {
                         },
                     },
                     {
-                        title: t('phone'),
+                        title: t('photo'),
                         dataKey: "attributes",
                         className: "white-space_no-wrap",
-                        render: (value, item) => Avatar(item.attributes.image)
+                        render: (value, item) => Avatar(item?.image)
                         // time?.timeFormater(item?.attributes?.createdAt, "DD.MM.YYYY"),
                     },
                     {
-                        title: t('fullName'),
+                        title: t('fullname'),
                         className: "white-space_no-wrap",
                         dataKey: "attributes.sureName",
                         render: (value, item) =>
                         {
-                            return Span(item.attributes)
+                            return Span(item)
                         }
                     },
                     {
                         title: t('birthdate'),
                         dataKey: "amount",
                         className: "white-space_no-wrap",
-                        render: (value,items) => time.timeFormater(items.attributes.birthdate, "DD.MM.YYYY"),
+                        render: (value,items) => time.timeFormater(items?.birthdate, "DD.MM.YYYY"),
                     },
                     {
                         title: t("passport"),
                         dataKey: "currency",
-                        render: (value,items) => items.attributes.passport,
+                        render: (value,items) => items?.passport,
                     },
                     {
                         title: t("to-account"),
@@ -151,7 +149,7 @@ const Vsitors = () => {
                     {
                         title: t('isInvalid'),
                         dataKey: "user",
-                        render: (value,item) => IsInvalid(item.attributes.isInvalid),
+                        render: (value,item) => IsInvalid(item?.isInvalid),
                     },
                     {
                         title: t("camera"),

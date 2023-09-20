@@ -6,16 +6,26 @@ import { Button } from "components";
 
 import "./Tab.scss";
 
-export const TabBase = ({ onPaneChange, className, labels = [], currentLabel }) => {
+export const TabBase = ({ onPaneChange, className, labels = [], currentLabel, isObjeckt }) => {
 	return (
 		<div className={cn("tab", className)}>
-			{labels.map((tabLabel, index) => (
+			{!isObjeckt && labels.map((tabLabel, index) => (
 				<Button
 					key={index}
 					className={cn("tab__label", "mr_40", {
 						tab__label_active: tabLabel === currentLabel,
 					})}
 					text={tabLabel}
+					onClick={(event) => onPaneChange(tabLabel, event)}
+				/>
+			))}
+			{isObjeckt&&labels.map((tabLabel, index) => (
+				<Button
+					key={index}
+					className={cn("tab__label", "mr_40", {
+						tab__label_active: tabLabel.name === currentLabel,
+					})}
+					text={tabLabel.name}
 					onClick={(event) => onPaneChange(tabLabel, event)}
 				/>
 			))}

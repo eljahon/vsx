@@ -24,13 +24,13 @@ export const CheckBox = ({
   const handleChange = (event) => {
     const newValue = event.target.checked;
     setChecked(newValue);
-    form.setFieldValue(field.name, newValue?? false);
+    form.setFieldValue(field?.name, newValue?? false);
     onValueChange && onValueChange(newValue);
   };
 
   useEffect(() => {
-    setChecked(field.value);
-  }, [field.value]);
+    setChecked(field?.value);
+  }, [field?.value]);
 
   return (
     <label className={classNames}>
@@ -38,7 +38,7 @@ export const CheckBox = ({
         <input
           type="checkbox"
           hidden
-          name={field.name}
+          name={field?.name}
           checked={checked}
           onChange={handleChange}
           {...inputProps}

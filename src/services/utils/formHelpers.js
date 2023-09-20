@@ -23,17 +23,16 @@ const createFormSchema = (fields, languages) => {
 			);
 		else initialValues[item.name] = "";
 
-		validationSchema[item.name] = createYupSchema(item, languages);
+		validationSchema[item.name] = createYupSchema(item, languages, item.name);
 	});
-	// console.log( initialValues, yup.object().shape(validationSchema))
+	// console.log( initialValues, yup.object().shape(validationSchema), validationSchema)
 	return { initialValues, validationSchema: yup.object().shape(validationSchema) };
 };
 
-const createYupSchema = (field, languages) => {
+const createYupSchema = (field, languages,name) => {
 	const { validationType = "string", validations = [], lazy, isLanguageSchema } = field;
 
 	let validator = yup[validationType]();
-
 	validations.forEach(({ type, params }, index) => {
 		switch (type) {
 			case "typeError":
@@ -42,6 +41,11 @@ const createYupSchema = (field, languages) => {
 			case "required":
 				validator = validator.required(params ? params : "Required");
 				break;
+				// case "isRequired": validator = validator.when(name, (name, schema)=> {
+				// 	console.log(name)
+				// 	if(name)  return schema.required(`${name} is required`);
+				// })
+				// break;
 			case "email":
 				validator = validator.email(params ? params : "Invalid email");
 				break;

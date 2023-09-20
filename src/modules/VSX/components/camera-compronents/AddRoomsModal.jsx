@@ -14,7 +14,7 @@ const {t } = useTranslation()
         <ModalDefault
             isOpen={isOpen}
             handleModalClose={handleModalClose}
-            title={t('room-add')}
+            title={t("camera-add")}
             innerClass="max-width_500"
         >
             <Containers.Form
@@ -110,7 +110,7 @@ const {t } = useTranslation()
                                     name="vsx"
                                     component={Fields.AsyncSelect}
                                     loadOptionsUrl={'/vsxes'}
-                                    loadOptionsKey={(data) => data?.data?.map((el) => ({label: el.attributes.name, value:el.id}))}
+                                    loadOptionsKey={(data) => data?.data?.map((el) => ({label: el.name, value:el.id}))}
                                     label="vsx"
                                 />
                             </div>

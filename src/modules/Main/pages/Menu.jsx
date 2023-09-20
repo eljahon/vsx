@@ -12,10 +12,12 @@ import Bukhara from "assets/images/bukhara.jpeg";
 // import Inventory from "assets/images/menu-inventory.png";
 // import Administration from "assets/images/menu-administration.png";
 // import Settings from "assets/images/menu-settings.png";
+import { useTranslation } from 'react-i18next';
 import {useFetchList, useOverlay} from "hooks";
 import { AddRegionModal } from "../components/AddRegionModal";
 
 const Menu = () => {
+    const {t} = useTranslation()
   const modal = useOverlay({ uniqueName: "addRegion" });
   const menu = [
     {
@@ -44,16 +46,17 @@ const Menu = () => {
         refetch={regionList.refetch}
       />
       <div className="row g-4">
+          <span>{t('home')}</span>
         {regionList?.data?.map((item, index) => (
           <div key={index} className="col-3" >
 
-            <AppLink link={`/${item.id}/dashboard`}>
+            <AppLink link={`/${item?.id}/dashboard`}>
               <div className="menu__item menu__item_granted">
                 <img className="menu__item-icon" src={Tashkent} alt="" />
                 <Typography
                   Type="p"
                   className="fw_600 fz_18 color_txt-primary"
-                  text={item.attributes.name
+                  text={item?.name
                   }
                 />
               </div>

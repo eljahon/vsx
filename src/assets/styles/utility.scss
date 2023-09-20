@@ -103,6 +103,9 @@
 }
 
 .w {
+	&_30{
+		width: 30px;
+	}
 	&_150 {
 		width: 150px;
 	}
@@ -136,7 +139,16 @@
 		margin-left: auto;
 	}
 }
-
+.loader {
+	width: 48px;
+	height: 48px;
+	border: 5px solid #FFF;
+	border-bottom-color: #FF3D00;
+	border-radius: 50%;
+	display: inline-block;
+	box-sizing: border-box;
+	animation: rotation 1s linear infinite;
+}
 .mt {
 	&_10 {
 		margin-top: 10px;
@@ -272,8 +284,26 @@
 		margin-left: 55px;
 	}
 }
-
+.g {
+	&_5 {
+		gap: 5px;
+	}
+	&_10 {
+		gap: 10px
+	}
+	&_15 {
+		gap: 15px
+	}
+	&_20 {
+		gap: 20px
+	}
+}
 .p {
+	&_5 {
+		padding: 5px;
+	}&_10 {
+		padding: 10px;
+	}
 	&_20 {
 		padding: 20px;
 	}

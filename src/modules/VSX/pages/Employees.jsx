@@ -69,7 +69,7 @@ const Employees = () => {
             />
             <HeaderFilters
                 setFieldValue={setFilters}
-                items={regionList?.data?.map((el) => ({id:el.id, name: el.attributes.name}))}
+                items={regionList?.data?.map((el) => ({id:el.id, name: el?.name}))}
             />
             <InputSearch
                 setValue={setFilters}

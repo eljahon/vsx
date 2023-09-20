@@ -31,13 +31,13 @@ const PrisonerForms = () => {
     return (
         <>
 
-            <InputSearch isInput   text={'ВСХда сақланаётган шахслар рўйхати'}/>
-           <div className='forms__wrapper'>
+            <InputSearch isInput   text={t('prisoner-list-add')}/>
+           {/*<div className='forms__wrapper'>*/}
                <PForms
                    isUpdata={isUpdate}
                    values={data ?{id: data.id, ...data.attributes} : null}
                />
-           </div>
+           {/*</div>*/}
         </>
     );
 };

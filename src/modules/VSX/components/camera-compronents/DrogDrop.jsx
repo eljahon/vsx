@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {DragDropContext,Droppable,Draggable} from 'react-beautiful-dnd'
 import {PrisonersPlaceNow} from './index'
 import './styles/main.scss'
-import { ReactComponent as DeleteIcon } from "assets/icons/delete.svg";
+import { ReactComponent as DeleteIcon } from "assets/icons/profile-step.svg";
 import { ReactComponent as EditIcon } from "assets/icons/edit.svg";
 import {elementType} from "prop-types";
 import {DropData} from "../../../../mock-data";
@@ -13,16 +13,30 @@ import {useParams} from "react-router-dom";
 import {Button} from "../../../../components";
 import {useNotification} from "../../../../hooks";
 export const DrogDrop = (props) => {
-    const {isNewPrsonerAdd, boardsList,refetch, boardItemRemove,boardItemUpdata} = props;
+    const {isNewPrsonerAdd, boardsList,refetch, boardItemRemove,boardItemUpdata, routerPush} = props;
+    console.log(boardsList)
     const notif = useNotification()
     const {pr_id} = useParams()
-    const [currentBoard, setCurrentBoard] = useState(null)
-    const [draggable, setDraggable] = useState(true)
     const [fileurl, setFileUlr] = useState(config.FielUrl)
-    const [currentItem, setCurrentItem] = useState(null)
-    const boardUpdata = async (boardPrisoner) => {
+    const boardUpdata = async (boardPrisoner, e) => {
         try {
-            setDraggable(false)
+            if(e && e.stopPropagation) e.stopPropagation();
+            console.log(boardPrisoner)
+          return await httpClient.put(`/rooms/change-prisoner-room`, {...boardPrisoner})
+        } catch (err) {
+            const {response:{data:{error: {message}}}} = err;
+            notif.error(message)
+            throw new Error(err)
+        }
+    }
+    const handlerItem = (item) => {
+        routerPush(item.id)
+    }
+    const boardItemSee = async (boardPrisoner, e) => {
+        if(e && e.stopPropagation) e.stopPropagation();
+        console.log(boardPrisoner)
+        try {
+            // setDraggable(false)
           return await httpClient.put(`/rooms/change-prisoner-room`, {...boardPrisoner})
         } catch (err) {
             const {response:{data:{error: {message}}}} = err;
@@ -33,95 +47,44 @@ export const DrogDrop = (props) => {
             setDraggable(true)
         }
     }
-    const dragOverHandler = (e, board, item)  => {
-        e.preventDefault()
-        // console.log(board, item,'dranOverHandler')
-    }
-    const dragLeaveHandler = (e, board, item)  => {
-        console.log(board,item, 'dranLeaveHandler')
-    }
-    const dragStartHandler = (e, board, item)  => {
-        setCurrentBoard(board)
-        setCurrentItem(item)
-    }
-    const dragEndHandler = (e, board, item)  => {
-        console.log(board,item,'dranEndHandler')
-    }
-    const dragHandler = async (e, board, item)  => {
-        e.preventDefault()
-         try {
-             await boardUpdata({prisonerId: currentItem.id, fromRoomId: currentBoard.id, toRoomId:board.id})
-             await refetch()
-         } catch (err) {
-
-         }
-
+    const dragEndHandler = async  ( item)  => {
+        console.log(item)
+        // const {destination:{droppableId}, draggableId, source:{droppableId}} = item;
+        if(item && item.destination && item.source && item.destination.droppableId !== item.source.droppableId) {
+            await boardUpdata({prisonerId: item.draggableId, fromRoomId: item.source.droppableId, toRoomId: item.destination.droppableId})
+            await refetch()
+        }
     }
     const itemAddUser =async (board) => {
-        console.log(board)
         const _items = [Number(pr_id)];
-        board.attributes.prisoners.data.forEach(el => {
-            _items.push(el.id)
-        })
-        await httpClient.put(`/rooms/${board.id}`,{data:{prisoners:_items,freePlace: board.attributes.capacity-_items.length}})
+        // board.attributes.prisoners.data.forEach(el => {
+        //     _items.push(el.id)
+        // })
+        await httpClient.put(`/rooms/${board.id}`,{data:{prisoners:_items}})
             .then(res => {
                 refetch()
             })
     }
     return(<div className="row">
-        {/*{boardsList?.map((board, index) => {*/}
-        {/*        return <div key={index} className='col-4 col-md-3 col-sm-6 col-lg-3'>*/}
-        {/*            <div className="board__title__wrapper">*/}
-        {/*                <div className="board__title">*/}
-        {/*                    {board.attributes.name}{board.id}*/}
-        {/*                </div>*/}
-        {/*                {!isNewPrsonerAdd&&<div className="board__icon">*/}
-        {/*                    <Button onClick={() => boardItemUpdata(board)}><EditIcon/></Button>*/}
-        {/*                    <Button onClick={() => boardItemRemove(board)}><DeleteIcon/></Button>*/}
-        {/*                </div>}*/}
-        {/*            </div>*/}
-        {/*           <div className='board'>*/}
-        {/*               {board?.attributes?.prisoners?.data?.map((item,key) =>*/}
-        {/*                   <div*/}
-        {/*                       key={key}*/}
-        {/*                       onDragOver={(e) => dragOverHandler(e, board, item)}*/}
-        {/*                       onDragLeave={(e) => dragLeaveHandler(e, board, item)}*/}
-        {/*                       onDragStart={(e) => dragStartHandler(e, board, item)}*/}
-        {/*                       onDragEnd={(e) => dragEndHandler(e, board, item)}*/}
-        {/*                       onDrop={(e) => dragHandler(e, board, item)}*/}
-        {/*                       draggable={draggable}*/}
-        {/*                       className='item'*/}
-        {/*                   ><span className='item__text'>*/}
-        {/*                       <img className='images' src={process.env.REACT_APP_IMAGE_BASE_URL+item.attributes.image} alt="dadsd"/>*/}
-        {/*                       {item.attributes.sureName} {item.attributes.firstName} <PrisonersPlaceNow index={key+1} text={'Kamerada'}/>*/}
-        {/*                   </span>*/}
-        {/*                   </div>*/}
-        {/*               )}*/}
-        {/*           </div>*/}
-        {/*            {isNewPrsonerAdd && board.attributes.freePlace!==0&&<button className='boar__item__add__btn' onClick={() => itemAddUser(board)}>Add+</button>}*/}
-        {/*        </div>;*/}
-        {/*    }*/}
-        {/*)}*/}
-        <DragDropContext className='w_full' onDragEnd={(result) => dragEndHandler(result, column, setColumn)}>
+        <DragDropContext className='w_full' onDragEnd={(result,) => dragEndHandler(result)}>
             <div className="row">
                 {boardsList?.map((board, index) => {
                     return <div key={index} className='col-sm-12 col-md-6 col-lg-4 col-xl-4'>
-                        <div className="board__title__wrapper">
+                        <div className="board__title__wrapper" onClick={()=> handlerItem(board)}>
                             <div className="board__title">
-                                {board.attributes.name}{board.id}
+                                {board.name}
                             </div>
                             {!isNewPrsonerAdd && <div className="board__icon">
-                                <Button onClick={() => boardItemUpdata(board)}><EditIcon/></Button>
-                                <Button onClick={() => boardItemRemove(board)}><DeleteIcon/></Button>
+                                <Button onClick={(e) => boardItemUpdata(board,e)}><EditIcon/></Button>
+                                {/*<Button onClick={(e) => boardItemSee(board,e)}><DeleteIcon/></Button>*/}
                             </div>}
                         </div>
-                        <Droppable droppableId={`${board.id+Math.round()*1000}`}  index={index}>
-                            {(provided) => {
-                                console.log(provided)
+                        <Droppable type="COLUMN" droppableId={`${board.id}`}  index={index}>
+                            {(provided, snapshot) => {
                                 return<div {...provided.droppableProps}
                                          ref={provided.innerRef} className='board'>
-                                        {board?.attributes?.prisoners?.data?.map((item, key) =>
-                                                <Draggable draggableId={`${key}`} key={item.id} index={key}>
+                                        {board?.prisoners?.map((item, key) =>
+                                                <Draggable draggableId={`${item.id}`} key={item.id} index={key}>
                                                     {(provided) => (
                                                         <div
                                                             {...provided.draggableProps}
@@ -130,8 +93,8 @@ export const DrogDrop = (props) => {
                                                             className='item'
                                                         ><span className='item__text'>
                                <img className='images'
-                                    src={fileurl+item.attributes.image} alt="dadsd"/>
-                                                            {item.attributes.sureName} {item.attributes.firstName}
+                                    src={fileurl+item.image} alt="dadsd"/>
+                                                            {item.sureName} {item.firstName}
                                                             <PrisonersPlaceNow index={key + 1} text={'Kamerada'}/>
                            </span>
                                                         </div>
@@ -142,8 +105,8 @@ export const DrogDrop = (props) => {
                             }
                             }
                         </Droppable>
-                        {isNewPrsonerAdd && board.attributes.freePlace !== 0 &&
-                            <button className='boar__item__add__btn' onClick={() => itemAddUser(board)}>Add+</button>}
+                        {isNewPrsonerAdd &&
+                            <Button className="bnt" design={'primary'} onClick={() => itemAddUser(board)}>Add+</Button>}
                     </div>
                 })}
             </div>

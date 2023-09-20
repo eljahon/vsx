@@ -1,17 +1,18 @@
 import { isArray } from "lodash";
-
+import qs from 'qs'
 export const queryBuilder = (url, config = {}) => {
 	if (Object.keys(config).length <= 0) return url;
 
 	const { sort = "", pageSize, page = 1, extra = {}, filters = {}, populate="*" } = config;
 	const queryObj = new URLSearchParams();
+	console.log(Object.entries(filters), 'filtes')
 	if (Object.keys(filters).length)
 		Object.entries(filters).forEach((item) => {
 			if (isArray(item[1])) {
 				item[1].forEach((inner, index) =>
 					queryObj.append(`filter[${item[0]}][${index}]`, inner)
 				);
-			} else if (item[1]) queryObj.append(`filter[${item[0]}]`, item[1]);
+			} ;
 		});
 
 	if (Object.keys(extra).length)

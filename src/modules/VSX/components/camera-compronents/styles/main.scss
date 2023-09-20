@@ -75,6 +75,7 @@
   border-radius: 50%;
 }
 .board__title__wrapper {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -84,7 +85,7 @@
   max-width: 350px;
   min-width: 230px;
   border-radius: 10px;
-  background: var(--light-blue);
+  //background: var(--light-blue);
   margin-top: 10px;
 }
 .board__icon{

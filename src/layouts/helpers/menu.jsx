@@ -46,6 +46,13 @@ export const SidbarMenu = (name) => {
         label: t('prisoners-list-get'),
         icon: <User className="mr_10" />,
         roles: new Set(['Superadmin'])
+      },  {
+        id: "prisoners-inside",
+        // link: "/tashkent/prisoner",
+         link: `/${params.region}/prisoner-insede`,
+        label: t('prisoners-insede'),
+        icon: <User className="mr_10" />,
+        roles: new Set(['Superadmin'])
       },
       {
         id: "employees",

@@ -20,27 +20,31 @@ export const AttachFile = ({
 	const [file, setFile] = useState();
 
 	const handleImageUpload = (event) => {
-		const files = serialize({ files: event.target.files });
-
+		// const files = serialize({ files: event.target.files });
+		const image = event?.target?.files[0];
+		const formdata = new FormData()
+		formdata.append('files', image)
+		// console.log(files)
 		httpClient
-			.post("/file", files)
+			.post("/upload", formdata)
 			.then(({ data }) => {
-				form.setFieldValue(field.name, data);
+				console.log(data)
+				form.setFieldValue(field.name, data[0].id);
 				setFile(event.target.files[0]);
 			})
 			.catch((error) => {
 				form.setFieldValue(field.name, null);
 			});
 	};
-
+	// isDisabled={file}
 	return (
 		<UploadBase
 			className="d-flex align-items-center justify-content-center"
 			accept={accept}
 			onFileUpload={handleImageUpload}
-			isDisabled={file}
 		>
 			<AttachIcon className="mr_10" />
+			{/*<span className="loader"></span>*/}
 			<Typography
 				Type="span"
 				className="color_txt-secondary fz_18"

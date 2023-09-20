@@ -1,16 +1,30 @@
 
 import React, {useState} from "react";
 import get from "lodash";
-import {Avatar, Button, TabBase, Typography} from "../../../../components";
+import {Avatar, Button, Pagination, TabBase, Table, Typography} from "../../../../components";
 import '../../styles/prisoners.scss'
 import {useTranslation} from "react-i18next";
 import userAva from "../../../../assets/images/user.png";
-import {IsInvalid} from "../../components/prisoners-components";
+import {ActionDropDown, IsInvalid, Span} from "../../components/prisoners-components";
+import {time} from "../../../../services";
+import {formatters} from "../../../../services/utils";
+import {useFetchList} from "../../../../hooks";
+import {useNavigate, useParams} from "react-router-dom";
+import UserInfo from "../../components/components/userInfo";
 
  const PrisonerDetail =() => {
      const {t} = useTranslation()
-    const tabLabels =[t('prisoner-data'),t('visitor-history'),t('documents-type') ];
+    const tabLabels =[t('prisoner-data'), t('search-medical'),t('visitor-history') ,t('documents-type')];
+     const navLink = useNavigate()
+     const {region, id} = useParams()
      const [currentLables, setLables] = useState(tabLabels[0])
+     const {data, isLoading,meta} = useFetchList({
+         url: `/prisoners/${id}`,
+         urlSearchParams:{
+             pageSize: 10,
+             populate: "*"
+         }
+     });
      const tabBtnList =[
          {
          text: t('extension-of-time'),
@@ -36,10 +50,10 @@ import {IsInvalid} from "../../components/prisoners-components";
              icon:false
          }
      ];
+     // console.log(prisonerList.data.data)
         return (
             <div>
 <div className="prisoner__item">
-    {/*item user */}
    <div className="prisoner__header">
        <div className="sidebar__admin d-flex align-items-center justify-content-between">
         <div className="prisoner__data">
@@ -73,12 +87,109 @@ import {IsInvalid} from "../../components/prisoners-components";
     currentLabel={currentLables}
     className={'prisoner__tab__item'}
     onPaneChange={(event)=> setLables(event)}
-/>
-
+/> <br/>
+           <div className={currentLables === 'prisoner-data' ? 'row' : currentLables === 'documents-type' ? 'row' : ''}>
+               {currentLables === 'prisoner-data'&&[1,2,3].map(el => (
+                   UserInfoF({id: data?.data?.id, ...data?.data?.attributes})
+               ))}
+               {currentLables === 'documents-type'&&[1,2,3].map(el => (
+                   UserInfoF({id: data?.data?.id, ...data?.data?.attributes})
+               ))}
+           </div>
+           {currentLables === 'visitor-history' &&
+            <>
+                <Table
+                    emptyUiText="Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q"
+                    isLoading={isLoading}
+                    // isCheckedSee
+                    // setChecked={handelchecked}
+                    columns={[
+                        {
+                            title: t('number'),
+                            dataKey: "id",
+                            render: (value, item) => {
+                                return 1
+                            },
+                        },
+                        {
+                            title: t('photo'),
+                            dataKey: "attributes",
+                            className: "white-space_no-wrap",
+                            render: (value, item) => Avatar(item.attributes.image)
+                            // time?.timeFormater(item?.attributes?.createdAt, "DD.MM.YYYY"),
+                        },
+                        {
+                            title: t('fullName'),
+                            className: "white-space_no-wrap",
+                            dataKey: "attributes.sureName",
+                            render: (value, item) =>
+                            {
+                                return Span(item.attributes)
+                            }
+                        },
+                        {
+                            title: t('birthdate'),
+                            dataKey: "amount",
+                            className: "white-space_no-wrap",
+                            render: (value,items) => time.timeFormater(items.attributes.birthdate, "DD.MM.YYYY"),
+                        },
+                        {
+                            title: t("passport"),
+                            dataKey: "currency",
+                            render: (value,items) => items.attributes.passport,
+                        },
+                        {
+                            title: t("to-account"),
+                            dataKey: "patient",
+                            className: "white-space_no-wrap",
+                            render: (value) =>
+                                formatters.formatPhoneView(get(value, "phone")),
+                        },
+                        //
+                        // {
+                        //   title: "Комментарий",
+                        //   dataKey: "comment",
+                        //   render: (value) => value,
+                        // },
+                        {
+                            title: t('isInvalid'),
+                            dataKey: "user",
+                            render: (value,item) => IsInvalid(item.attributes.isInvalid),
+                        },
+                        {
+                            title: t("camera"),
+                            dataKey: "camera",
+                            render: (value, items) => {
+                                // console.log(value,items)
+                                // formatters.showDegree(value)
+                                return items.attributes?.room?.data?.attributes?.name
+                            },
+                        },
+                        {
+                            title: t('action'),
+                            dataKey: "expired_at",
+                            className: "white-space_no-wrap",
+                            render: (value, items) => <ActionDropDown setMethod={handlaAction}  itemdata={items}/>,
+                        },
+                    ]}
+                    items={data}
+                />
+                <Pagination
+                    currentPage={meta?.pagination?.page}
+                    pageCount={meta?.pagination?.pageCount}
+                    onPageChange={(newPage) => setPage(newPage + 1)}
+                />
+            </>
+           }
        </div>
    </div>
 </div>
             </div>
         );
     };
+ function  UserInfoF (data) {
+     return (<div className="col-3 col-md-6 col-sm-12 col-xl-4">
+         <UserInfo item={data}/>
+     </div>)
+ }
 export default PrisonerDetail

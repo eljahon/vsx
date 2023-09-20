@@ -7,9 +7,12 @@ import {time} from '../../../services/time'
 import {formatters} from "../../../services/utils";
 import {AddRoomsModal, DrogDrop} from "../components/camera-compronents";
 import {useTranslation} from "react-i18next";
+import {useNavigate, useParams} from "react-router-dom";
 
 const Prisoners = () => {
     const { getLanguageValue } = useGetLanguage();
+    const navLink = useNavigate()
+    const {region} = useParams()
     const addRooms = useOverlay({ uniqueName: "addRooms" });
     const {t} = useTranslation()
     const removeRoomModal = useDeleteWithConfirm({
@@ -23,12 +26,16 @@ const Prisoners = () => {
             sort: {id: 'desc'}
         }
     });
+    const handaleRouter = (itemId) => {
+        navLink(`/${region}/cameras/${itemId}`)
+    }
     const removeRoom = (item) => {
         // console.log(itemdata, get(itemdata, "id"))
         removeRoomModal.setId(item.id);
         removeRoomModal.handleOverlayOpen();
 
     }
+    console.log(cameraList)
     return (
         <>
             <AddRoomsModal
@@ -58,10 +65,11 @@ const Prisoners = () => {
                 btnText={t("camera-add")}
             />
             <DrogDrop
+                routerPush={handaleRouter}
                 draggable={true}
                 boardItemRemove={removeRoom}
                 boardItemUpdata={(item) => {}}
-                boardsList={cameraList.data}
+                boardsList={cameraList?.data}
                 refetch={cameraList.refetch}/>
         </>
     );
