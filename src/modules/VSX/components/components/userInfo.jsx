@@ -5,54 +5,8 @@ import {ReactComponent as BirthdayIcon } from '../../../../assets/icons/birthday
 import {ReactComponent as Gendor } from '../../../../assets/icons/gendor.svg'
 import {ReactComponent as Nation } from '../../../../assets/icons/nation.svg'
 import {ReactComponent as Passport } from '../../../../assets/icons/passport.svg'
-const list =
-    [
-        {
-            userName: 'Шохжахон',
-            key: 'Исм',
-            icon: "user"
-        },
-        {
-            userName: 'Усмоналиев',
-            key: 'Фамилия',
-            icon: "user"
-        },
-        {
-            userName: 'Замоналиевич',
-            key: 'Отасининг исми',
-            icon: "user"
-        },
-        {
-            userName: '14.04.1998',
-            key: 'Тугилган сана',
-            icon: "user"
-        },
-        {
-            userName: 'Эркак',
-            key: 'Жинси',
-            icon: "birthday"
-        },
-        {
-            userName: 'Ўзбек',
-            key: 'Миллати',
-            icon: "gendor"
-        },
-        {
-            userName: 'Ўзбекистон',
-            key: 'Фуқаролиги',
-            icon: "passpor"
-        },
-        {
-            userName: 'AD 1234567',
-            key: 'Пасспорт / ID',
-            icon: "passpor"
-        },
-        {
-            userName: '1234567123123123',
-            key: 'ПИНФЛ',
-            icon: "passpor"
-        }
-    ]
+import { useTranslation } from 'react-i18next';
+
     const iconList = {
         user: <UserInfoIcon/>,
         birthday: <BirthdayIcon/>,
@@ -61,11 +15,70 @@ const list =
         gendor: <Gendor/>
     }
 const  UserInfo = (props) => {
+    const { t } = useTranslation();
     const {item} = props;
-    console.log(item)
+    const list =
+    [
+        {
+            userName: item?.person?.firstName,
+            key: 'Исм',
+            icon: "user"
+        },
+        {
+            userName: item?.person?.sureName,
+            key: 'Фамилия',
+            icon: "user"
+        },
+        {
+            userName: item?.person?.middleName,
+            key: 'Отасининг исми',
+            icon: "user"
+        },
+        {
+            userName: item?.person?.birthAddress,
+            key: `Tug'ilgan joyi`,
+            icon: "user"
+        },
+        {
+            userName: item?.person?.birthAddress,
+            key: `Tug'ilgan joyi`,
+            icon: "user"
+        },
+        {
+            userName: item?.person?.birthdate,
+            key: 'Тугилган сана',
+            icon: "user"
+        },
+        {
+            userName: item?.person?.gender?.name,
+            key: 'Жинси',
+            icon: "birthday"
+        },
+        {
+            userName: item?.person?.nationality?.name,
+            key: 'Миллати',
+            icon: "gendor"
+        },
+        {
+            userName: item?.person?.nationality?.name,
+            key: 'Фуқаролиги',
+            icon: "passpor"
+        },
+        {
+            userName: item?.person?.passport,
+            key: 'Пасспорт / ID',
+            icon: "passpor"
+        },
+        {
+            userName: '--',
+            key: 'ПИНФЛ',
+            icon: "passpor"
+        }
+    ]
+    console.log("s",item)
         return (
             <div className='user'>
-                <div className="user_title p_d">Шахсий маълумотлар</div>
+                <div className="user_title p_d">{t('personal-data')}</div>
                 {list.map((el, index) => (
                     <div className="user_item p_d" key={index}>
                         <div className='item'>
