@@ -25,7 +25,6 @@ export const AppLink = ({
       {prepend}
 
       <span>{text}</span>
-
       {append}
 
       {isFunction(children) ? children() : children}
