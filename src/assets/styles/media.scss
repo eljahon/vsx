@@ -1,6 +1,7 @@
+@use './variables.scss' as var;
 @mixin media($breakpoint) {
           @if $breakpoint == small {
-            @media (max-width: $small-screen) {
+            @media (max-width: var.$small-screen) {
               @content;
             }
           } @else if $breakpoint == medium {

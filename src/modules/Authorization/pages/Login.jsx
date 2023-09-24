@@ -14,11 +14,13 @@ import { ReactComponent as UserIcon } from "assets/icons/user.svg";
 import { ReactComponent as PhoneIcon } from "assets/icons/phone.svg";
 import logo from "../../../assets/images/logo.svg";
 import {useNotification} from "../../../hooks";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-    const notifier = useNotification();
+  const notifier = useNotification();
+  const {t} = useTranslation();
   return (
     <>
       <div className="auth__heading d-flex align-items-center flex-column">
@@ -27,7 +29,7 @@ const Login = () => {
         <Typography
           Type="h1"
           className="auth__title"
-          text="Ўзбекистон Республикаси Ички ишлар вазирлиги"
+          text={t("auth-title")}
         />
 
       </div>
@@ -68,11 +70,11 @@ const Login = () => {
         {({ isSubmitting }) => (
           <>
             <div className="col-12">
+              <span className="label">{t("auth-label")}</span>
               <FastField
                 name="identifier"
                 component={Fields.InputText}
-                placeholder="Имя пользователя"
-                // prepend={<UserIcon />}
+                placeholder={t("auth-login")}
               />
             </div>
 
@@ -80,8 +82,7 @@ const Login = () => {
               <FastField
                 name="password"
                 component={InputPassword}
-                placeholder="Пароль"
-                // prepend={<PhoneIcon />}
+                placeholder={t("auth-password")}
               />
             </div>
 
@@ -89,7 +90,7 @@ const Login = () => {
               <AppLink
                 link="/forgot-password"
                 className="color_brand-blue text-decoration_underline"
-                text="Паролни унутингизми?"
+                text={t('auth-forgot-password')}
               />
             </div>
 
@@ -98,7 +99,7 @@ const Login = () => {
                 className="btn w_full"
                 design="primary"
                 type="submit"
-                text="Кириш"
+                text={t("submit")}
                 isDisabled={isSubmitting}
                 isLoading={isSubmitting}
               />
@@ -120,6 +121,7 @@ const Login = () => {
 					</>
 				)}
 			</Typography> */}
+
     </>
   );
 };

@@ -60,5 +60,11 @@
   "lawyer-meeting-time": "Advakat bilan uchrashuv vaqti",
   "order": "Order",
   "free-verdict": "Ozod etishga qaror",
-  "free-verdict-time": "Ozod etish vaqti"
+  "free-verdict-time": "Ozod etish vaqti",
+  "auth-title": "O‘zbekiston Respublikasi Ichki ishlar vazirligi",
+  "auth-label": " Login va Parolni kiriting",
+  "auth-login": "Login",
+  "auth-password": "Parol",
+  "auth-forgot-password": "Parolni unutdingizmi?",
+  "submit": "Kirish"
 }
