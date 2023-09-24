@@ -8,7 +8,6 @@ import  FormRelease from './formRelease'
 import  FormSpecially from './formSpecially'
 
 export const returnForms =  (id, customData, method) => {
-    console.log(id)
     let forms = {
         "1": <FormSayirga customData={customData} method={method}/>,
         "2": <FormFood customData={customData} method={method}/>,

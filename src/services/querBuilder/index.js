@@ -12,7 +12,7 @@ export const queryBuilder = (url, config = {}) => {
 				item[1].forEach((inner, index) =>
 					queryObj.append(`filter[${item[0]}][${index}]`, inner)
 				);
-			} ;
+			};
 		});
 
 	if (Object.keys(extra).length)
