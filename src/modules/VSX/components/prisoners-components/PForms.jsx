@@ -18,7 +18,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import dayjs from "dayjs";
 
-const FieldArrays = ({products}) => {
+const FieldArrays = ({products, t}) => {
     return <div className='row'>
         <FieldArray name={'items'}>
             {({insert, remove, push}) => (
@@ -30,10 +30,10 @@ const FieldArrays = ({products}) => {
                             <Field
                                 name={`items.${index}.name`}
                                 component={Fields.InputText}
-                                placeholder="Чиқган нарсалар "
+                                placeholder={t('something')}
                             />
                             <ErrorMessage
-                                name={`friends.${index}.name`}
+                                name={`items.${index}.name`}
                                 component="span"
                                 className="field-error"
                             />
@@ -57,6 +57,89 @@ const FieldArrays = ({products}) => {
             }
         </FieldArray>
     </div>
+}
+const FieldArraysChilds = ({products, t}) => {
+    return <FieldArray name={'children'}>
+            {({insert, remove, push}) => (
+                <>
+                    {products.map((product, index, arr) => (
+                        <div className='row mt_10 g-4'>
+                        <div className='col-6 col-md-6 col-sm-6 col-lg-6 col-xl-3' key={index}>
+                            <Field
+                                name={`children.${index}.fullName`}
+                                component={Fields.InputText}
+                                placeholder={t('fullname')}
+                                label={t('fullname')}
+                            />
+                            <ErrorMessage
+                                name={`children.${index}.fullName`}
+                                component="span"
+                                className="field-error"
+                            />
+                            {/*</div>*/}
+                        </div>
+                        <div className='col-6 col-md-6 col-sm-6 col-lg-6 col-xl-3' key={index}>
+                            <Field
+                                name={`children.${index}.birthLisenc`}
+                                component={Fields.InputText}
+                                placeholder={t('birthlisenc')}
+                                label={t('birthlisenc')}
+                            />
+                            <ErrorMessage
+                                name={`children.${index}.birthLisenc`}
+                                component="span"
+                                className="field-error"
+                            />
+                            {/*</div>*/}
+                        </div>
+                        <div className='col-6 col-md-6 col-sm-6 col-lg-6 col-xl-3' key={index}>
+                            <Field
+                                name={`children.${index}.birthDate`}
+                                component={Fields.DatePicker}
+                                placeholder={t('birthdate')}
+                                label={t('birthdate')}
+                            />
+                            <ErrorMessage
+                                name={`children.${index}.birthdate`}
+                                component="span"
+                                className="field-error"
+                            />
+                            {/*</div>*/}
+                        </div>
+                        <div className='col-6 col-md-6 col-sm-6 col-lg-6 col-xl-3' key={index}>
+                            <Field
+                                name={`children.${index}.birthPlace`}
+                                component={Fields.InputText}
+                                placeholder={t('birthplace')}
+                                label={t('birthplace')}
+                            />
+                            <ErrorMessage
+                                name={`children.${index}.birthPlace`}
+                                component="span"
+                                className="field-error"
+                            />
+                            <div className='ml_10'>{index + 1 === arr.length && index !== 0 && (
+                                <Button
+                                    className="color_primary-red product__btn mt_10"
+                                    style={{float: 'right'}}
+                                    onClick={() => remove(index)}
+                                ><IconDelete/></Button>
+                            )}</div>
+                            {/*</div>*/}
+                        </div>
+                        </div>
+                    ))}
+                    <Button
+                        className='w_30 mt_20 '
+                        style={{padding: 0, borderRadius: 5 + "px"}}
+                        design={"primary"}
+                        onClick={() => push({fullName: '', birthLisenc: "", birthDate: "", birthPlace: ""})}
+                    >+</Button>
+                </>
+                )
+            }
+        </FieldArray>
+
 }
 const Info = ({icon, data, label}) => {
     return (
@@ -86,10 +169,8 @@ export const PForms = (props) => {
     const {t} = useTranslation()
     const [childpartId, setPartId] = useState(null)
     const handleFormOptions = (values, setFields) => {
-        // console.log(values)
         if (values.parentPartId?.value) {
             setPartId(values.parentPartId.value)
-            // arestDocTypeRender(values,setFields)
         }
     }
     const doclist = useFetchList({url: 'prisoner-basis-documents'});
@@ -206,6 +287,17 @@ export const PForms = (props) => {
                         onSubmitValue: (value) => value.map((item) => (item)),
                     },
                     {
+                        name: "children",
+                        validationType: "array",
+                        value: [{name: ''},],
+                        lazy: (validator, yup) => validator.of(
+                                yup.object().shape({
+                                    name: yup.string(),
+                                })
+                            ),
+                        onSubmitValue: (value) => value.map((item) => (item)),
+                    },
+                    {
                         name: "birthAddress",
                         validations: [{type: "required"}],
                         value: get(values, 'birthAddress'),
@@ -266,6 +358,13 @@ export const PForms = (props) => {
                         name: "isConvicted",
                         validations: [{type: "required"}],
                         value: get(values, 'isConvicted') ?? false,
+                        onSubmitValue: (value) => {
+                            return value
+                        },
+                    },{
+                        name: "hasChild",
+                        validations: [{type: "required"}],
+                        value: get(values, 'hasChild') ?? false,
                         onSubmitValue: (value) => {
                             return value
                         },
@@ -422,7 +521,7 @@ export const PForms = (props) => {
                                         <FastField
                                             name="passport"
                                             component={Fields.InputText}
-                                            label="Seriya va raqam*"
+                                            label={t('passport')}
                                             // placeholder="Серия ва рақам *"
                                             required
                                         />
@@ -434,8 +533,8 @@ export const PForms = (props) => {
                                             name="birthdate"
                                             component={Fields.DatePicker}
                                             hasTimeSelect
-                                            label="Tug'ilgan Sanasi  *"
-                                            placeholder="Tug'ilgan Sanasi *"
+                                            label={t('birthdate')+"*"}
+                                            placeholder={t('birthdate')+"*"}
                                         />
                                     </div>
 
@@ -444,7 +543,7 @@ export const PForms = (props) => {
                                         <FastField
                                             name="firstName"
                                             component={Fields.InputText}
-                                            label="Ismi *"
+                                            label={t('first-name')}
                                             // placeholder="Исми"
                                         />
                                     </div>
@@ -453,7 +552,7 @@ export const PForms = (props) => {
                                         <FastField
                                             name="sureName"
                                             component={Fields.InputText}
-                                            label="Familyasi *"
+                                            label={t('sure-name')}
                                             // placeholder="Фамилия"
                                         />
                                     </div>
@@ -470,7 +569,7 @@ export const PForms = (props) => {
                                         <FastField
                                             name="middleName"
                                             component={Fields.InputText}
-                                            label="Otasining ismi *"
+                                            label={t('middle-name')}
                                             // placeholder="Отасининг исми"
                                         />
                                     </div>
@@ -479,7 +578,7 @@ export const PForms = (props) => {
                                         <FastField
                                             name="birthAddress"
                                             component={Fields.InputText}
-                                            label="Tug'ilgan joyi"
+                                            label={t('birthaddress')}
                                             // placeholder="Тугилган жойи"
                                         />
                                     </div>
@@ -488,7 +587,7 @@ export const PForms = (props) => {
                                         <FastField
                                             name="address"
                                             component={Fields.InputText}
-                                            label="Doimiy ro'yxatga olingan manzili"
+                                            label={t('address')}
                                             // placeholder="Доимий рўйхатга олинган манзил"
                                         />
                                     </div>
@@ -497,7 +596,7 @@ export const PForms = (props) => {
                                         <FastField
                                             name="livingAddress"
                                             component={Fields.InputText}
-                                            label="Yashash Joyi *"
+                                            label={t('livingAddress')}
                                             // placeholder="Яшаш жойи"
                                         />
                                     </div>
@@ -511,7 +610,7 @@ export const PForms = (props) => {
                                                 label: el.name,
                                                 value: el.id
                                             }))}
-                                            label="Sudlanganligi*"
+                                            label={t('conviction')}
                                             // placeholder="Миллати"
                                         />
                                     </div>
@@ -525,7 +624,7 @@ export const PForms = (props) => {
                                                 label: el.name,
                                                 value: el.id
                                             }))}
-                                            label="Millati"
+                                            label={t('nationality')}
                                             // placeholder="Миллати"
                                         />
                                     </div>
@@ -539,7 +638,7 @@ export const PForms = (props) => {
                                                 label: el.name,
                                                 value: el.id
                                             }))}
-                                            label="Jinsi"
+                                            label={t('gender')}
                                             // placeholder="Отасининг исми"
                                         />
                                     </div>
@@ -553,7 +652,7 @@ export const PForms = (props) => {
                                                 label: el.name,
                                                 value: el.id
                                             }))}
-                                            label="Qaysi xizmat xodimi*"
+                                            label={t('where-service-employees')}
                                             // placeholder="Отасининг исми"
                                         />
                                     </div>
@@ -562,7 +661,7 @@ export const PForms = (props) => {
                                         <FastField
                                             name="organizationOfficer"
                                             component={Fields.InputText}
-                                            label="Xizmat xodimi F.I.SH*"
+                                            label={t('service-employees')}
                                             // placeholder="Яшаш жойи"
                                         />
                                     </div>
@@ -579,7 +678,7 @@ export const PForms = (props) => {
                                                 label: el.name,
                                                 value: el.id
                                             }))}
-                                            label="Tashqi ko'rinishi"
+                                            label={t('out-see')}
                                             // placeholder="Отасининг исми"
                                         />
                                         {/*</div>*/}
@@ -588,7 +687,7 @@ export const PForms = (props) => {
                                         {/*</div>*/}
                                     </div>
                                     <div className='col-4 col-md-6 col-xl-4 col-lg-4'>
-                                        <p className="mb_20" style={{fontSize: 14 + 'px'}}>LGBTQ+</p>
+                                        <p className="mb_20" style={{fontSize: 14 + 'px'}}>{t('lgbt')}</p>
                                         <div className="d-flex">
                           <span>
                             <FastField
@@ -608,10 +707,10 @@ export const PForms = (props) => {
                        </span>
                                         </div>
                                     </div>
-                                    <h2>Muassaasaga joylashtirishga asos bo'lgan xujjatlar turi</h2>
+                                    <h2>{t('place-asign-data')}</h2>
                                     <hr style={{marginBottom: 20 + "px"}}/>
                                     <div className="row">
-                                        <div className="col-4">
+                                        <div className="col-4 cl-md-6 col-sm-6">
                                             <FastField
                                                 name="parentPartId"
                                                 component={Fields.AsyncSelect}
@@ -620,14 +719,23 @@ export const PForms = (props) => {
                                                     label: el.name,
                                                     value: el.id
                                                 }))}
-                                                label="JK moddasi *"
+                                                label={t('jk-role')}
                                                 // placeholder="Отасининг исми"
                                             />
                                         </div>
+                                        <div className="col-4 cl-md-6 col-sm-6">
+                                            <h3 className=' mb_20'>{t('child')}</h3>
+                                            <FastField
+                                                name="hasChild"
+                                                component={Fields.CheckBox}
+                                                // placeholder="Отасининг исми"
+                                            />
+                                        </div>
+                                        {/*{values}*/}
 
-                                        <div className="col-8">
-                                            {childpartId===1 && <div className="row">
-                                                <div className="col-6 col-md-12 col-sm-12 col-lg-6 col-xl-6">
+                                        <div className="col-12">
+                                            {childpartId===1 && <div className="row mt_10">
+                                                <div className="col-6 col-md-12 col-sm-6 col-lg-6 col-xl-6">
                                                     <FastField
                                                         name="basisDocumentPart"
                                                         component={Fields.AsyncSelect}
@@ -641,20 +749,20 @@ export const PForms = (props) => {
                                                             label: el.name,
                                                             value: el.id
                                                         }))}
-                                                        label="JK moddasi qismi *"
+                                                        label={t('jk-role-section')}
                                                         // placeholder="Отасининг исми"
                                                     />
                                                 </div>
-                                                <div className="col-6 col-md-12 col-sm-12 col-lg-6 col-xl-6">
+                                                <div className="col-6 col-md-12 col-sm-6 col-lg-6 col-xl-6">
                                                     <FastField
                                                         name="arestTime"
                                                         component={Fields.DatePicker}
                                                         hasTimeSelect
-                                                        label="Ushlangan sanasi *"
-                                                        placeholder="Ushlangan sanasi *"
+                                                        label={t("arest-time")}
+                                                        placeholder={t('arest-time')}
                                                     />
                                                 </div>
-                                                <div className="col-6 col-md-12 col-sm-12 col-lg-6 col-xl-6 mt_10">
+                                                <div className="col-6 col-md-12 col-sm-6 col-lg-6 col-xl-6 mt_10">
                                                     <FastField
                                                         name="arestOrganization"
                                                         component={Fields.AsyncSelect}
@@ -663,39 +771,41 @@ export const PForms = (props) => {
                                                             label: el.name,
                                                             value: el.id
                                                         }))}
-                                                        label="Muassasaga joylashtirgan organ nomi *"
+                                                        label={t('arest-organization')}
                                                         // placeholder="Отасининг исми"
                                                     /></div>
-                                                <div className="col-6 col-md-12 col-sm-12 col-lg-6  col-xl-6 mt_10">
+                                                <div className="col-6 col-md-12 col-sm-6 col-lg-6 col-xl-6 mt_10">
                                                     <FastField
                                                         name="arestOrganizationOfficer"
                                                         component={Fields.InputText}
-                                                        label="Muassasaga joylashtirgan xodim (F.I.Sh lavozmi unvoni) *"
+                                                        label={t('arest-organization-officer')}
                                                         // placeholder="Отасининг исми"
                                                     /></div>
-                                                <div className="col-6 col-md-12 col-sm-12 col-lg-6  col-xl-6 mt_10">
+                                                <div className="col-6 col-md-12 col-sm-col-lg-6 col-xl-6 mt_10">
                                                     <FastField
                                                         name="organizationArestTime"
                                                         component={Fields.DatePicker}
                                                         hasTimeSelect
-                                                        label="Muassasaga qabul qilingan sana va vaqit *"
+                                                        label={t('organization-arest-time')}
                                                         // placeholder="Отасининг исми"
                                                     /></div>
                                             </div>}
+                                            {values.hasChild && <FieldArraysChilds t={t} products={values?.children?.length ? values.children : [{fullName: '', birthLisenc: "", birthDate: "", birthPlace: ""}]}/>}
+
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
                             <div className="col-12">
-                                <h2 className='title'>Tintuv</h2>
+                                <h2 className='title'>{t('search-to')}</h2>
                                 <hr/>
                                 <br/>
                                 <div className="row">
 
                                     <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6"><Info
                                         className='w_full'
-                                        label={"Tintuv sanasi"}
+                                        label={t('search-data')}
                                         icon
                                         data={dayjs().format('DD.MM.YYYY HH:mm')}/>
                                     </div>
@@ -739,7 +849,8 @@ export const PForms = (props) => {
                                         </div>
                                     </div>
                                     <div className="col-9 col-md-12 col-xl-9 col-sm-12">
-                                        {values.hasItems === 'Ha'&&<FieldArrays products={values?.items?.length ? values.items : [{name: ""}] } />}
+                                        {values.hasItems === 'Ha'&&<FieldArrays t={t} products={values?.items?.length ? values.items : [{name: ""}] } />}
+
                                     </div>
 
 
@@ -748,7 +859,7 @@ export const PForms = (props) => {
                                 {/*<span className='time_now'>{dayjs().format('HH:mm')}</span>*/}
                             </div>
                             <div className="col-12">
-                                <h2 className='title'>Tanani ko'zdan kechrish</h2>
+                                <h2 className='title'>{t('body-to-search')}</h2>
                                 <hr/>
                                 <br/>
                                 <div className="row">
@@ -765,7 +876,7 @@ export const PForms = (props) => {
                                         data={JSON.parse(localStorage.getItem('userData')).username}/>
                                     </div>
                                     <div className="col-3 col-md-4 col-lg-2 col-xl-2 col-lg-2 col-sm-6">
-                                        <h2 className='search_label'>Tibbiy Malumotnoma</h2>
+                                        <h2 className='search_label'>{t('medical-data')}</h2>
                                         <div className='file-upload'>
                                             <FastField
                                                 name="medExamInfoDocument"
