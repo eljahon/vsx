@@ -37,7 +37,7 @@ const PrisonerDetail = () => {
     url: `/prisoners/${id}`,
     urlSearchParams: {
       pageSize: 10,
-      populate: "person, person.gender, person.nationality, person.citizenship",
+      populate: "person, person.gender, person.nationality, person.citizenship, ",
     },
 
   });
@@ -80,7 +80,7 @@ const PrisonerDetail = () => {
       icon: false,
     },
   ];
-  
+
   return (
     <div>
       <div className="prisoner__item">
@@ -144,12 +144,12 @@ const PrisonerDetail = () => {
               }
             >
               {currentLables === t("prisoner-data") &&
-                [1, 2, 3].map((el) =>
+                [1].map((el) =>
                   UserInfoF({ id: data?.data?.id, ...data?.data })
                 )}
               {currentLables === t("documents-type") &&
                 [1, 2, 3].map((el) =>
-                  UserInfoF({ id: data?.data?.id, ...data?.data?.attributes })
+                  UserInfoF({ id: data?.data?.id, ...data?.data })
                 )}
             </div>
             {currentLables === t("visitor-history") && (
@@ -237,7 +237,8 @@ const PrisonerDetail = () => {
                       ),
                     },
                   ]}
-                  items={data}
+                  items={console.log('sdf' ,data?.data)}
+               
                 />
                 <Pagination
                   currentPage={meta?.pagination?.page}
