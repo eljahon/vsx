@@ -78,11 +78,11 @@ const ItemCamera = () => {
 
     }
     const handelchecked = (items) => {
-        console.log(items)
+        // console.log(items)
         setcheckedList(items)
     }
     const handleTab = (items) => {
-        console.log(items)
+        // console.log(items)
     }
     const tableCheckItemClick = (item) => {
         const {actionType, itemdata} = item;
@@ -96,9 +96,9 @@ const ItemCamera = () => {
         }
     }
     const regionList = useFetchList({url: '/regions'});
-    console.log(StatusList)
+    // console.log(StatusList)
     const handelStatus = (element) => {
-        console.log(element)
+        // console.log(element)
         setcurrenName(element.id)
     }
     const clear = () => {

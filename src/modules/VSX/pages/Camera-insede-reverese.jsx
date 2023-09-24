@@ -63,7 +63,7 @@ const CameraInsedeReverese = () => {
         }
     });
     const [reason,setReason] = useState(StatusList?.data)
-    console.log(reason, '==>>>')
+    // console.log(reason, '==>>>')
     const prisonerList = useFetchList({
         url: "/prisoners",
         urlSearchParams:{
@@ -92,11 +92,11 @@ const CameraInsedeReverese = () => {
 
     }
     const handelchecked =  (items) => {
-        console.log(items)
+        // console.log(items)
         setcheckedList(items)
     }
     const handleTab =  (items) => {
-        console.log(items)
+        // console.log(items)
     }
     const tableCheckItemClick = (item) =>{
         const {actionType, itemdata} = item;
