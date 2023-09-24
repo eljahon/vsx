@@ -76,5 +76,7 @@
   "empty": "Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q",
   "personal-data": "Shaxsiy ma’lumotlar",
   "camera-out-time": "Kamerdan olib chiqish vaqti",
-  "camera-get-time": "Kameraga olib kirish vaqti"
+  "camera-get-time": "Kameraga olib kirish vaqti",
+  "responsible-person": "Yo'qlovni qabul qiladigan hodim"
+  
 }
