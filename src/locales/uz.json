@@ -95,6 +95,16 @@
   "auth-password": "Parol",
   "auth-forgot-password": "Parolni unutdingizmi?",
   "submit": "Kirish",
+  "position": "Inspektor",
+  "added": "Joylashtiril",
+  "prisoner-data": "Shaxsning ma’lumotlari",
+  "search-medical": "Tintuv va tibbiy ko‘rik",
+  "visitor-history":"  Yo‘qlovlar tarixi   ",
+  "documents-type": "Muassasaga joylashtirishga asos bo‘lgan hujjatlar turi",
+  "empty": "Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q",
+  "personal-data": "Shaxsiy ma’lumotlar",
   "camera-out-time": "Kamerdan olib chiqish vaqti",
-  "camera-get-time": "Kameraga olib kirish vaqti"
+  "camera-get-time": "Kameraga olib kirish vaqti",
+  "responsible-person": "Yo'qlovni qabul qiladigan hodim"
+  
 }
