@@ -75,7 +75,7 @@ const  UserInfo = (props) => {
             icon: "passpor"
         }
     ]
-    console.log("s",item)
+    // console.log("s",item)
         return (
             <div className='user'>
                 <div className="user_title p_d">{t('personal-data')}</div>

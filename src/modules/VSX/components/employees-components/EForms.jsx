@@ -340,7 +340,7 @@ export const EForms = (props) => {
                                             loadOptionsUrl={'/user-family-statuses'}
                                             label={t('family-status')}
                                             loadOptionsKey={(data) => {
-                                                console.log(data)
+                                                // console.log(data)
                                                 return data.data?.map((el) => ({label: el.attributes.name, hasChild: el.attributes.hasChild, value:el.id}))
                                             }}
                                             placeholder={t('family-status')}

@@ -15,7 +15,7 @@ function FormRelease(props) {
             <Containers.Form
                 customData={customData}
                 validate={(event) => {
-                    console.log(event)
+                    // console.log(event)
                 }}
                 method={"post"}
                 url={"/prisoner/leave-room"}
@@ -59,7 +59,7 @@ function FormRelease(props) {
 
             >
                 {({isSubmitting, values, setFieldValue, ...rest}) => {
-                    console.log(values, rest)
+                    // console.log(values, rest)
                     return <>
                         <div className="row g-4">
                             <div className="col-xl-10 col-lg-10 col-md-12 col-sm-12">
