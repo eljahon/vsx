@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import { AppLink, Avatar, Button, Typography } from "components";
@@ -12,9 +12,20 @@ import { ReactComponent as ArrowLeft } from "assets/icons/arrow.svg";
 import { ReactComponent as ArrowRight } from "assets/icons/arrow-right.svg";
 
 export const Sidebar = ({ setMini, mini }) => {
+  const getWidth = () => {
+    if (window.innerWidth < 992) {
+      setMini(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", getWidth);
+    return () => window.removeEventListener("resize", getWidth);
+  }, []);
+
   const { pathname } = useLocation();
   const menuKey = pathname.split("/")[1];
-    const roleName = localStorage.getItem('roleName')
+  const roleName = localStorage.getItem("roleName");
   return (
     <aside className={`sidebar scroll-style ${mini ? "sidebar__mini" : ""} `}>
       <Button
@@ -45,14 +56,16 @@ export const Sidebar = ({ setMini, mini }) => {
         menu.submenu ? (
           <SubMenu key={menu.id} menu={menu} />
         ) : (
-         menu?.roles.has(roleName)&&<AppLink
-            key={menu.id}
-            className="sidebar__link"
-            link={menu.link}
-            prepend={menu.icon}
-            text={menu.label}
-            activeClass="sidebar__link_active"
-          />
+          menu?.roles.has(roleName) && (
+            <AppLink
+              key={menu.id}
+              className="sidebar__link"
+              link={menu.link}
+              prepend={menu.icon}
+              text={menu.label}
+              activeClass="sidebar__link_active"
+            />
+          )
         )
       )}
     </aside>
