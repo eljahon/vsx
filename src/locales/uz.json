@@ -66,5 +66,7 @@
   "auth-login": "Login",
   "auth-password": "Parol",
   "auth-forgot-password": "Parolni unutdingizmi?",
-  "submit": "Kirish"
+  "submit": "Kirish",
+  "camera-out-time": "Kamerdan olib chiqish vaqti",
+  "camera-get-time": "Kameraga olib kirish vaqti"
 }

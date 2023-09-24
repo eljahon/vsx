@@ -122,6 +122,7 @@ const CameraInsedeReverese = () => {
             {/*/>*/}
             <HeaderFilters
                 setFieldValue={setFilters}
+
                 items={regionList?.data?.map((el) => ({id:el.id, name: el.name}))}
             />
             <InputSearch
@@ -169,12 +170,15 @@ const CameraInsedeReverese = () => {
                             return Span(item)
                         }
                     },
-                    // {
-                    //     title: t('birthdate'),
-                    //     dataKey: "amount",
-                    //     className: "white-space_no-wrap",
-                    //     render: (value,items) => time.timeFormater(items.attributes.birthdate, "DD.MM.YYYY"),
-                    // },
+                    {
+                        title: t('camera'),
+                        dataKey: "amount",
+                        className: "white-space_no-wrap",
+                        render: (value,items) => {
+                            const _ = items?.room?.name ? items?.room?.name : '-'
+                            return _;
+                        }
+                    },
                     // {
                     //     title: t("passport"),
                     //     dataKey: "currency",

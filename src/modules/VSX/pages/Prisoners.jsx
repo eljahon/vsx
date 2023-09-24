@@ -129,14 +129,13 @@ let count=0;
           {
             title: t("passport"),
             dataKey: "currency",
-            render: (value,items) => items.passport,
+            render: (value,items) => items?.person?.passport,
           },
           {
             title: t("to-account"),
             dataKey: "patient",
             className: "white-space_no-wrap",
-            render: (value) =>
-              formatters.formatPhoneView(get(value, "phone")),
+            render: (value, item) => item?.basisDocumentPart?.name
           },
           //
           // {
@@ -147,7 +146,7 @@ let count=0;
             {
                 title: t('isInvalid'),
                 dataKey: "user",
-                render: (value,item) => IsInvalid(item.isInvalid),
+                render: (value,item) => IsInvalid(item?.person?.isInvalid),
             },
           {
             title: t("camera"),
@@ -155,7 +154,7 @@ let count=0;
             render: (value, items) => {
                 // console.log(value,items)
                 // formatters.showDegree(value)
-                return items?.room?.data
+                return items?.room?.name
             },
           },
           // {
