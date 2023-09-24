@@ -35,7 +35,6 @@ const ForgotPassword = () => {
 					4-значный код."
 				/>
 			</div>
-
 			<Containers.Form
 				url="/user/forgot-password"
 				onSuccess={(response) => {

@@ -62,13 +62,14 @@ const CameraInsedeReverese = () => {
             sort: {id: 'asc'}
         }
     });
-    // const [reason,setReason] = useState(StatusList?.data)
+    const [reason,setReason] = useState(StatusList?.data)
+    console.log(reason, '==>>>')
     const prisonerList = useFetchList({
         url: "/prisoners",
         urlSearchParams:{
             pageSize: 10,
             filters: {
-                roomLeave:{reason: 1}
+                // roomLeave:{reason: }
             }
         },
 
@@ -148,7 +149,7 @@ const CameraInsedeReverese = () => {
                         title: t('number'),
                         dataKey: "id",
                         render: (value, item, index) => {
-                            console.log(value, item, index)
+                            // console.log(value, item, index)
                             return index+1
                         },
                     },
