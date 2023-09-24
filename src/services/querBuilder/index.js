@@ -1,19 +1,22 @@
 import { isArray } from "lodash";
-import qs from 'qs'
+const querRecurce = (filters) => {
+	for(let key in filters) {
+		if(typeof  filters[key] === 'string'||typeof  filters[key] === 'number') return `[${key}]=`+`${filters[key]}`
+		return `[${key}]`+querRecurce(filters[key])
+	}
+}
 export const queryBuilder = (url, config = {}) => {
 	if (Object.keys(config).length <= 0) return url;
 
 	const { sort = "", pageSize, page = 1, extra = {}, filters = {}, populate="*" } = config;
 	const queryObj = new URLSearchParams();
-	console.log(Object.entries(filters), 'filtes')
 	if (Object.keys(filters).length)
-		Object.entries(filters).forEach((item) => {
-			if (isArray(item[1])) {
-				item[1].forEach((inner, index) =>
-					queryObj.append(`filter[${item[0]}][${index}]`, inner)
-				);
-			};
-		});
+	{
+		const s = 'filters'+querRecurce(filters);
+		console.log(s)
+		const d = s.split('=');
+		 queryObj.append(`${d[0]}`, d[1])
+	}
 
 	if (Object.keys(extra).length)
 		Object.entries(extra).forEach((item) => {

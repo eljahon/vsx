@@ -74,5 +74,7 @@
   "visitor-history":"  Yo‘qlovlar tarixi   ",
   "documents-type": "Muassasaga joylashtirishga asos bo‘lgan hujjatlar turi",
   "empty": "Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q",
-  "personal-data": "Shaxsiy ma’lumotlar"
+  "personal-data": "Shaxsiy ma’lumotlar",
+  "camera-out-time": "Kamerdan olib chiqish vaqti",
+  "camera-get-time": "Kameraga olib kirish vaqti"
 }
