@@ -1,7 +1,7 @@
 import { isArray } from "lodash";
 const querRecurce = (filters) => {
 	for(let key in filters) {
-		if(typeof  filters[key] === 'string'||typeof  filters[key] === 'number') return `[${key}]=`+`${filters[key]}`
+		if(typeof  filters[key] === 'string'||typeof  filters[key] === 'number'|| typeof filters[key] === 'boolean') return `[${key}]=`+`${filters[key]}`
 		return `[${key}]`+querRecurce(filters[key])
 	}
 }

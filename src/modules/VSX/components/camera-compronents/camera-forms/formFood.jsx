@@ -9,7 +9,7 @@ import { FastField } from "formik";
 
 function FormFood(props) {
   const navLink = useNavigate();
-  const { values, customData, method } = props;
+  const { values, customData, method, title } = props;
   const { t } = useTranslation();
   return (
     <div>
@@ -107,7 +107,7 @@ function FormFood(props) {
                   design="primary"
                   type="submit"
                   className="modal-btn-end fz_16 btn mt_40"
-                  text={t("walk-out")}
+                  text={title.name}
                   isLoading={isSubmitting}
                 />
               </div>

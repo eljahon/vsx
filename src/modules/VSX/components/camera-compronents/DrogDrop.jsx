@@ -12,6 +12,7 @@ import {httpClient} from "../../../../services";
 import {useNavigate, useParams} from "react-router-dom";
 import {Button} from "../../../../components";
 import {useNotification} from "../../../../hooks";
+import user from '../../../../assets/icons/user.svg'
 export const DrogDrop = (props) => {
     const {isNewPrsonerAdd, boardsList,refetch, boardItemRemove,boardItemUpdata, routerPush} = props;
     console.log(boardsList)
@@ -57,10 +58,8 @@ export const DrogDrop = (props) => {
         }
     }
     const itemAddUser =async (board) => {
-        const _items = [Number(pr_id)];
-        // board.attributes.prisoners.data.forEach(el => {
-        //     _items.push(el.id)
-        // })
+        let _items = board.prisoners.map((el) => el.id)
+        _items.push(Number(pr_id))
         await httpClient.put(`/rooms/${board.id}`,{data:{prisoners:_items}})
             .then(res => {
                 refetch()
@@ -73,7 +72,7 @@ export const DrogDrop = (props) => {
     return(<div className="row">
         <DragDropContext className='w_full' onDragEnd={(result,) => dragEndHandler(result)}>
             <div className="row">
-                {boardsList?.map((board, index) => {
+                {boardsList?.length&&boardsList?.map((board, index) => {
                     return <div key={index} className='col-sm-12 col-md-6 col-lg-4 col-xl-4'>
                         <div className="board__title__wrapper" onClick={()=> handlerItem(board)}>
                             <div className="board__title">
@@ -89,22 +88,28 @@ export const DrogDrop = (props) => {
                                 return<div {...provided.droppableProps}
                                          ref={provided.innerRef} className='board'>
                                         {board?.prisoners?.map((item, key) =>
-                                                <Draggable draggableId={`${item.id}`} key={item.id} index={key}>
+                                            {
+                                                return !item.isLeftRoom&& <Draggable draggableId={`${item.id}`} key={item.id} index={key}>
                                                     {(provided) => (
                                                         <div
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
                                                             ref={provided.innerRef}
                                                             className='item'
-                                                        ><span className='item__text'>
-                               <img className='images'
-                                    src={fileurl+item.image} alt="dadsd"/>
-                                                            {item.sureName} {item.firstName}
-                                                            <PrisonersPlaceNow index={key + 1} text={'Kamerada'}/>
+                                                        >
+                                                            <span className='item__text'>
+                                                            {item?.person?.image&&<img className='images'
+                                                                                       src={fileurl+item?.person?.image} alt="image is not"/>}
+
+                                                                {!item?.person?.image&&<img className='images'
+                                                                                            src={user} alt="image is not"/>}
+                                                                {item?.person?.sureName} {item?.person?.sureName}
+                                                                <PrisonersPlaceNow index={key + 1} text={'Kamerada'}/>
                            </span>
                                                         </div>
                                                     )}
                                                 </Draggable>
+                                            }
                                         )}
                                     </div>
                             }

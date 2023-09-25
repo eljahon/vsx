@@ -10,6 +10,7 @@ export const TableRow = (props) => {
 		deleteAction,
 		editAction,
 		onRowClick,
+		index,
 		renderButtons,
 		seeAction,
 		isChecked,
@@ -30,7 +31,7 @@ export const TableRow = (props) => {
 						<span className='d-flex' style={{gap: 10+"px", alignItems: 'center'}}>
 							{innerIndex === 0 && isCheckedSee && <CheckBox row={row} isChecked={isChecked} setItemChecked={setItemChecked}/>}
 							{/*{row}*/}
-							{col.render(row[col.dataKey], row, innerIndex)}
+							{col.render(row[col.dataKey], row, index)}
 						</span>
 					</td>
 				);

@@ -11,6 +11,9 @@ function PrisonerMadicalForms(props) {
     const [currentLables, setLables] = useState(tabLabels[0])
     const cameraList = useFetchList({
         url: "/rooms",
+        urlSearchParams:{
+            populate: "prisoners,prisoners.person"
+        }
     });
     return (
         <div>

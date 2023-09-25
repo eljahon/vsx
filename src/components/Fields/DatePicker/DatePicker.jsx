@@ -34,7 +34,7 @@ export const DatePicker = ({
 
   const handleChange = (date) => {
     // console.log(date)
-    form.setFieldValue(field.name, date.toDate());
+    form.setFieldValue(field.name, date?.toDate());
     onDateChange && onDateChange(date);
   };
 

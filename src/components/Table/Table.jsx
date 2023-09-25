@@ -24,35 +24,14 @@ export const Table = ({
 	renderButtons,
 	filterComponent,
 	isChecked,
-	setItemChecked
+       checkedList,
+    isHeaderChecked
 }) => {
 	const classNames = cn("table__wrapper", className);
-	const [isHeaderChecked, setIsHeaderCheaked] = useState(false)
-	const [checkedList, setCheckedList] = useState([])
+	// const [checkedList, setCheckedList] = useState([])
 	const handelChecketAll =(isCheckedAll, id='all') =>  {
-		if(isCheckedAll && id === 'all') {
-
-            setIsHeaderCheaked(true)
-			setCheckedList(items.map(el=> el.id));
-			setChecked&&setChecked(items.map(el=> el.id), setCheckedList)
-
-		} else if(!isCheckedAll && id ==='all'){
-
-			setIsHeaderCheaked(false)
-			setCheckedList([])
-			setChecked&&setChecked([])
-
-		} else if (isCheckedAll && id !== 'all') {
-
-			setCheckedList(old => [...old, id])
-			setChecked&&setChecked(old => [...old, id])
-
-		} else if (!isCheckedAll && id !== 'all') {
-
-			setCheckedList(checkedList.filter(el=> el !==id ))
-			setChecked&&setChecked(old => [...old].filter(el=> el !== id))
-
-		}
+		console.log(isCheckedAll, id)
+		setChecked({isCheckedAll, id})
 	}
 	return (
 		<div className={classNames}>
@@ -85,6 +64,7 @@ export const Table = ({
 							) : (
 								items.map((row, index) => (
 									<TableRow
+										index={index}
 										key={row[rowKey]}
 										row={row}
 										columns={columns}

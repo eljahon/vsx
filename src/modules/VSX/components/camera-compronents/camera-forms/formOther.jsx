@@ -8,7 +8,7 @@ import { FastField } from "formik";
 import { AttachFile, Button, Fields } from "../../../../../components";
 function FormOther(props) {
   const navLink = useNavigate();
-  const { values, customData, method } = props;
+  const { values, customData, method, title } = props;
   const { t } = useTranslation();
 
   return (
@@ -123,7 +123,7 @@ function FormOther(props) {
                   design="primary"
                   type="submit"
                   className="modal-btn-end fz_16 btn mt_40"
-                  text={t("walk-out")}
+                  text={title.name}
                   isLoading={isSubmitting}
                 />
               </div>

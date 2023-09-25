@@ -8,7 +8,7 @@ import {FastField} from "formik";
 
 function FormRelease(props) {
     const navLink = useNavigate()
-    const {values, customData, method} = props;
+    const {values, customData, method, title} = props;
     const {t} = useTranslation()
     return (
         <div>
@@ -53,7 +53,10 @@ function FormRelease(props) {
                     {
                         name: "document",
                         value: get(values, 'worker') ?? '',
-                        onSubmitValue: (value) => value,
+                        onSubmitValue: (value) => {
+                            if(!value)  return null;
+                            return value;
+                        },
                     },
                 ]}
 
@@ -120,7 +123,7 @@ function FormRelease(props) {
                                 design="primary"
                                 type="submit"
                                 className="modal-btn-end fz_16 btn mt_40"
-                                text={t('walk-out')}
+                                text={title.name}
                                 isLoading={isSubmitting}
                             />
                         </div>

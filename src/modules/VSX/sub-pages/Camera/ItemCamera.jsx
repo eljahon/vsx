@@ -36,8 +36,9 @@ const ItemCamera = () => {
     const navLink = useNavigate()
     const {region, id} = useParams()
     const {getLanguageValue} = useGetLanguage();
+    const [isHeaderChecked, setIsHeaderCheaked] = useState(false)
     const [checkedList, setcheckedList] = useState([])
-    const [currenName, setcurrenName] = useState('')
+    const [currenName, setcurrenName] = useState({})
     const [filters, setFilters] = useState({
         start: '',
         end: '',
@@ -73,7 +74,22 @@ const ItemCamera = () => {
 
     }
     const handelchecked = (items) => {
-        setcheckedList(items)
+        const {data:{prisoners}} = ItemCamera.data;
+        if(items.isCheckedAll && items.id === 'all') {
+            setIsHeaderCheaked(true)
+             setcheckedList(prisoners.map(el=> el.id))
+        } else if (!items.isCheckedAll && items.id === 'all') {
+            setIsHeaderCheaked(false)
+            setcheckedList([])
+        } else if (items.isCheckedAll && items.id) {
+            setcheckedList(old => [...old, items.id])
+        }else if (!items.isCheckedAll && items.id) {
+            setcheckedList(checkedList.filter(el => el !== items.id))
+        } else {
+            setIsHeaderCheaked(false)
+            setcheckedList([])
+        }
+
 
     }
     const handleTab = (items) => {
@@ -91,11 +107,13 @@ const ItemCamera = () => {
     }
     const regionList = useFetchList({url: '/regions'});
     const handelStatus = (element) => {
-        setcurrenName(element.id)
+        console.log(element)
+        setcurrenName(element)
     }
     const clear = () => {
         handelchecked([])
         setcurrenName('')
+        navLink(`/${region}/prisoner-insede`)
     }
     return (
         <>
@@ -122,13 +140,16 @@ const ItemCamera = () => {
                 emptyUiText="Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q"
                 isLoading={ItemCamera.isLoading}
                 isCheckedSee
+                isHeaderChecked={isHeaderChecked}
+                setIsHeaderCheaked={setIsHeaderCheaked}
+                checkedList={checkedList}
                 setChecked={handelchecked}
                 columns={[
                     {
                         title: t('number'),
                         dataKey: "id",
-                        render: (value, item) => {
-                            return 1
+                        render: (value, item, index) => {
+                            return  index+1
                         },
                     },
                     {
@@ -201,12 +222,12 @@ const ItemCamera = () => {
             <div className='statusItem mt_20'>
                 {StatusList?.data?.map((el, index) => (
                     <span onClick={() => handelStatus(el)} key={index}
-                          className={checkedList.length ? `statusItem-isdisible statusItem-status ${el.id === currenName ? 'statusItem_bg-add' : ''}` : 'statusItem-status statusItem-disible'}>{iconRender(el.name)}{el.name}</span>
+                          className={checkedList.length ? `statusItem-isdisible statusItem-status ${el.id === currenName.id ? 'statusItem_bg-add' : ''}` : 'statusItem-status statusItem-disible'}>{iconRender(el.name)}{el.name}</span>
                 ))}
             </div>
             <div className='mt_20'>
                 {
-                    currenName && returnForms(currenName, {prisoners: checkedList, reason: currenName}, clear)
+                    currenName?.id && returnForms(currenName.id, {prisoners: checkedList, reason: currenName.id}, clear, currenName)
                 }
             </div>
         </>

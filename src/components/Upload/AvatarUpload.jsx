@@ -33,7 +33,7 @@ const BaseUrl = process.env.REACT_APP_IMAGE_BASE_URL;
     const formdata = new FormData()
     formdata.append('files', image)
     httpClient.post("/upload", formdata).then(({ data }) => {
-      // console.log(data)
+      console.log(data)
     	setImgSrc(get(data, "0.url"));
     	form.setFieldValue(
     		field.name,
@@ -44,7 +44,7 @@ const BaseUrl = process.env.REACT_APP_IMAGE_BASE_URL;
   return (
     <div className={cn("avatar-upload", className)}>
       <div className="avatar-upload__inner">
-        <img src={field.value ? BaseUrl+field.value : imgSrc ?  BaseUrl+imgSrc : ''} alt="" />
+        <img src={field.value ? BaseUrl+field.value : imgSrc ?  BaseUrl+imgSrc : ''} alt="image is not " />
       </div>
 
       <UploadBase

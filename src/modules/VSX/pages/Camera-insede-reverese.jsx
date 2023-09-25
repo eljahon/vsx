@@ -62,13 +62,13 @@ const CameraInsedeReverese = () => {
             sort: {id: 'asc'}
         }
     });
-    const [reason,setReason] = useState(StatusList?.data)
+    const [reason,setReason] = useState(1)
     const prisonerList = useFetchList({
         url: "/prisoners",
         urlSearchParams:{
             pageSize: 10,
             filters: {
-                roomLeave:{reason: 1}
+                roomLeave:{reason}
             }
         },
 
@@ -137,6 +137,7 @@ const CameraInsedeReverese = () => {
                 isObjeckt
                 onPaneChange={(active,envt)=> {
                     handleTab(active)
+                    setReason(active)
                     setCurrentTabLabel(active.name)
                 }}
             /> <br/>

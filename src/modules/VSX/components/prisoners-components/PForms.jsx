@@ -164,8 +164,8 @@ export const PForms = (props) => {
     const {t} = useTranslation()
     const [childpartId, setPartId] = useState(null)
     const handleFormOptions = (values, setFields) => {
-        if (values.parentPartId?.value) {
-            setPartId(values.parentPartId.value)
+        if (values.basisDocument?.value) {
+            setPartId(values.basisDocument.value)
         }
     }
     const doclist = useFetchList({url: 'prisoner-basis-documents'});
@@ -432,12 +432,12 @@ export const PForms = (props) => {
                         }
                     },
                     {
-                        name: "parentPartId",
+                        name: "basisDocument",
                         validations: [{type: "required"}],
                         validationType: "object",
-                        value: get(values, 'gender.data.id') ? {
-                            label: get(values, 'gender.data.attributes.name'),
-                            value: get(values, 'gender.data.id')
+                        value: get(values, 'basisDocument.id') ? {
+                            label: get(values, 'basisDocument.name'),
+                            value: get(values, 'basisDocument.id')
                         } : '',
                         onSubmitValue: (value) => {
                             return value.value
@@ -705,7 +705,7 @@ export const PForms = (props) => {
                                     <div className="row">
                                         <div className="col-4 cl-md-6 col-sm-6">
                                             <FastField
-                                                name="parentPartId"
+                                                name="basisDocument"
                                                 component={Fields.AsyncSelect}
                                                 loadOptionsUrl={'/prisoner-basis-documents'}
                                                 loadOptionsKey={(data) => data?.data?.map((el) => ({

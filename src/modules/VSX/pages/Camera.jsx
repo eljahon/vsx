@@ -29,6 +29,12 @@ const Prisoners = () => {
     url: "/rooms",
     urlSearchParams: {
       sort: { id: "desc" },
+        // filters: {
+        //     prisoners: {
+        //         isLeftRoom: false
+        //     }
+        // },
+        populate: "prisoners, prisoners.person"
     },
   });
   const handaleRouter = (itemId) => {
