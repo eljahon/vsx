@@ -26,25 +26,25 @@ export const App = () => {
   // 	},
   // });
 
-  // useFetchOne({
-  // 	url: "/users/me",
-  // 	urlSearchParams: {
-  // 		include: "position,userDetail,userDetail.avatar",
-  // 	},
-  // 	queryOptions: {
-  // 		onSuccess: (user) => {
-  // 			dispatch(auth.success(user));
-  // 			storage.set("token", get(user, "token"));
-  // 			if (get(user, "step") <= constants.STEP_PHONE_CONFIRMED) navigate("/profile");
-  // 		},
-  // 		onError: (error) => {
-  // 			dispatch(auth.success(user));
+  useFetchOne({
+  	url: "/users/me",
+  	urlSearchParams: {
+  		populate: "position,userDetail,userDetail.avatar",
+  	},
+  	queryOptions: {
+  		onSuccess: (user) => {
+  			dispatch(auth.success(user));
+  			storage.set("token", get(user, "token"));
+  			if (get(user, "step") <= constants.STEP_PHONE_CONFIRMED) navigate("/profile");
+  		},
+  		onError: (error) => {
+  			dispatch(auth.success(user));
 
-  // 			// dispatch(auth.failure(error));
-  // 			// navigate("/login");
-  // 		},
-  // 	},
-  // });
+  			// dispatch(auth.failure(error));
+  			// navigate("/login");
+  		},
+  	},
+  });
 
   return (
     <>
