@@ -1,12 +1,10 @@
 import React, {useState} from "react";
 import get from "lodash";
-import {PageHeading, Table, Pagination, InputSearch, HeaderFilters, ConfirmModal, TabBase, Button} from "components";
+import {Table, Pagination, InputSearch, HeaderFilters, ConfirmModal, TabBase, Button} from "components";
 import {useTranslation} from "react-i18next";
 import {} from 'react-dom'
-import {useDelete, useFetchList, useGetLanguage, useOverlay, useDeleteWithConfirm} from "hooks";
+import {useFetchList, useGetLanguage, useDeleteWithConfirm} from "hooks";
 import {useNavigate, useParams} from "react-router-dom";
-import {formatters} from "../../../../services/utils";
-import {time} from '../../../../services/time'
 import {Avatar, Span, IsInvalid, ActionDropDown} from '../../components/prisoners-components'
 import {returnForms} from "../../components/camera-compronents/camera-forms";
 import {ReactComponent as User} from '../../../../assets/icons/outsidedisibleuser.svg'
@@ -18,7 +16,6 @@ import {ReactComponent as MaxsusPalata} from '../../../../assets/icons/maxsusPal
 import {ReactComponent as Tergovdisibel} from '../../../../assets/icons/tergovdisibel.svg'
 import {ReactComponent as Food} from '../../../../assets/icons/outsidedisiblefood.svg'
 import '../../styles/prisoners.scss'
-import userimg from '../../../../assets/images/user.png'
 
 const iconRender = (name) => {
     let iconName = {
@@ -62,12 +59,10 @@ const ItemCamera = () => {
         }
     });
     const tabLabels = [ItemCamera?.data?.data?.name];
-    // const [currentLables, setCurrentTabLabel] = useState(tabLabels[0])
     const prisonerDelete = useDeleteWithConfirm({
         uniqueName: "removePrisonerModal",
         url: "/prisoners",
     });
-    // let count =prisonerList?.meta?.pagination?.page;
     const handlaAction = (items) => {
         tableCheckItemClick(items)
 
@@ -78,11 +73,10 @@ const ItemCamera = () => {
 
     }
     const handelchecked = (items) => {
-        // console.log(items)
         setcheckedList(items)
+
     }
     const handleTab = (items) => {
-        // console.log(items)
     }
     const tableCheckItemClick = (item) => {
         const {actionType, itemdata} = item;
@@ -96,9 +90,7 @@ const ItemCamera = () => {
         }
     }
     const regionList = useFetchList({url: '/regions'});
-    // console.log(StatusList)
     const handelStatus = (element) => {
-        // console.log(element)
         setcurrenName(element.id)
     }
     const clear = () => {
@@ -107,14 +99,7 @@ const ItemCamera = () => {
     }
     return (
         <>
-            {/*<ConfirmModal*/}
-            {/*    isOpen={prisonerDelete.isOverlayOpen}*/}
-            {/*    cancelAction={prisonerDelete.handleOverlayClose}*/}
-            {/*    successAction={() => {*/}
-            {/*        prisonerDelete.mutateAsync(prisonerDelete.id).then(() => prisonerList.refetch());*/}
-            {/*        prisonerDelete.handleOverlayClose();*/}
-            {/*    }}*/}
-            {/*/>*/}
+
             <HeaderFilters
                 setFieldValue={setFilters}
                 items={regionList?.data?.map((el) => ({id: el.id, name: el.name}))}
@@ -123,16 +108,7 @@ const ItemCamera = () => {
                 setValue={setFilters}
                 text={ItemCamera?.data?.data?.name}
             />
-            {/*<PageHeading*/}
-            {/*    links={[*/}
-            {/*        { link: "/", label: "Bosh sahifa" },*/}
-            {/*        { link: "/", label: "Toshkent" },*/}
-            {/*        { label: "Shaxslarni ro'yxatga olish" },*/}
-            {/*    ]}*/}
-            {/*    title={t("prisoner-list-add")}*/}
-            {/*    mainAction={() => navLink(`/${region}/prisoner/create`)}*/}
-            {/*    btnText={t("prisoner-list-add")}*/}
-            {/*/>*/}
+
             <TabBase
                 labels={tabLabels}
                 currentLabel={ItemCamera?.data?.data?.name}
@@ -217,8 +193,6 @@ const ItemCamera = () => {
                 ]}
                 items={ItemCamera?.data?.data?.prisoners}
             />
-            {/*<span>salom</span>*/}
-            {/*<span>{get(prisonerList, "meta.pagination.pageCount")}</span>*/}
             <Pagination
                 currentPage={ItemCamera?.meta?.pagination?.page}
                 pageCount={ItemCamera?.meta?.pagination?.pageCount}

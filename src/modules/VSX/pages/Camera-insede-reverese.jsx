@@ -8,7 +8,7 @@
 //
 // export default CameraInsedeReverese;
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import get from "lodash";
 import {PageHeading, Table, Pagination, InputSearch, HeaderFilters, ConfirmModal, TabBase, Button} from "components";
 import {useTranslation} from "react-i18next";
@@ -63,17 +63,18 @@ const CameraInsedeReverese = () => {
         }
     });
     const [reason,setReason] = useState(StatusList?.data)
-    // console.log(reason, '==>>>')
     const prisonerList = useFetchList({
         url: "/prisoners",
         urlSearchParams:{
             pageSize: 10,
             filters: {
-                // roomLeave:{reason: }
+                roomLeave:{reason: 1}
             }
         },
 
     });
+    useEffect(() =>{} ,[StatusList.data])
+
     const tabLabels =[StatusList?.data];
     const [currentLables, setCurrentTabLabel]= useState('Sayrga olib chiqish')
     const prisonerDelete = useDeleteWithConfirm({
@@ -91,8 +92,8 @@ const CameraInsedeReverese = () => {
         prisonerDelete.handleOverlayOpen();
 
     }
+    let setItemsEmptiy;
     const handelchecked =  (items) => {
-        // console.log(items)
         setcheckedList(items)
     }
     const handleTab =  (items) => {
@@ -206,9 +207,7 @@ const CameraInsedeReverese = () => {
                         title: t("where-is-now"),
                         dataKey: "camera",
                         render: (value, items) => {
-                            // console.log(value,items)
-                            // formatters.showDegree(value)
-                            return items?.room?.data?.name
+                            return items?.room?.name
                         },
                     },
                     // {

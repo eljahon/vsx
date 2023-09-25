@@ -34,7 +34,7 @@ export const Table = ({
 
             setIsHeaderCheaked(true)
 			setCheckedList(items.map(el=> el.id));
-			setChecked&&setChecked(items.map(el=> el.id))
+			setChecked&&setChecked(items.map(el=> el.id), setCheckedList)
 
 		} else if(!isCheckedAll && id ==='all'){
 

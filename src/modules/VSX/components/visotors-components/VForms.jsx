@@ -1,5 +1,5 @@
 import React from "react";
-import { FastField } from "formik";
+import {ErrorMessage, FastField, Field, FieldArray} from "formik";
 import { useSelector } from "react-redux";
 import { get } from "lodash";
 import { userSelector } from "store/selectors";
@@ -9,6 +9,47 @@ import { useNavigate } from "react-router-dom";
 import Containers from "containers";
 import { Fields, Button, AvatarUpload, AttachFile } from "components";
 import { useTranslation } from "react-i18next";
+import {ReactComponent as IconDelete} from "../../../../assets/icons/delete.svg";
+const FieldArrays = ({products, t}) => {
+  return <div className='row'>
+    <FieldArray name={'items'}>
+      {({insert, remove, push}) => (
+          <>
+            {products.map((product, index, arr) => (
+
+                <div className='col-3 col-md-4 col-sm-12 mt_20 d-flex align-items-center' key={index}>
+
+                  <Field
+                      name={`items.${index}.name`}
+                      component={Fields.InputText}
+                      placeholder={t('something')}
+                  />
+                  <ErrorMessage
+                      name={`items.${index}.name`}
+                      component="span"
+                      className="field-error"
+                  />
+                  <div className='ml_10'>{index + 1 === arr.length && index !== 0 && (
+                      <Button
+                          className="color_primary-red product__btn"
+                          onClick={() => remove(index)}
+                      ><IconDelete/></Button>
+                  )}</div>
+                  {/*</div>*/}
+                </div>
+            ))}
+            <Button
+                className='w_30 mt_20 '
+                style={{padding: 0, borderRadius: 5 + "px"}}
+                design={"primary"}
+                onClick={() => push({name: ''})}
+            >+</Button>
+          </>
+      )
+      }
+    </FieldArray>
+  </div>
+}
 export const VForms = (props) => {
   const { values, handleOverlayClose, onAddedNewRecord } = props;
   // console.log(get(values, 'responsibleUser.data.attributes.username'), isUpdate)
@@ -32,6 +73,17 @@ export const VForms = (props) => {
             onSubmitValue: (value) => {
               return value;
             },
+          },
+          {
+            name: "items",
+            validationType: "array",
+            value: [{name: ''},],
+            lazy: (validator, yup) => validator.of(
+                yup.object().shape({
+                  name: yup.string(),
+                })
+            ),
+            onSubmitValue: (value) => value.map((item) => (item)),
           },
           {
             name: "birthDate",
@@ -93,7 +145,7 @@ export const VForms = (props) => {
           },
         ]}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values }) => (
           <>
             <div className="row g-5 mb_25">
               <div className="col-5">
@@ -262,14 +314,16 @@ export const VForms = (props) => {
                       // placeholder="Отасининг исми"
                     />
                   </div>
-                  <p>Ариза</p>
-                  <div className="file-upload d-flex justify-content-center col-4 p__5">
-                    <FastField
-                      name="searchDocument"
-                      title={t("file")}
-                      component={AttachFile}
-                      label={t("minutes")}
-                    />
+                  <div className="col-4">
+                    <h2 className='search_label mb_10'>{t('aplication')}</h2>
+                    <div className='file-upload'>
+                      <FastField
+                          name="searchDocument"
+                          title={t('file')}
+                          component={AttachFile}
+                          label={t('aplication')}
+                      />
+                    </div>
                   </div>
                   <div className="col-3">
                     <p className="mb_20">Холати</p>
@@ -278,6 +332,9 @@ export const VForms = (props) => {
                       component={Fields.CheckBox}
                       label="Ногирон"
                     />
+                  </div>
+                  <div>
+                    <FieldArrays t={t} products={values?.items?.length ? values.items : [{key: "", value}] }/>
                   </div>
                 </div>
               </div>

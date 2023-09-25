@@ -9,13 +9,15 @@ import {DropData} from "../../../../mock-data";
 import {useFetchList} from "../../../../hooks";
 import config from "../../../../config";
 import {httpClient} from "../../../../services";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Button} from "../../../../components";
 import {useNotification} from "../../../../hooks";
 export const DrogDrop = (props) => {
     const {isNewPrsonerAdd, boardsList,refetch, boardItemRemove,boardItemUpdata, routerPush} = props;
     console.log(boardsList)
     const notif = useNotification()
+    const nav = useNavigate()
+    const {region} = useParams()
     const {pr_id} = useParams()
     const [fileurl, setFileUlr] = useState(config.FielUrl)
     const boardUpdata = async (boardPrisoner, e) => {
@@ -48,7 +50,6 @@ export const DrogDrop = (props) => {
         }
     }
     const dragEndHandler = async  ( item)  => {
-        console.log(item)
         // const {destination:{droppableId}, draggableId, source:{droppableId}} = item;
         if(item && item.destination && item.source && item.destination.droppableId !== item.source.droppableId) {
             await boardUpdata({prisonerId: item.draggableId, fromRoomId: item.source.droppableId, toRoomId: item.destination.droppableId})
@@ -63,6 +64,10 @@ export const DrogDrop = (props) => {
         await httpClient.put(`/rooms/${board.id}`,{data:{prisoners:_items}})
             .then(res => {
                 refetch()
+                nav(`/${region}/prisoner`)
+            })
+            .catch(err => {
+                nav(`/${region}/prisoner`)
             })
     }
     return(<div className="row">

@@ -2,10 +2,6 @@ import React from "react";
 import get from "lodash";
 import {
   PageHeading,
-  Table,
-  Pagination,
-  InputSearch,
-  HeaderFilters,
   ConfirmModal,
 } from "components";
 import {
@@ -14,9 +10,6 @@ import {
   useGetLanguage,
   useOverlay,
 } from "hooks";
-import { PForms } from "../components/prisoners-components/PForms";
-import { time } from "../../../services/time";
-import { formatters } from "../../../services/utils";
 import { AddRoomsModal, DrogDrop } from "../components/camera-compronents";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -42,7 +35,6 @@ const Prisoners = () => {
     navLink(`/${region}/cameras/${itemId}`);
   };
   const removeRoom = (item) => {
-    // console.log(itemdata, get(itemdata, "id"))
     removeRoomModal.setId(item.id);
     removeRoomModal.handleOverlayOpen();
   };

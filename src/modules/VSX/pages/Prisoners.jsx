@@ -1,16 +1,11 @@
 import React, {useState} from "react";
-import get from "lodash";
 import {PageHeading, Table, Pagination, InputSearch, HeaderFilters, ConfirmModal} from "components";
 import {useTranslation} from "react-i18next";
-import {} from 'react-dom'
-import {useDelete, useFetchList, useGetLanguage, useOverlay, useDeleteWithConfirm} from "hooks";
+import {useFetchList, useGetLanguage, useOverlay, useDeleteWithConfirm} from "hooks";
 import { useNavigate, useParams } from "react-router-dom";
-import {formatters} from "../../../services/utils";
 import {time} from '../../../services/time'
-import {Avatar,Span, IsInvalid,ActionDropDown} from '../components/prisoners-components'
+import {Avatar,Span, IsInvalid} from '../components/prisoners-components'
 import '../styles/prisoners.scss'
-import userimg from '../../../assets/images/user.png'
-
 const Prisoners = () => {
       const {t} = useTranslation()
       const navLink = useNavigate()

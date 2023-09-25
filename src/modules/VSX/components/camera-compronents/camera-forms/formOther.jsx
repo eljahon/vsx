@@ -90,7 +90,7 @@ function FormOther(props) {
                             value: el.id,
                           }))
                         }
-                        label={t("inquest-out-organition")}
+                        label={t("select-reason")}
                         placeholder={t("select-reason")}
                       />
                     </div>
@@ -99,7 +99,7 @@ function FormOther(props) {
                         name="worker"
                         component={Fields.InputText}
                         hasTimeSelect
-                        label={t("inquest-employees")}
+                        label={t("reason")}
                         placeholder={t("reason")}
                       />
                     </div>

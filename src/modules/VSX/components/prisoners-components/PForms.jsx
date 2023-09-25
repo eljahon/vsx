@@ -5,14 +5,14 @@ import {get} from "lodash";
 
 import {userSelector} from "store/selectors";
 import {useFetchList, useGetLanguage,} from "hooks";
-import {constants, time, utils} from "services";
+import {time} from "services";
 import './styleds/tintuv.scss'
 import {ReactComponent as IconDelete} from "../../../../assets/icons/delete.svg";
 import Containers from "containers";
 import {
     Fields,
     Button,
-    AvatarUpload, Typography, AttachFile,
+    AvatarUpload, AttachFile,
 } from "components";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
@@ -155,13 +155,8 @@ const Info = ({icon, data, label}) => {
         </div>
     )
 }
-
 export const PForms = (props) => {
-    const {
-        values,
-        handleOverlayClose,
-        onAddedNewRecord,
-    } = props;
+    const {values} = props;
     const {getLanguageValue} = useGetLanguage();
     const user = useSelector(userSelector);
     const navLink = useNavigate()
@@ -174,34 +169,10 @@ export const PForms = (props) => {
         }
     }
     const doclist = useFetchList({url: 'prisoner-basis-documents'});
-    const handleAddProduct = (products, setFieldValue) => {
-        const newProduct = {
-            name: "",
-        };
-        setFieldValue("items", [...products, newProduct]);
-    };
-    const handleRemoveProduct = (selectedIndex, values, setFieldValue) => {
-        const newProducts = values.items.filter((item, index) => {
-            // if (index !== selectedIndex) {
-            //   setFieldValue(
-            //       "total_price",
-            //       values.total_price -
-            //       utils.formatters.formatCurrencyApi(item.quantity) *
-            //       utils.formatters.formatCurrencyApi(item.price)
-            //   );
-            // }
-            return index !== selectedIndex;
-        });
-        setFieldValue("items", newProducts);
-    };
-    const handleNewFild =  (forim) => {
-
-    }
     return (
         <>
             <Containers.Form
-                validate={(event) => {
-                    console.log(event)}}
+                validate={(event) => {}}
                 method={get(values, "id") ? "put" : "post"}
                 url={get(values, "id") ? `/prisoner/create-prisoner/${get(values, "id")}` : "/prisoner/create-prisoner"}
                 onSuccess={({data}) => {
@@ -289,10 +260,13 @@ export const PForms = (props) => {
                     {
                         name: "children",
                         validationType: "array",
-                        value: [{name: ''},],
+                        value: [{fullName: '', birthLisenc: "", birthDate: "", birthPlace: ""}],
                         lazy: (validator, yup) => validator.of(
                                 yup.object().shape({
-                                    name: yup.string(),
+                                    fullName: yup.string(),
+                                    birthLisenc: yup.string(),
+                                    birthDate: yup.string(),
+                                    birthPlace: yup.string(),
                                 })
                             ),
                         onSubmitValue: (value) => value.map((item) => (item)),
@@ -307,6 +281,12 @@ export const PForms = (props) => {
                         name: "address",
                         validations: [{type: "required"}],
                         value: get(values, 'address'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "responsibleMedWorkers",
+                        validations: [{type: "required"}],
+                        value: get(values, 'responsibleMedWorkers'),
                         onSubmitValue: (value) => value,
                     },
                     {
@@ -355,13 +335,32 @@ export const PForms = (props) => {
                         onSubmitValue: (value) => value.value,
                     },
                     {
+                        name: "medExamDate",
+                        // validations: [{type: "required"}],
+                        value: get(values, 'medExamDate'),
+                        onSubmitValue: (value) => {
+                            if(value) return value;
+                            return  dayjs().format('YYYY-MM-DD HH:mm')
+                        },
+                    },
+                    {
+                        name: "medExamResponsibleOfficer",
+                        // validations: [{type: "required"}],
+                        value: get(values, 'medExamResponsibleOfficer'),
+                        onSubmitValue: (value) => {
+                            if(value) return value;
+                            return  JSON.parse(localStorage.getItem('userData')).id
+                        },
+                    },
+                    {
                         name: "isConvicted",
                         validations: [{type: "required"}],
                         value: get(values, 'isConvicted') ?? false,
                         onSubmitValue: (value) => {
                             return value
                         },
-                    },{
+                    },
+                    {
                         name: "hasChild",
                         validations: [{type: "required"}],
                         value: get(values, 'hasChild') ?? false,
@@ -477,13 +476,7 @@ export const PForms = (props) => {
                             const _item = value === 'Ha' ? true : false
                             return _item;
                         }
-                    },
-                    // {
-                    //     name: "searchDocument",
-                    //     onSubmitValue: (value) => {
-                    //         return value
-                    //     }
-                    // },
+                    }
 
                 ]}
             >
@@ -864,16 +857,24 @@ export const PForms = (props) => {
                                 <br/>
                                 <div className="row">
 
-                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6"><Info
-                                        className='w_full'
-                                        label={"Tintuv sanasi va Vaqti"}
-                                        icon
-                                        data={dayjs().format('DD.MM.YYYY HH:mm')}/>
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
+                                        <FastField
+                                        name='medExamDate'
+                                        component={Info}
+                                        label={t('search-medical-time')}
+                                        data={dayjs().format('DD.MM.YYYY HH:mm')}
+                                        >
+                                        </FastField>
                                     </div>
                                     {/*<div className="col-2 col-md-4 col-lg-2"><Info label={'Тинтув вақти'} icon data={dayjs().format('HH:mm')}/></div>*/}
-                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6"><Info
-                                        label={'Masul Xodim'}
-                                        data={JSON.parse(localStorage.getItem('userData')).username}/>
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
+                                        <FastField
+                                            name='medExamResponsibleOfficer'
+                                            component={Info}
+                                            label={t('respon-employess')}
+                                            data={JSON.parse(localStorage.getItem('userData')).username}
+                                        >
+                                        </FastField>
                                     </div>
                                     <div className="col-3 col-md-4 col-lg-2 col-xl-2 col-lg-2 col-sm-6">
                                         <h2 className='search_label'>{t('medical-data')}</h2>

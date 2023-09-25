@@ -46,7 +46,6 @@ const Menu = () => {
         refetch={regionList.refetch}
       />
       <div className="row g-4">
-          <span>{t('home')}</span>
         {regionList?.data?.map((item, index) => (
           <div key={index} className="col-3" >
 

@@ -13,7 +13,6 @@ export const queryBuilder = (url, config = {}) => {
 	if (Object.keys(filters).length)
 	{
 		const s = 'filters'+querRecurce(filters);
-		console.log(s)
 		const d = s.split('=');
 		 queryObj.append(`${d[0]}`, d[1])
 	}

@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from "react";
 import get from "lodash";
-import {PageHeading, Table, Pagination, InputSearch, HeaderFilters} from "components";
+import {InputSearch}  from "components";
 import {useTranslation} from "react-i18next";
 import {} from 'react-dom'
-import {useFetchList, useFetchOne, useGetLanguage, useOverlay} from "hooks";
-import { useNavigate } from "react-router-dom";
+import {useFetchOne, useGetLanguage} from "hooks";
 import {PForms} from '../../components/prisoners-components'
 import {useParams} from "react-router-dom";
 import '../../styles/prisoners.scss'
 const PrisonerForms = () => {
     const {t} = useTranslation()
-    const navLink = useNavigate()
     const {id}= useParams();
     const { getLanguageValue } = useGetLanguage();
     const [isUpdate, setUpdate] = useState(false)
@@ -32,12 +30,10 @@ const PrisonerForms = () => {
         <>
 
             <InputSearch isInput   text={t('prisoner-list-add')}/>
-           {/*<div className='forms__wrapper'>*/}
                <PForms
                    isUpdata={isUpdate}
                    values={data ?{id: data.id, ...data.attributes} : null}
                />
-           {/*</div>*/}
         </>
     );
 };

@@ -38,6 +38,7 @@
   "search": "Qidirish",
   "gender": "Jinsi",
   "something": "Chiqan narsalar",
+  "aplication": "Ariza",
   "citizenship": "Fuqaroligi",
   "visitors-add": "Yoqlov qo'shish",
   "cansel": "Bekoq qilish",
@@ -99,15 +100,19 @@
   "added": "Joylashtiril",
   "prisoner-data": "Shaxsning ma’lumotlari",
   "search-medical": "Tintuv va tibbiy ko‘rik",
+  "search-medical-time": "Tanani ko'zdan kechirish vaqti",
   "visitor-history":"  Yo‘qlovlar tarixi   ",
   "documents-type": "Muassasaga joylashtirishga asos bo‘lgan hujjatlar turi",
   "empty": "Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q",
   "personal-data": "Shaxsiy ma’lumotlar",
   "camera-out-time": "Kamerdan olib chiqish vaqti",
+  "respon-employess": "Masul Xodim",
   "camera-get-time": "Kameraga olib kirish vaqti",
   "responsible-person": "Yo'qlovni qabul qiladigan hodim",
   "reason": "Boshqa sababni yozing",
   "select-reason": "Sababni tanlang",
-  "choose": "Tanlang..."
-  
+  "choose": "Tanlang...",
+  "where-is-now": "Xozirgi holati",
+  "prisoner-get-data-add": "VSX ga olib kelingan shaxshni malumotlarini qo'shish tibbiy ko'rik "
+
 }
