@@ -33,7 +33,7 @@ export const DrogDrop = (props) => {
         }
     }
     const handlerItem = (item) => {
-        routerPush(item.id)
+        routerPush(item)
     }
     const boardItemSee = async (boardPrisoner, e) => {
         if(e && e.stopPropagation) e.stopPropagation();

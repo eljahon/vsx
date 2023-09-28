@@ -130,7 +130,7 @@ export const VSXRoutes = [
     roles: new Set(["Superadmin", 'VsxManager'])
   },  {
     id:24,
-    path: "/:region/cameras/:id",
+    path: "/:region/cameras/:id/:name",
     // element: <CashboxOrders />,
     element: <ItemCamera/>,
     roles: new Set(["Superadmin"])

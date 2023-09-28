@@ -34,7 +34,7 @@ const iconRender = (name) => {
 const ItemCamera = () => {
     const {t} = useTranslation()
     const navLink = useNavigate()
-    const {region, id} = useParams()
+    const {region, id,name} = useParams()
     const {getLanguageValue} = useGetLanguage();
     const [isHeaderChecked, setIsHeaderCheaked] = useState(false)
     const [checkedList, setcheckedList] = useState([])
@@ -46,42 +46,30 @@ const ItemCamera = () => {
         region_id: null
     })
     // const removePrisonerModal = useOverlay({ uniqueName: "removePrisoner" });
-    const ItemCamera = useFetchList({
-        url: `/rooms/${id}`,
+    const ItemCameraData = useFetchList({
+        url: `/prisoners`,
         urlSearchParams: {
             sort: {id: 'desc'},
             filters: {
-                prisoners:{
-                    isLeftRoom: {
-                        $eq: false
-                    }
+                room:{id},
+                isLeftRoom: {
+                    $eq: false
                 }
             },
-            populate: "prisoners, prisoners.person"
+            populate: "person, room"
         }
     });
+    console.log(ItemCameraData.data)
     const StatusList = useFetchList({
         url: `/prisoner-room-leave-reasons`,
         urlSearchParams: {
             sort: {id: 'asc'}
         }
     });
-    const tabLabels = [ItemCamera?.data?.data?.name];
-    const prisonerDelete = useDeleteWithConfirm({
-        uniqueName: "removePrisonerModal",
-        url: "/prisoners",
-    });
-    const handlaAction = (items) => {
-        tableCheckItemClick(items)
-
-    }
-    const remove = (id) => {
-        prisonerDelete.setId(id);
-        prisonerDelete.handleOverlayOpen();
-
-    }
+    const tabLabels = [StatusList?.data];
+    console.log(StatusList?.data)
     const handelchecked = (items) => {
-        const {data:{prisoners}} = ItemCamera.data;
+        const {data:{prisoners}} = ItemCameraData?.data;
         if(items.isCheckedAll && items.id === 'all') {
             setIsHeaderCheaked(true)
              setcheckedList(prisoners.map(el=> el.id))
@@ -100,17 +88,6 @@ const ItemCamera = () => {
 
     }
     const handleTab = (items) => {
-    }
-    const tableCheckItemClick = (item) => {
-        const {actionType, itemdata} = item;
-        switch (actionType) {
-            case 'see':
-                return navLink(`/${region}/prisoner/detail/${itemdata.id}`);
-            case 'updata':
-                return navLink(`/${region}/prisoner/${itemdata.id}`)
-            case 'delete':
-                return remove(itemdata.id)
-        }
     }
     const regionList = useFetchList({url: '/regions'});
     const handelStatus = (element) => {
@@ -131,21 +108,12 @@ const ItemCamera = () => {
             />
             <InputSearch
                 setValue={setFilters}
-                text={ItemCamera?.data?.data?.name}
+                text={name}
             />
-
-            <TabBase
-                labels={tabLabels}
-                currentLabel={ItemCamera?.data?.data?.name}
-                className={'prisoner__tab__item'}
-                onPaneChange={(active, envt) => {
-                    handleTab(active)
-                }}
-            /> <br/>
 
             <Table
                 emptyUiText="Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q"
-                isLoading={ItemCamera.isLoading}
+                isLoading={ItemCameraData?.isLoading}
                 isCheckedSee
                 isHeaderChecked={isHeaderChecked}
                 setIsHeaderCheaked={setIsHeaderCheaked}
@@ -171,6 +139,7 @@ const ItemCamera = () => {
                         className: "white-space_no-wrap",
                         dataKey: "attributes.sureName",
                         render: (value, item) => {
+                            // console.log('dalomomoo===>>', item)
                             return Span(item)
                         }
                     },
@@ -185,31 +154,31 @@ const ItemCamera = () => {
                     //     dataKey: "currency",
                     //     render: (value,items) => items.attributes.passport,
                     // },
-                    {
-                        title: t("camera-out-time"),
-                        dataKey: "patient",
-                        className: "white-space_no-wrap",
-                        render: (value) => '--',
-                    },
+                    // {
+                    //     title: t("camera-out-time"),
+                    //     dataKey: "patient",
+                    //     className: "white-space_no-wrap",
+                    //     render: (value) => '--',
+                    // },
                     //
                     // {
                     //   title: "Комментарий",
                     //   dataKey: "comment",
                     //   render: (value) => value,
                     // },
-                    {
-                        title: t('camera-get-time'),
-                        dataKey: "user",
-                        align: 'center',
-                        render: (value, item) => item?.room?.name ?? '--',
-                    },
+                    // {
+                    //     title: t('camera-get-time'),
+                    //     dataKey: "user",
+                    //     align: 'center',
+                    //     render: (value, item) => item?.room?.name ?? '--',
+                    // },
                     {
                         title: t("where-is-now"),
                         dataKey: "camera",
                         render: (value, items) => {
                             // console.log(value,items)
                             // formatters.showDegree(value)
-                            return items?.room?.data?.name
+                            return items?.room?.name
                         },
                     },
                     // {
@@ -219,12 +188,12 @@ const ItemCamera = () => {
                     //     render: (value, items) => <ActionDropDown setMethod={handlaAction}  itemdata={items}/>,
                     // },
                 ]}
-                items={ItemCamera?.data?.data?.prisoners}
+                items={ItemCameraData?.data}
             />
             <Pagination
-                currentPage={ItemCamera?.meta?.pagination?.page}
-                pageCount={ItemCamera?.meta?.pagination?.pageCount}
-                onPageChange={(newPage) => ItemCamera.setPage(newPage + 1)}
+                currentPage={ItemCameraData?.meta?.pagination?.page}
+                pageCount={ItemCameraData?.meta?.pagination?.pageCount}
+                onPageChange={(newPage) => ItemCameraData.setPage(newPage + 1)}
             />
             <div className='statusItem mt_20'>
                 {StatusList?.data?.map((el, index) => (

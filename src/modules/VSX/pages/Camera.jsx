@@ -42,7 +42,7 @@ const Prisoners = () => {
     },
   });
   const handaleRouter = (itemId) => {
-    navLink(`/${region}/cameras/${itemId}`);
+    navLink(`/${region}/cameras/${itemId.id}/${itemId.name}`);
   };
   const removeRoom = (item) => {
     removeRoomModal.setId(item.id);

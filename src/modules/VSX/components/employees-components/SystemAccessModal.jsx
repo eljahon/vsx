@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { FastField } from "formik";
 import { get } from "lodash";
 
@@ -22,7 +22,7 @@ export const SystemAccessModal = ({
                                       setcheckedList
                                }) => {
     const {t} = useTranslation()
-
+    const [filetvsx,setFiletvsx] = useState(null)
     const userData = JSON.parse(localStorage.getItem('userData'))
     const filters={
         id: {
@@ -119,6 +119,7 @@ export const SystemAccessModal = ({
                 ]}
             >
                 {({ isSubmitting,values, ...rest}) =>{
+                    handleFild(values)
                     return   <>
                         <div className="row g-4">
                             {
@@ -146,14 +147,13 @@ export const SystemAccessModal = ({
                                 />
                             </div>}
 
-                            {values?.role?.keys?.includes('vsx')&&<div className="col-12 col-md-12 col-lg-6 col-xl-6 col-sm-12">
+                            {values?.role?.keys?.includes('vsx')&&values.region.value&&<div className="col-12 col-md-12 col-lg-6 col-xl-6 col-sm-12">
                                 <FastField
                                     name="vsx"
                                     component={Fields.AsyncSelect}
                                     loadOptionsUrl={'/vsxes'}
                                     loadOptionsParams={(search) => ({
-                                        filters,
-                                        name: search
+                                   filters: {...filters , region:{id: values.region.value}},
                                     })}
                                     loadOptionsKey={(data) => data?.data?.map((el) => ({label: el.name, value:el.id}))}
                                     label={t('vsx')}
