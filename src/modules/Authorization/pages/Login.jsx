@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FastField } from "formik";
@@ -21,6 +21,9 @@ const Login = () => {
   const dispatch = useDispatch();
   const notifier = useNotification();
   const {t} = useTranslation();
+  useEffect(() => {
+      localStorage.clear()
+  }, [])
   const checkList = (roleName, id) => {
       console.log(roleName, id)
       switch (roleName) {
