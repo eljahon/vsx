@@ -10,20 +10,26 @@ import Containers from "containers";
 import { Fields, Button, AvatarUpload, AttachFile } from "components";
 import { useTranslation } from "react-i18next";
 import {ReactComponent as IconDelete} from "../../../../assets/icons/delete.svg";
+import dayjs from "dayjs";
 const FieldArrays = ({products, t}) => {
-  return <div className='row'>
-    <FieldArray name={'items'}>
+  return<FieldArray name={'items'}>
       {({insert, remove, push}) => (
-          <>
+         <>
             {products.map((product, index, arr) => (
+        <div className='row'>
+                <div className='col-2 col-md-2 col-sm-12 mt_20 d-flex align-items-center ' key={index}>
 
-                <div className='col-3 col-md-4 col-sm-12 mt_20 d-flex align-items-center' key={index}>
+               <div className='d-flex'>
+                 <Field
+                     style={{borderRight: 'none'}}
+                     name={`items.${index}.key`}
+                     component={Fields.InputText}
+                 /><Field
+                   name={`items.${index}.value`}
+                   component={Fields.InputText}
 
-                  <Field
-                      name={`items.${index}.name`}
-                      component={Fields.InputText}
-                      placeholder={t('something')}
-                  />
+               />
+               </div>
                   <ErrorMessage
                       name={`items.${index}.name`}
                       component="span"
@@ -37,6 +43,7 @@ const FieldArrays = ({products, t}) => {
                   )}</div>
                   {/*</div>*/}
                 </div>
+        </div>
             ))}
             <Button
                 className='w_30 mt_20 '
@@ -44,11 +51,11 @@ const FieldArrays = ({products, t}) => {
                 design={"primary"}
                 onClick={() => push({name: ''})}
             >+</Button>
-          </>
+              </>
       )
       }
     </FieldArray>
-  </div>
+
 }
 export const VForms = (props) => {
   const { values, handleOverlayClose, onAddedNewRecord } = props;
@@ -61,7 +68,7 @@ export const VForms = (props) => {
     <>
       <Containers.Form
         method={get(values, "id") ? "put" : "post"}
-        url={get(values, "id") ? `/visitors/${get(values, "id")}` : "/visitors"}
+        url={get(values, "id") ? `/visitor/create-visitor-and-visit${get(values, "id")}` : "/visitor/create-visitor-and-visit"}
         onSuccess={() => {
           navLink(-1);
         }}
@@ -77,7 +84,7 @@ export const VForms = (props) => {
           {
             name: "items",
             validationType: "array",
-            value: [{name: ''},],
+            value: [{key: '', value: ''},],
             lazy: (validator, yup) => validator.of(
                 yup.object().shape({
                   name: yup.string(),
@@ -91,6 +98,13 @@ export const VForms = (props) => {
             value: get(values, "birthDate"),
             onSubmitValue: (value) => {
               return time.timeFormater(value, "YYYY-MM-DD");
+            },
+          },
+          {
+            name: "date",
+            value: get(values, "date"),
+            onSubmitValue: () => {
+              return dayjs()
             },
           },
           {
@@ -119,29 +133,46 @@ export const VForms = (props) => {
           },
           {
             name: "phone",
-            validations: [{ type: "phone" }],
+            validations: [{ type: "required" }],
             value: get(values, "phone"),
             onSubmitValue: (value) => value,
           },
           {
             name: "nationality",
             validations: [{ type: "required" }],
-            value: get(values, "nationality") ?? "",
-            onSubmitValue: (value) => value,
+            validationType: "object",
+            value: get(values, 'id') ?  {label: get(values, 'nationality.name'),value:get(values, 'nationality.id')} : "",
+            onSubmitValue: (value) => value.value,
+          },
+          {
+            name: "responsibleOfficer",
+            validations: [{ type: "required" }],
+            validationType: "object",
+            value: get(values, 'id') ?  {label: get(values, 'responsibleOfficer.username'),value:get(values, 'responsibleOfficer.id')} : "",
+            onSubmitValue: (value) => value.value,
+          },
+          {
+            name: "prisoner",
+            validations: [{ type: "required" }],
+            validationType: "object",
+            value: get(values, 'id') ?  {label: get(values, 'prisoner.name'),value:get(values, 'prisoner.id')} : "",
+            onSubmitValue: (value) => value.value,
+          },
+          {
+            name: "document",
+            // validations: [{type: "required"}],
+            value: get(values, 'searchDocument'),
+            onSubmitValue: (value) => {
+              if(!value) return null;
+              return  value
+            },
           },
           {
             name: "citizenship",
             validations: [{ type: "required" }],
-            value: get(values, "citizenship") ?? "",
-            onSubmitValue: (value) => value,
-          },
-          {
-            name: "isConvicted",
-            validations: [{ type: "required" }],
-            value: get(values, "isConvicted") ?? false,
-            onSubmitValue: (value) => {
-              return value;
-            },
+            validationType: "object",
+            value: get(values, 'id') ?  {label: get(values, 'citizenship.name'),value:get(values, 'citizenship.id')} : "",
+            onSubmitValue: (value) => value.value,
           },
         ]}
       >
@@ -149,10 +180,9 @@ export const VForms = (props) => {
           <>
             <div className="row g-5 mb_25">
               <div className="col-5">
-                <p className="mb_10">{t("responsible-person")}</p>
                 <div className="">
                   <FastField
-                    name="users"
+                    name="responsibleOfficer"
                     component={Fields.AsyncSelect}
                     loadOptionsUrl={"/users"}
                     loadOptionsKey={(data) =>
@@ -161,16 +191,16 @@ export const VForms = (props) => {
                         value: el.id,
                       }))
                     }
-                    label={t("fullname")}
+                    label={t("responsible-person")}
                     // placeholder="Отасининг исми"
                   />
                 </div>
               </div>
               <div className="col-5">
-                <p className="mb_10">{t("responsible-person")}</p>
+                {/*<p className="mb_10">{}</p>*/}
                 <div className="">
                   <FastField
-                    name="prisoners"
+                    name="prisoner"
                     component={Fields.AsyncSelect}
                     loadOptionsUrl={"/prisoners"}
                     loadOptionsParams={(searchText) => ({
@@ -183,7 +213,7 @@ export const VForms = (props) => {
                         value: el.id,
                       }))
                     }
-                    label={t("fullname")}
+                    label={t("responsible-prisoner")}
                     // placeholder="Отасининг исми"
                   />
                 </div>
@@ -192,12 +222,13 @@ export const VForms = (props) => {
             <div className="row g-4">
               <div className="col-10">
                 <div className="row g-4">
+
                   {/*passport*/}
                   <div className="col-4">
                     <FastField
                       name="passport"
                       component={Fields.InputText}
-                      label="Серия ва рақам *"
+                      label={t('passport')}
                       // placeholder="Серия ва рақам *"
                       required
                     />
@@ -207,10 +238,9 @@ export const VForms = (props) => {
                     <FastField
                       name="birthDate"
                       component={Fields.DatePicker}
-                      label="Туғилган санаси *"
+                      label={t('birthdate')}
                       format="YYYY-MM-DD"
                       prepend=""
-                      placeholder="Туғилган санаси *"
                     />
                   </div>
                   <div className="col-4">
@@ -226,7 +256,7 @@ export const VForms = (props) => {
                     <FastField
                       name="firstName"
                       component={Fields.InputText}
-                      label="Исми *"
+                      label={t('first-name')}
                       // placeholder="Исми"
                     />
                   </div>
@@ -235,7 +265,7 @@ export const VForms = (props) => {
                     <FastField
                       name="sureName"
                       component={Fields.InputText}
-                      label="Фамилия *"
+                      label={t('sure-name')}
                       // placeholder="Фамилия"
                     />
                   </div>
@@ -260,7 +290,7 @@ export const VForms = (props) => {
                     <FastField
                       name="birthAddress"
                       component={Fields.InputText}
-                      label="Тугилган жойи"
+                      label={t('birthaddress')}
                       // placeholder="Тугилган жойи"
                     />
                   </div>
@@ -269,7 +299,7 @@ export const VForms = (props) => {
                     <FastField
                       name="middleName"
                       component={Fields.InputText}
-                      label="Отасининг исми *"
+                      label={t('middle-name')}
                       // placeholder="Отасининг исми"
                     />
                   </div>
@@ -278,7 +308,7 @@ export const VForms = (props) => {
                     <FastField
                       name="phone"
                       component={Fields.InputMask}
-                      label="Phone"
+                      label={t('phone')}
                       // placeholder="Доимий рўйхатга олинган манзил"
                     />
                   </div>
@@ -294,7 +324,7 @@ export const VForms = (props) => {
                           value: el.id,
                         }))
                       }
-                      label="Millati"
+                      label={t('nationality')}
                       // placeholder="Миллати"
                     />
                   </div>
@@ -325,16 +355,9 @@ export const VForms = (props) => {
                       />
                     </div>
                   </div>
-                  <div className="col-3">
-                    <p className="mb_20">Холати</p>
-                    <FastField
-                      name="isConvicted"
-                      component={Fields.CheckBox}
-                      label="Ногирон"
-                    />
-                  </div>
                   <div>
-                    <FieldArrays t={t} products={values?.items?.length ? values.items : [{key: "", value}] }/>
+                    <h3>{t('get-out-thing')}</h3>
+                    <FieldArrays t={t} products={values?.items?.length ? values.items : [{key: "", value: ''}] }/>
                   </div>
                 </div>
               </div>

@@ -5,7 +5,7 @@ import { isFunction } from "lodash";
 import { overlay } from "store/actions";
 import { constants, utils } from "services";
 
-export const useOverlay = ({ uniqueName, onOpen, onClose } = {}) => {
+export const 	useOverlay = ({ uniqueName, onOpen, onClose } = {}) => {
 	const dispatch = useDispatch();
 	const isOverlayOpen = useSelector((state) => state.overlay[uniqueName]);
 
@@ -34,6 +34,7 @@ export const useOverlay = ({ uniqueName, onOpen, onClose } = {}) => {
 	};
 
 	const handlePressEsc = (event) => {
+		// console.log('salom', event.keyCode)
 		if (event.keyCode === constants.KEYCODE_ESC) handleOverlayClose();
 	};
 

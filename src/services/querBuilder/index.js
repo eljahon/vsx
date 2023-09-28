@@ -1,32 +1,11 @@
 import { isArray } from "lodash";
-const querRecurce = (filters) => {
-	for(let key in filters) {
-		if(typeof  filters[key] === 'string'||typeof  filters[key] === 'number'|| typeof filters[key] === 'boolean') return `[${key}]=`+`${filters[key]}`
-		return `[${key}]`+querRecurce(filters[key])
-	}
-}
+import qs from 'qs'
+
 export const queryBuilder = (url, config = {}) => {
+	console.log(config, '====>>>')
 	if (Object.keys(config).length <= 0) return url;
-
-	const { sort = "", pageSize, page = 1, extra = {}, filters = {}, populate="*" } = config;
-	const queryObj = new URLSearchParams();
-	if (Object.keys(filters).length)
-	{
-		const s = 'filters'+querRecurce(filters);
-		const d = s.split('=');
-		 queryObj.append(`${d[0]}`, d[1])
-	}
-
-	if (Object.keys(extra).length)
-		Object.entries(extra).forEach((item) => {
-			if (item[0] && item[1]) queryObj.append(item[0], item[1]);
-		});
-
-	 // if (include.length) queryObj.set("include", include.toString());
-     if(populate) queryObj.set('populate',populate)
-	if (sort) queryObj.set(`sort[id]`, sort.id);
-	if (pageSize) queryObj.set("pagination[pageSize]", pageSize);
-	queryObj.set("pagination[page]", page);
-
+	const s = qs.stringify(config, {encodeValuesOnly: true})
+	console.log(s)
+	const queryObj = new URLSearchParams(s);
 	return `${url}?${decodeURIComponent(queryObj.toString())}`;
 };

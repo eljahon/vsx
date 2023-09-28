@@ -14,6 +14,7 @@ const Vsitors = () => {
     const navLink = useNavigate()
     const { getLanguageValue } = useGetLanguage();
     const {region} = useParams()
+    const userData = JSON.parse(localStorage.getItem('userData'))
     const [isUpdate, setUpdate] = useState(false)
     const [values, setValues] = useState({})
     const [filters, setFilters] = useState({
@@ -23,23 +24,41 @@ const Vsitors = () => {
         region_id: null
     })
     let count =0;
+    let filter = {};
+    if(userData.vsx){
+        filter = {
+            vsx: {
+                id: userData?.vsx?.id
+            }
+        }
+    }
+    if (userData.region) {
+        filter = {
+            ...filter,
+            vsx: {
+                region: {
+                    id: userData?.region?.id
+                }
+            }
+        }
+    }
     const visitorsList = useFetchList({
-        url: "/visitors",
+        url: "/visits",
         urlSearchParams:{
-            pageSize: 10,
+            filters:filter
+
         }
     });
     const visitorsDelete = useDeleteWithConfirm({
         uniqueName: "removeVisitorsModal",
-        url: "/visitors",
+        url: "/visits",
     });
     const handlaAction=  (items) => {
         tableCheckItemClick(items)
 
     }
-    const remove = (id) => {
-        console.log(id)
-        visitorsDelete.setId(id);
+    const remove = (item) => {
+        visitorsDelete.setId(item.id);
         visitorsDelete.handleOverlayOpen();
 
     }
@@ -66,6 +85,9 @@ const Vsitors = () => {
             {/*  }}*/}
             {/*/>*/}
             <ConfirmModal
+                cancelText={t('cancel-text')}
+                successText={t('remove')}
+                title={t('citizen-info')}
                 isOpen={visitorsDelete.isOverlayOpen}
                 cancelAction={visitorsDelete.handleOverlayClose}
                 successAction={() => {
@@ -94,6 +116,9 @@ const Vsitors = () => {
             />
 
             <Table
+                editAction={(row) => {navLink(`/${region}/visitors/form/${row.id}`)}}
+                deleteAction={remove}
+                // seeAction={(row) => { navLink(`/${region}/prisoner/detail/${row.id}`)}}
                 emptyUiText="Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q"
                 isLoading={visitorsList.isLoading}
                 columns={[
@@ -153,17 +178,10 @@ const Vsitors = () => {
                         title: t("camera"),
                         dataKey: "camera",
                         render: (value) => formatters.showDegree(value),
-                    },
-                    {
-                        title: t('action'),
-                        dataKey: "expired_at",
-                        className: "white-space_no-wrap",
-                        render: (value, items) => <ActionDropDown setMethod={handlaAction}  itemdata={items}/>,
-                    },
+                    }
                 ]}
                 items={visitorsList.data}
             />
-            {/*<span>salom</span>*/}
             <span>{get(visitorsList, "meta.pagination.pageCount")}</span>
             <Pagination
                 currentPage={visitorsList?.meta?.pagination?.page}

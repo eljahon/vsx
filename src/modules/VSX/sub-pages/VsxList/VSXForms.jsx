@@ -1,22 +1,20 @@
 import React, {useEffect, useState} from "react";
 import get from "lodash";
-import {InputSearch} from "components";
+import {PageHeading, Table, Pagination, InputSearch, HeaderFilters, DropDown} from "components";
 import {useTranslation} from "react-i18next";
 import {} from 'react-dom'
-import {useFetchOne, useGetLanguage} from "hooks";
+import {useFetchList, useFetchOne, useGetLanguage, useOverlay} from "hooks";
 import { useNavigate } from "react-router-dom";
+import {VsxForms} from './VsxForm'
 import {useParams} from "react-router-dom";
 import '../../styles/prisoners.scss'
-import {EForms} from "../../components/employees-components";
-const EmployessForms = () => {
+const VSXForms = () => {
     const {t} = useTranslation()
     const navLink = useNavigate()
     const {id}= useParams();
     const { getLanguageValue } = useGetLanguage();
-    const [isUpdate, setUpdate] = useState(false)
-    const [values, setValues] = useState({})
     const {setId,data} = useFetchOne({
-        url:`prisoners`,
+        url:`/vsxes`,
         urlSearchParams: {
             populate: '*'
         }
@@ -24,19 +22,17 @@ const EmployessForms = () => {
     })
     useEffect(()=> {
         if(id !== 'create') {
-            setUpdate(true)
             setId(id)
         }
     }, [id])
     return (
         <>
-
-            <InputSearch isInput   text={ id !== 'create' ? t('employees-updata'): t('employees-add')}/>
+            <InputSearch isInput   text={t('VSX-add')}/>
             <div className='forms__wrapper'>
-                <EForms/>
+                <VsxForms values={data ?{id: data.id, ...data} : null}/>
             </div>
         </>
     );
 };
 
-export default EmployessForms;
+export default VSXForms;

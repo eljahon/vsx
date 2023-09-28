@@ -12,7 +12,7 @@ export const useFetchList = ({
 	urlSearchParams = {},
 }) => {
 	const [page, setPage] = useState(1);
-	const params = { page, ...urlSearchParams };
+	const params = {...urlSearchParams };
 
 	let meta;
 	const query = useQuery(

@@ -18,23 +18,27 @@ const Prisoners = () => {
   const { getLanguageValue } = useGetLanguage();
   const navLink = useNavigate();
   const { region } = useParams();
+  const userData = JSON.parse(localStorage.getItem('userData'))
   const addRooms = useOverlay({ uniqueName: "addRooms" });
   const { t } = useTranslation();
   const removeRoomModal = useDeleteWithConfirm({
     uniqueName: "removeRoomModal",
     url: "/rooms",
   });
+    const filter={}
+    // if(userData.region) {
+    //     filter['region'] =userData.region.id
+    // }
+    if(userData.vsx) {
+        filter['vsx'] =userData.vsx.id
+    }
   // console.log(cameraList)
   const cameraList = useFetchList({
     url: "/rooms",
     urlSearchParams: {
       sort: { id: "desc" },
-        // filters: {
-        //     prisoners: {
-        //         isLeftRoom: false
-        //     }
-        // },
-        populate: "prisoners, prisoners.person"
+        populate: "prisoners, prisoners.person",
+        filters:filter
     },
   });
   const handaleRouter = (itemId) => {

@@ -50,6 +50,13 @@ const ItemCamera = () => {
         url: `/rooms/${id}`,
         urlSearchParams: {
             sort: {id: 'desc'},
+            filters: {
+                prisoners:{
+                    isLeftRoom: {
+                        $eq: false
+                    }
+                }
+            },
             populate: "prisoners, prisoners.person"
         }
     });
@@ -156,7 +163,7 @@ const ItemCamera = () => {
                         title: t('photo'),
                         dataKey: "attributes",
                         className: "white-space_no-wrap",
-                        render: (value, item) => Avatar(item.image)
+                        render: (value, item) => Avatar(item.person.image)
                         // time?.timeFormater(item?.attributes?.createdAt, "DD.MM.YYYY"),
                     },
                     {

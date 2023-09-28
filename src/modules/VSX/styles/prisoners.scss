@@ -55,6 +55,7 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    margin-top: 10px;
     @media (max-width: 1300px) {
       padding: 9px 11px;
       margin-left: 15px;
@@ -122,4 +123,8 @@
   &_bg-add {
     background-color: #C4CDF4;
   }
+}
+.bg-red {
+  background-color: red;
+  color: #fff
 }

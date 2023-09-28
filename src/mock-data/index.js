@@ -332,4 +332,15 @@ return chartdata;
         {id: 7, title: 'Kamera', items: [{id:Math.round(Math.random()*1000), title: 'Убадуллаев Хожи '+Math.round(Math.random()*1000)},{id: Math.round(Math.random()*1000), title: 'Убадуллаев Хожи '+Math.round(Math.random()*1000)},{id: Math.round(Math.random()*1000), title: 'Убадуллаев Хожи'+Math.round(Math.random()*1000)},{id: Math.round(Math.random()*1000), title: 'Убадуллаев Хожи'+Math.round(Math.random()*1000)},{id:  Math.round(Math.random()*1000), title: 'Убадуллаев Хожи'+Math.round(Math.random()*1000)},{id: Math.round(Math.random()*1000), title: 'Убадуллаев Хожи '+Math.round(Math.random()*1000)},{id:Math.round(Math.random()*1000), title: 'Убадуллаев Хожи '+Math.round(Math.random()*1000)},]},
         {id: 8, title: 'Kamera', items: [{id:Math.round(Math.random()*1000), title: 'Убадуллаев Хожи '+Math.round(Math.random()*1000)},{id: Math.round(Math.random()*1000), title: 'Убадуллаев Хожи '+Math.round(Math.random()*1000)},{id: Math.round(Math.random()*1000), title: 'Убадуллаев Хожи'+Math.round(Math.random()*1000)},{id: Math.round(Math.random()*1000), title: 'Убадуллаев Хожи'+Math.round(Math.random()*1000)},{id:  Math.round(Math.random()*1000), title: 'Убадуллаев Хожи'+Math.round(Math.random()*1000)},{id: Math.round(Math.random()*1000), title: 'Убадуллаев Хожи '+Math.round(Math.random()*1000)},{id:Math.round(Math.random()*1000), title: 'Убадуллаев Хожи '+Math.round(Math.random()*1000)},]},
     ]
+    export const filterToRole = (name) => {
+        let roleFilter = {
+            '':{
+
+            }
+        }
+    }
+    export const   AccessButtonAdd = ['']
+    export const   AccessButtonDeletet = []
+    export const   AccessButtonSee = []
+    export const   AccessButtonSearch = []
 

@@ -14,18 +14,21 @@ import { Button, Avatar, Typography, DropDown } from "components";
 import { ReactComponent as ArrowIcon } from "assets/icons/drop-down-arrow-small.svg";
 import { ReactComponent as EditIcon } from "assets/icons/edit.svg";
 import { ReactComponent as LogoutIcon } from "assets/icons/logout.svg";
+import {useTranslation} from "react-i18next";
 
 export const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector(userSelector);
+  const user = JSON.parse(localStorage.getItem('userData'))
   const { getLanguageValue } = useGetLanguage();
+  const {t} = useTranslation()
   console.log(user)
   const handleLogout = (event) => {
     storage.remove("token");
     dispatch(auth.failure());
     navigate("/login");
   };
+  const filerUrl = process.env.REACT_APP_IMAGE_BASE_URL
 
   const redirectEditPage = (event) => {
     navigate("/profile");
@@ -54,15 +57,15 @@ export const Profile = () => {
                 Type="p"
                 className="profile__position"
                 text={
-                  getLanguageValue(get(user, "position.title")) || "John Doe"
+                  get(user, 'sureName') ? user.firstName+ " " +user.sureName      : t('user-not')
                 }
               />
             </div>
 
             <Avatar
               src={
-                get(user, "userDetail.avatar.thumbnails.medium") ||
-                require("assets/images/user.png")
+                get(user, "image")  ? filerUrl +get(user, 'image') :
+                require("assets/images/user-default.png")
               }
               className="mr_10"
             />

@@ -48,6 +48,7 @@ export const AsyncSelect = ({
 		form.setFieldTouched(field.name, true);
 	};
 	const loadOptions = async (search, prevOptions, params) => {
+		console.log(loadOptionsParams,params)
 		const { data } = await httpClient.get(
 			queryBuilder(loadOptionsUrl, {
 				// page: get(params, "page", 1),

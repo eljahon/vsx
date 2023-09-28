@@ -9,15 +9,7 @@ import '../styles/prisoners.scss'
 const Prisoners = () => {
       const {t} = useTranslation()
       const navLink = useNavigate()
-    const userData = JSON.parse(localStorage.getItem('userData'))
       const {region} = useParams()
-    const filter = {
-          room: {
-              vsx: {
-                  id:userData?.vsx?.id
-              }
-          }
-    }
       const { getLanguageValue } = useGetLanguage();
       const [checkedList , setcheckedList] = useState([])
       const [filters, setFilters] = useState({
@@ -30,8 +22,7 @@ const Prisoners = () => {
   const prisonerList = useFetchList({
     url: "/prisoners",
       urlSearchParams:{
-        populate: "*",
-          filters: filter
+        pageSize: 10,
       }
   });
     const prisonerDelete = useDeleteWithConfirm({
@@ -82,16 +73,16 @@ let count=0;
             placeholder={t('search')}
             text={t('prisoners-list-get')}
         />
-      {/*<PageHeading*/}
-      {/*  links={[*/}
-      {/*    { link: "/", label: "Bosh sahifa" },*/}
-      {/*    { link: "/", label: "Toshkent" },*/}
-      {/*    { label: "Shaxslarni ro'yxatga olish" },*/}
-      {/*  ]}*/}
-      {/*  title={t("prisoner-list-add")}*/}
-      {/*  mainAction={() => navLink(`/${region}/prisoner/create`)}*/}
-      {/*  btnText={t("prisoner-list-add")}*/}
-      {/*/>*/}
+      <PageHeading
+        links={[
+          { link: "/", label: "Bosh sahifa" },
+          { link: "/", label: "Toshkent" },
+          { label: "Shaxslarni ro'yxatga olish" },
+        ]}
+        title={t("prisoner-list-add")}
+        mainAction={() => navLink(`/${region}/prisoner/create`)}
+        btnText={t("prisoner-list-add")}
+      />
 
       <Table
           emptyUiText={t('prisoner-list-emptey')}
@@ -113,7 +104,7 @@ let count=0;
             dataKey: "attributes",
             className: "white-space_no-wrap",
             render: (value, item) => {
-               return Avatar(item?.person?.image)
+               return Avatar(item.person.image)
             }
                 // time?.timeFormater(item?.attributes?.createdAt, "DD.MM.YYYY"),
           },

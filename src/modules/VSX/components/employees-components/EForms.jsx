@@ -1,444 +1,547 @@
 import React, {useState} from "react";
-import { FastField } from "formik";
-import { useSelector } from "react-redux";
-import { get } from "lodash";
+import {ErrorMessage, FastField, Field, FieldArray} from "formik";
+import {useSelector} from "react-redux";
+import {get} from "lodash";
 
-import { userSelector } from "store/selectors";
-import {useGetLanguage,} from "hooks";
-import { constants, time, utils } from "services";
-
-
+import {userSelector} from "store/selectors";
+import {useFetchList, useGetLanguage,} from "hooks";
+import {time} from "services";
+// import './styleds/tintuv.scss'
+import {ReactComponent as IconDelete} from "../../../../assets/icons/delete.svg";
 import Containers from "containers";
 import {
     Fields,
     Button,
-    AvatarUpload,
+    AvatarUpload, AttachFile,
 } from "components";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-
+import dayjs from "dayjs";
+import {ControlLabel} from "../../../../components/Common";
 export const EForms = (props) => {
-    const {
-        valuesList,
-        handleOverlayClose,
-        onAddedNewRecord,
-    } = props;
-    const { getLanguageValue } = useGetLanguage();
-    const [fields, setFields] = useState(
-        [
-            {
-                name: "passport",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'passport'),
-                onSubmitValue: (value) => {
-                    return value
-                },
-            },
-            {
-                name: "image",
-                value: get(valuesList, 'image'),
-                onSubmitValue: (value) => {
-                    return value
-                },
-            },
-            {
-                name: "birthdate",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'birthdate'),
-                onSubmitValue: (value) => time.timeFormater(value, 'YYYY-MM-DD'),
-            },
-            {
-                name: "fullName",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'fullName'),
-                onSubmitValue: (value) => value,
-            },
-            {
-                name: "password",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'password'),
-                onSubmitValue: (value) => value,
-            },{
-                name: "confirmPassword",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'confirmPassword'),
-                onSubmitValue: (value) => value,
-            },
-            {
-                name: "phone",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'phone'),
-                onSubmitValue: (value) => value,
-            },
-            {
-                name: "login",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'login'),
-                onSubmitValue: (value) => value
-            },
-            {
-                name: "homePhone",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'login'),
-                onSubmitValue: (value) => value
-            }, {
-                name: "fromServiceCame",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'login'),
-                onSubmitValue: (value) => value
-            },
-            {
-                name: "birthAddress",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'birthAddress'),
-                onSubmitValue: (value) => value,
-            },
-            {
-                name: "livingAddress",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'livingAddress'),
-                onSubmitValue: (value) => value,
-            },
-            {
-                name: "address",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'address'),
-                onSubmitValue: (value) =>value,
-            },
-            {
-                name: "nationality",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'nationality') ?? '',
-                onSubmitValue: (value) => value,
-            },
-            {
-                name: "citizenship",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'citizenship') ?? '',
-                onSubmitValue: (value) => value,
-            },
-            {
-                name: "isInvalid",
-                validations: [{ type: "required" }],
-                value: get(valuesList, 'isInvalid')?? false,
-                onSubmitValue: (value) => {
-                    return value
-                },
-            },{
-            name: "familyStatus",
-            validations: [{ type: "required" }],
-            validationType: "object",
-            value: get(valuesList, 'familyStatus')?? false,
-            onSubmitValue: (value) => {
-                return value
-            },
-        },
-            {
-                name: "personalCar",
-                validations: [{ type: "required" }],
-                value: `${get(valuesList, 'personalCar')}` ?? false,
-                onSubmitValue: (value) => {
-                    // console.log(value)
-                    const _item = value === 'yes' ? true :  false
-                    return _item;
-                }
-            },
-            {
-                name: "gender",
-                validations: [{ type: "required" }],
-                validationType: "object",
-                value:get(valuesList, 'gender.data.id') ?  {label: get(valuesList, 'gender.data.attributes.name'),value:get(valuesList, 'gender.data.id')} : '',
-                onSubmitValue: (value) => {
-                    return value.value
-                }
-            },
-
-            {
-                name: "responsibleUser",
-                validations: [{ type: "required" }],
-                validationType: "object",
-                value:get(valuesList, 'responsibleUser.data.id') ?  {label: get(valuesList, 'responsibleUser.data.attributes.username'),value:get(valuesList, 'responsibleUser.data.id')} : '',
-                onSubmitValue: (value) => {
-                    return  value.value
-                }
-            },
-        ]
-    )
+    const {values} = props;
+    const {getLanguageValue} = useGetLanguage();
     const user = useSelector(userSelector);
     const navLink = useNavigate()
-    const {region}= useParams();
+    const {region} = useParams();
     const {t} = useTranslation()
+    const [childpartId, setPartId] = useState(null)
+    const handleFormOptions = (values, setFields) => {
+        if (values.basisDocument?.value) {
+            setPartId(values.basisDocument.value)
+        }
+    }
+    const doclist = useFetchList({url: 'prisoner-basis-documents'});
     return (
         <>
             <Containers.Form
-                method={get(valuesList, "id") ? "put" : "post"}
-                url={get(valuesList, "id") ? `/users/${get(valuesList, "id")}` : "/users"}
-                onSuccess={({data}) =>{
-                     navLink(-1)
-                } }
-                fields={fields}
+                validate={(event) => {}}
+                method={get(values, "id") ? "put" : "post"}
+                url={get(values, "id") ? `/users-permissions/create-user/${get(values, "id")}` : "/users-permissions/create-user"}
+                onSuccess={({data}) => {
+                    navLink(-1)
+                }}
+                fields={[
+                    {
+                        name: "image",
+                        value: get(values, 'image'),
+                        onSubmitValue: (value) => {
+                            if(!value) return  null;
+                            return value
+                        },
+                    },
+                    {
+                        name: "passport",
+                        validations: [{type: "required"}],
+                        value: get(values, 'passport'),
+                        onSubmitValue: (value) => {
+                            return value
+                        },
+                    },
+                    {
+                        name: "birthDate",
+                        validations: [{type: "required"}],
+                        value: get(values, 'birthDate'),
+                        onSubmitValue: (value) => time.timeFormater(value, 'YYYY-MM-DD'),
+                    },
+                    {
+                        name: "jobStartDate",
+                        validations: [{type: "required"}],
+                        value: get(values, 'jobStartDate'),
+                        onSubmitValue: (value) => time.timeFormater(value, 'YYYY-MM-DD'),
+                    },
+                    {
+                        name: "comeFrom",
+                        validations: [{type: "required"}],
+                        value: get(values, 'comeFrom'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "firstName",
+                        validations: [{type: "required"}],
+                        value: get(values, 'firstName'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "sureName",
+                        validations: [{type: "required"}],
+                        value: get(values, 'sureName'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "positionAssign",
+                        validations: [{type: "required"}],
+                        value: get(values, 'positionAssign'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "middleName",
+                        validations: [{type: "required"}],
+                        value: get(values, 'middleName'),
+                        onSubmitValue: (value) => value
+                    },
+                    {
+                        name: "birthAddress",
+                        validations: [{type: "required"}],
+                        value: get(values, 'birthAddress'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "address",
+                        validations: [{type: "required"}],
+                        value: get(values, 'address'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "livingAddress",
+                        validations: [{type: "required"}],
+                        value: get(values, 'livingAddress'),
+                        onSubmitValue: (value) => value,
+                    },
+                    {
+                        name: "carInfo",
+                        // validations: [{type: "required"}],
+                        value: get(values, 'livingAddress'),
+                        onSubmitValue: (value) => {
+                            if(!value) return null;
+                            return  value
+                        },
+                    },
+                    {
+                        name: "childrenCount",
+                        // validations: [{type: "required"}],
+                        value: get(values, 'childrenCount'),
+                        onSubmitValue: (value) => {
+                            if(!value) return 0;
+                            return  Number(value)
+                        },
+                    },
+                    {
+                        name: "anotherReasonText",
+                        // validations: [{type: "required"}],
+                        value: get(values, 'anotherReasonText'),
+                        onSubmitValue: (value) => {
+                            if(!value)  return null;
+                            return  value
+                        },
+                    },
+                    {
+                        name: "hasChild",
+                        validations: [{type: "required"}],
+                        value: get(values, 'hasChild') ?? false,
+                        onSubmitValue: (value) => {
+                            return value
+                        },
+                    },
+                    {
+                        name: "nationality",
+                        validations: [{type: "required"}],
+                        validationType: "object",
+                        value: get(values, 'nationality') ?? '',
+                        onSubmitValue: (value) => value.value,
+                    },
+                    {
+                        name: "gender",
+                        validations: [{type: "required"}],
+                        validationType: "object",
+                        value: get(values, 'gender.data.id') ? {
+                            label: get(values, 'gender.data.name'),
+                            value: get(values, 'gender.data.id')
+                        } : '',
+                        onSubmitValue: (value) => {
+                            return value.value
+                        }
+                    },
+                    {
+                        name: "reason",
+                        validations: [{type: "required"}],
+                        validationType: "object",
+                        value: get(values, 'reason.data.id') ? {
+                            label: get(values, 'reason.data.name'),
+                            value: get(values, 'reason.data.id')
+                        } : '',
+                        onSubmitValue: (value) => {
+                            return value.value
+                        }
+                    },
+                    {
+                        name: "rank",
+                        validations: [{type: "required"}],
+                        validationType: "object",
+                        value: get(values, 'rank.data.id') ? {
+                            label: get(values, 'rank.data.name'),
+                            value: get(values, 'rank.data.id')
+                        } : '',
+                        onSubmitValue: (value) => {
+                            return value.value
+                        }
+                    },
+                    {
+                        name: "position",
+                        validations: [{type: "required"}],
+                        validationType: "object",
+                        value: get(values, 'position.data.id') ? {
+                            label: get(values, 'position.data.name'),
+                            value: get(values, 'position.data.id')
+                        } : '',
+                        onSubmitValue: (value) => {
+                            return value.value
+                        }
+                    },
+                    {
+                        name: "graduation",
+                        validations: [{type: "required"}],
+                        validationType: "object",
+                        value: get(values, 'graduation.data.id') ? {
+                            label: get(values, 'graduation.data.name'),
+                            value: get(values, 'graduation.data.id')
+                        } : '',
+                        onSubmitValue: (value) => {
+                            return value.value
+                        }
+                    },
+                    {
+                        name: "familyStatus",
+                        validations: [{type: "required"}],
+                        validationType: "object",
+                        value: get(values, 'familyStatus.data.id') ? {
+                            label: get(values, 'familyStatus.data.name'),
+                            value: get(values, 'familyStatus.data.id')
+                        } : '',
+                        onSubmitValue: (value) => {
+                            delete value.label;
+                            return { id: value.value, hasChild: value.hasChild }
+                        }
+                    },
+                    {
+                        name: "hasCar",
+                        value: `${get(values, 'hasCar')}` ?? false,
+                        onSubmitValue: (value) => {
+                            const _item = value === 'Ha' ? true : false
+                            return _item;
+                        }
+                    }
+
+                ]}
             >
-                {({ isSubmitting,values }) => {
+                {({isSubmitting, values, setFieldValue, ...rest}) => {
+                    handleFormOptions(values, setFieldValue)
+                    console.log(values, rest)
                     return <>
                         <div className="row g-4">
-                            <div className="col-2">
+                            <div className="col-xl-2 col-lg-2 col-md-2 col-sm-2">
                                 <FastField
                                     name="image"
                                     component={AvatarUpload}
                                     className="avatar-upload"
                                 />
                             </div>
-                            <div className="col-10">
+                            <div className="col-xl-10 col-lg-10 col-md-12 col-sm-12">
                                 <div className="row g-4">
-                                    {/*passport*/}
-                                    <div className="col-4">
+                                    {/*sureName*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
                                         <FastField
-                                            name="passport"
+                                            name="sureName"
                                             component={Fields.InputText}
-                                            label={t('series-number-passport')}
-                                            placeholder={t('series-number-passport')}
-                                            required
-                                        />
-                                    </div>
-                                    {/*birthdate*/}
-                                    <div className="col-4">
-                                        <FastField
-                                            name="birthdate"
-                                            component={Fields.DatePicker}
-                                            label={t('birthdate')+"*"}
-                                            prepend=""
-                                            placeholder={t('birthdate')+"*"}
-                                        />
-                                    </div>
-                                    <div className="col-4">
-                                        <Button
-                                            className="btn btn-primary mt_20"
-                                            design="primary"
-                                            style={{ width: "100%" }}
-                                            text={t('search')}
+                                            label={t('sure-name')}
+                                            // placeholder="Фамилия"
                                         />
                                     </div>
                                     {/*firstname*/}
-                                    <div className="col-4">
+                                    <div className="col-4 col-sm-6 col-md-4">
                                         <FastField
-                                            name="fullName"
+                                            name="firstName"
                                             component={Fields.InputText}
-                                            label={t('fullName')}
-                                            placeholder={t('fullName')}
+                                            label={t('first-name')}
+                                            // placeholder="Исми"
                                         />
                                     </div>
-                                    <div className="col-4">
+                                    {/*birthDate*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
+                                        <FastField
+                                            name="birthDate"
+                                            component={Fields.DatePicker}
+                                            hasTimeSelect
+                                            label={t('birthdate')+"*"}
+                                            placeholder={t('birthdate')+"*"}
+                                        />
+                                    </div>
+                                    {/*passport*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
+                                        <FastField
+                                            name="passport"
+                                            component={Fields.InputText}
+                                            label={t('passport')}
+                                            // placeholder="Серия ва рақам *"
+                                            required
+                                        />
+                                    </div>
+                                    {/*middlename*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
+                                        <FastField
+                                            name="middleName"
+                                            component={Fields.InputText}
+                                            label={t('middle-name')}
+                                            // placeholder="Отасининг исми"
+                                        />
+                                    </div>
+                                    <div className="col-4 col-sm-6 col-md-4">
+                                        <Button
+                                            className="btn btn-primary mt_20"
+                                            design="primary"
+                                            style={{width: "100%"}}
+                                            text={t('search')}
+                                        />
+                                    </div>
+                                    {/*birthAddress*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
                                         <FastField
                                             name="birthAddress"
                                             component={Fields.InputText}
-                                            label={t('birthAddress')}
-                                            placeholder={t('birthAddress')}
+                                            label={t('birthaddress')}
+                                            // placeholder="Тугилган жойи"
                                         />
                                     </div>
                                     {/*address*/}
-                                    <div className="col-4">
+                                    <div className="col-4 col-sm-6 col-md-4">
                                         <FastField
                                             name="address"
                                             component={Fields.InputText}
                                             label={t('address')}
-                                            placeholder={t('address')}
+                                            // placeholder="Доимий рўйхатга олинган манзил"
                                         />
                                     </div>
                                     {/*livingAddress*/}
-                                    <div className="col-4">
+                                    <div className="col-4 col-sm-6 col-md-4">
                                         <FastField
                                             name="livingAddress"
                                             component={Fields.InputText}
                                             label={t('livingAddress')}
-                                            placeholder={t('livingAddress')}
+                                            // placeholder="Яшаш жойи"
                                         />
                                     </div>
-                                    <div className="col-4">
+                                    {/*nationality*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
                                         <FastField
                                             name="nationality"
-                                            component={Fields.InputText}
+                                            component={Fields.AsyncSelect}
+                                            loadOptionsUrl={'/nationalities'}
+                                            loadOptionsKey={(data) => data?.data?.map((el) => ({
+                                                label: el.name,
+                                                value: el.id
+                                            }))}
                                             label={t('nationality')}
-                                            placeholder={t('nationality')}
+                                            // placeholder="Миллати"
                                         />
                                     </div>
-                                    {/*citizenship*/}
-                                    <div className="col-4">
-                                        <FastField
-                                            name="citizenship"
-                                            component={Fields.InputText}
-                                            label={t('citizenship')}
-                                            placeholder={t('citizenship')}
-                                        />
-                                    </div>
-                                    <div className="col-4">
+                                    {/*gender*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
                                         <FastField
                                             name="gender"
                                             component={Fields.AsyncSelect}
                                             loadOptionsUrl={'/genders'}
-                                            loadOptionsKey={(data) => data?.data?.map((el) => ({label: el.attributes.name, value:el.id}))}
+                                            loadOptionsKey={(data) => data?.data?.map((el) => ({
+                                                label: el.name,
+                                                value: el.id
+                                            }))}
                                             label={t('gender')}
-                                            placeholder={t('gender')}
+                                            // placeholder="Отасининг исми"
                                         />
                                     </div>
-
-                                    <div className="col-4">
-                                        {values.personalCar === 'yes'&&<FastField
-                                            name="citizenship"
-                                            component={Fields.InputText}
-                                            label={t("Vehicle-category-car-number-model")}
-                                            // placeholder="Отасининг исми"
-                                        />}
-                                    </div>
-                                    <div className="col-2  offset-1">
-                                        <p className="mb_20">{t('is-personal-car')}</p>
-                                        <div className="d-flex justify-content-between">
-                                            <FastField
-                                                name="personalCar"
-                                                component={Fields.RadioButton}
-                                                label={t('yes')}
-                                                value={'yes'}
-                                            />
-                                            <FastField
-                                                name="personalCar"
-                                                component={Fields.RadioButton}
-                                                label={t('no')}
-                                                value={'no'}
-                                            />
+                                    <div className='col-4 col-md-6 col-xl-4 col-lg-4'>
+                                        <ControlLabel label={t('personal-car')}/> <br/>
+                                        <div className="d-flex">
+                          <span>
+                            <FastField
+                                name="hasCar"
+                                component={Fields.RadioButton}
+                                label={t('yes')}
+                                value={t('yes')}
+                            />
+                          </span>
+                                            <span className='ml_10'>
+                            <FastField
+                                name="hasCar"
+                                component={Fields.RadioButton}
+                                label={t("no")}
+                                value={t("no")}
+                            />
+                       </span>
                                         </div>
                                     </div>
-
-                                    {/*<div className="row g-4">*/}
-                                    <div className="col-4">
+                                    {values.hasCar === t('yes') &&<div className="col-4 col-sm-6 col-md-4">
                                         <FastField
-                                            name="information"
+                                            name="carInfo"
                                             component={Fields.InputText}
-                                            label={t('information')}
-                                            placeholder={t('information')}
+                                            label={t('car-number-data')}
+                                            // placeholder="Тугилган жойи"
+                                        />
+                                    </div>}
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className='row g-4'>
+                                    {/*graduation*/}
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
+                                        <FastField
+                                            name="graduation"
+                                            component={Fields.AsyncSelect}
+                                            loadOptionsUrl={'/user-graduations'}
+                                            loadOptionsKey={(data) => data?.data?.map((el) => ({
+                                                label: el.name,
+                                                value: el.id
+                                            }))}
+                                            label={t('graduation')}
+                                            // placeholder="Исми"
                                         />
                                     </div>
-                                    <div className="col-4">
-                                        <FastField
-                                            name="degree"
-                                            component={Fields.InputText}
-                                            label={t('degree')+"*"}
-                                            placeholder={t('degree')+"*"}
-                                            required
-                                        />
-                                    </div>
-                                    <div className={values.familyStatus ? 'col-3' : "col-4"}>
+                                    {/*rank*/}
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
                                         <FastField
                                             name="rank"
-                                            component={Fields.InputText}
-                                            label={t('rank')+"*"}
-                                            placeholder={t('rank')+"*"}
+                                            component={Fields.AsyncSelect}
+                                            loadOptionsUrl={'/user-ranks'}
+                                            loadOptionsKey={(data) => data?.data?.map((el) => ({
+                                                label: el.name,
+                                                value: el.id
+                                            }))}
+                                            label={t('rank')}
+                                            // placeholder="Исми"
                                         />
                                     </div>
-                                    <div className={values.familyStatus ? 'col-3' : "col-4"}>
+                                    {/*position*/}
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
+                                        <FastField
+                                            name="position"
+                                            component={Fields.AsyncSelect}
+                                            loadOptionsUrl={'/user-positions'}
+                                            loadOptionsKey={(data) => data?.data?.map((el) => ({
+                                                label: el.name,
+                                                value: el.id
+                                            }))}
+                                            label={t('positions')}
+                                            // placeholder="Исми"
+                                        />
+                                    </div>
+                                    {/*familyStatus*/}
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
                                         <FastField
                                             name="familyStatus"
                                             component={Fields.AsyncSelect}
                                             loadOptionsUrl={'/user-family-statuses'}
+                                            loadOptionsKey={(data) => data?.data?.map((el) => ({
+                                                label: el.name,
+                                                value: el.id,
+                                                hasChild: el.hasChild
+                                            }))}
                                             label={t('family-status')}
-                                            loadOptionsKey={(data) => {
-                                                // console.log(data)
-                                                return data.data?.map((el) => ({label: el.attributes.name, hasChild: el.attributes.hasChild, value:el.id}))
-                                            }}
-                                            placeholder={t('family-status')}
+                                            // placeholder="Исми"
                                         />
                                     </div>
-                                    <div className={values.familyStatus.hasChild
-                                        ? 'col-3' : "col-4"}>
-                                        <FastField
-                                            name="beginWorkingDate"
-                                            component={Fields.DatePicker}
-                                            placeholder={t('begin-working-date')}
-                                            label={t('begin-working-date')}
-                                        />
-                                    </div>
-                                    <div className={values.familyStatus.hasChild
-                                        ? 'col-3' : "col-4"}>
-                                        <FastField
-                                            name="positionNumberDate"
-                                            component={Fields.InputText}
-                                            placeholder={t('position-number-date')}
-                                            label={t('position-number-date')}
-                                        />
-                                    </div>
-                                    {values.familyStatus.hasChild&&<div className={values.familyStatus.hasChild
-                                        ? 'col-3' : "col-4"}>
+                                    {(values?.familyStatus?.hasChild)&&<div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
                                         <FastField
                                             name="childrenCount"
                                             component={Fields.InputText}
-                                            placeholder={t('children-count')}
-                                            label={t('children-count')}
+                                            label={t('child-count')}
+                                            // placeholder="Исми"
                                         />
                                     </div>}
-                                    <div className="col-4">
+                                    {/*jobStartDate*/}
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
                                         <FastField
-                                            name="fromServiceCame"
+                                            name="jobStartDate"
+                                            component={Fields.DatePicker}
+                                            label={t('working-time')}
+                                            placeholder={t('working-time')}
+                                        />
+                                    </div>
+                                    {/*positionAssign*/}
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
+                                        <FastField
+                                            name="positionAssign"
                                             component={Fields.InputText}
-                                            placeholder={t('from-service-came')}
-                                            label={t('from-service-came')}
+                                            label={t('positions-assign')}
+                                            // placeholder="Исми"
                                         />
                                     </div>
-                                    <div className="col-4">
+                                    {/*comeFrom*/}
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
                                         <FastField
-                                            name="phone"
-                                            component={Fields.InputMask}
-                                            placeholder={t('phone')}
-                                            label={t('phone')}
+                                            name="comeFrom"
+                                            component={Fields.InputText}
+                                            label={t('field-get')}
+                                            // placeholder="Исми"
                                         />
                                     </div>
+                                    {/*reason*/}
+                                    <div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
+                                        <FastField
+                                            name="reason"
+                                            component={Fields.AsyncSelect}
+                                            loadOptionsUrl={'/user-reasons'}
+                                            loadOptionsKey={(data) => data?.data?.map((el) => ({
+                                                label: el.name,
+                                                value: el.id,
+                                                list: el.isDiff
+                                            }))}
+                                            label={t('user-reason')}
+                                            // placeholder="Исми"
+                                        />
+                                    </div>
+                                    {/*anotherReasonText*/}
+                                    {values.reason.list&&<div className="col-3 col-md-4 col-lg-4 col-xl-4 col-lg-3 col-sm-6">
+                                        <FastField
+                                            name="anotherReasonText"
+                                            component={Fields.InputText}
+                                            label={t('reason')}
+                                            // placeholder="Исми"
+                                        />
+                                    </div>}
 
-
-                                    <div className="col-4">
-                                        <FastField
-                                            name="homePhone"
-                                            component={Fields.InputText}
-                                            placeholder={t('home-phone')}
-                                            label={t('home-phone')}
-                                        />
-                                    </div>
-                                    <div className="col-4">
-                                        <FastField
-                                            name="login"
-                                            component={Fields.InputText}
-                                            placeholder={t('login')}
-                                            label={t('login')}
-                                        />
-                                    </div>
-                                    <div className="col-4">
-                                        <FastField
-                                            name="password"
-                                            component={Fields.InputText}
-                                            placeholder={t('password')}
-                                            label={t('password')}
-                                        />
-                                    </div>
-                                    <div className="col-4">
-                                        <FastField
-                                            name="confirmPassword"
-                                            component={Fields.InputText}
-                                            placeholder={t('confirm-password')}
-                                            label={t('confirm-password')}
-                                        />
-                                    </div>
-                                    {/*</div>*/}
                                 </div>
                             </div>
-
-
                         </div>
-                        <Button
+                        <div className='d-flex justify-content-end'>
+                            <Button
+                                design="cancel"
+                                type="submit"
+                                className="modal-btn-end fz_16 btn mt_40"
+                                text={t('cansel')}
+                                isLoading={isSubmitting}
+                            /> <Button
                             design="primary"
                             type="submit"
                             className="modal-btn-end fz_16 btn mt_40"
-                            text={get(valuesList, 'id') ?t('updata'):t('save')}
+                            text={get(values, "id") ? t('updata') :t('save')}
                             isLoading={isSubmitting}
                         />
+                        </div>
                     </>
-                }}
+                }
+
+                }
             </Containers.Form>
         </>
     );
 };
+

@@ -14,9 +14,9 @@ const VisitorsForms = () => {
     const {id}= useParams();
     const { getLanguageValue } = useGetLanguage();
     const {setId,data} = useFetchOne({
-        url:`/visitors`,
+        url:`/visits`,
         urlSearchParams: {
-            populate: '*'
+            populate: 'prisoner'
         }
 
     })
@@ -30,7 +30,7 @@ const VisitorsForms = () => {
         <>
             <InputSearch isInput   text={t('visitors-came-citizen')}/>
             <div className='forms__wrapper'>
-                <VForms values={data ?{id: data.id, ...data.attributes} : null}/>
+                <VForms values={data ?{id: data.id, ...data} : null}/>
             </div>
         </>
     );

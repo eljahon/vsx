@@ -11,11 +11,10 @@ import '../styles/prisoners.scss'
 import {httpClient} from "../../../services";
 import {SystemAccessModal} from "../components/employees-components/SystemAccessModal";
 
-const Employees = () => {
+const VisotorProduct = () => {
     const {t} = useTranslation()
     const navLink = useNavigate()
     const { getLanguageValue } = useGetLanguage();
-    const userData = JSON.parse(localStorage.getItem('userData'))
     const {region} = useParams()
     const [isUpdate, setUpdate] = useState(false)
     const [checkedList, setcheckedList] = useState([])
@@ -27,39 +26,54 @@ const Employees = () => {
         search: '',
         region_id: null
     })
-    const [page, setPage] = useState(1)
     const systemAccessModal = useOverlay({ uniqueName: "systemAccessModal" });
     const removePrisonerModal = useOverlay({ uniqueName: "removePrisoner" });
-    const filter={
-        id: {
-            $ne: userData.id
-        }
-    }
-    if(userData.region) {
-        filter['region'] =userData.region.id
-    }
-    if(userData.vsx) {
-        filter['vsx'] =userData.vsx.id
-    }
     const prisonerList = useFetchList({
         url: "/users",
         urlSearchParams:{
+            pageSize: 10,
             populate: "*",
-            filters:filter
+            filters: {
+                id: {
+                    $ne: JSON.parse(localStorage.getItem('userData')).id
+                }
+            }
         }
     });
     const prisonerDelete = useDeleteWithConfirm({
         uniqueName: "removePrisonerModal",
         url: "/users",
     });
+    const handlaAction=  (items) => {
+        tableCheckItemClick(items)
 
+    }
     const remove = (item) => {
         prisonerDelete.setId(item.id);
         prisonerDelete.handleOverlayOpen();
     }
+    const tableCheckItemClick = (item) =>{
+        const {actionType, itemdata} = item;
+        switch (actionType) {
+            case 'see': return navLink(`/${region}/prisoner-detail/${itemdata.id}`);
+            case 'updata': return navLink(`/${region}/prisoner/${itemdata.id}`)
+            case 'delete': return remove(itemdata.id)
+        }
+    }
+    const handeleReversToRoom = async () => {
+        // try {
+        //     const reversToRoomData = await httpClient.post('/prisoner/leave-room',{data: {prisoners:checkedList}})
+        //     if(reversToRoomData) {
+        //         prisonerList.refetch()
+        //     }
+        //     return  reversToRoomData
+        // } catch (err) {
+        //     throw new Error(err)
+        // }
+    }
     const handelchecked = (items) => {
         const prisoners= prisonerList.data;
-      if (items.isCheckedAll && (items.id !== 'all')) {
+        if (items.isCheckedAll && (items.id !== 'all')) {
             setcheckedList( [items.id])
         }else if (!items.isCheckedAll && (items.id !== 'all')) {
             setcheckedList(checkedList.filter(el => el !== items.id))
@@ -136,10 +150,7 @@ const Employees = () => {
                         dataKey: "attributes.sureName",
                         render: (value, item) =>
                         {
-                            return Span({person: {
-                                     sureName: item?.sureName,
-                                    firstName:item?.firstName
-                                }})
+                            return Span(item)
                         }
                     },
                     {
@@ -148,36 +159,33 @@ const Employees = () => {
                         className: "white-space_no-wrap",
                         render: (value,items) => time.timeFormater(items?.birthdate, "DD.MM.YYYY"),
                     },
-                    // {
-                    //     title: t("passport"),
-                    //     dataKey: "currency",
-                    //     render: (value,items) => items?.passport,
-                    // },
                     {
-                        title: t("working-time"),
+                        title: t("passport"),
+                        dataKey: "currency",
+                        render: (value,items) => items?.passport,
+                    },
+                    {
+                        title: t("to-account"),
                         dataKey: "patient",
                         className: "white-space_no-wrap",
-                        render: (value, item) => {
-                           return  time.timeFormater(item.jobStartDate, 'YYYY-MM-DD')
-                        }
-
-
+                        render: (value) =>
+                            formatters.formatPhoneView(get(value, "phone")),
                     },
                     //
+                    // {
+                    //   title: "Комментарий",
+                    //   dataKey: "comment",
+                    //   render: (value) => value,
+                    // },
                     {
-                      title: t("graduation"),
-                      dataKey: "comment",
-                      render: (value, item) => item?.graduation?.name,
-                    },
-                    {
-                        title: t('rank'),
+                        title: t('isInvalid'),
                         dataKey: "user",
-                        render: (value,item) => item?.rank?.name,
+                        render: (value,item) => IsInvalid(item?.isInvalid),
                     },
                     {
-                        title: t("Job"),
+                        title: t("camera"),
                         dataKey: "camera",
-                        render: (value,item) => item?.position?.name
+                        render: (value) => formatters.showDegree(value),
                     },
                     // {
                     //     title: t('action'),
@@ -206,4 +214,4 @@ const Employees = () => {
     );
 };
 
-export default Employees;
+export default VisotorProduct;

@@ -1,12 +1,4 @@
-// import React from 'react';
-//
-// function CameraInsedeReverese(props) {
-//     return (
-//         <div>CameraReverese</div>
-//     );
-// }
-//
-// export default CameraInsedeReverese;
+
 
 import React, {useEffect, useState} from "react";
 import get from "lodash";
@@ -15,8 +7,6 @@ import {useTranslation} from "react-i18next";
 import {} from 'react-dom'
 import {useDelete, useFetchList, useGetLanguage, useOverlay, useDeleteWithConfirm} from "hooks";
 import { useNavigate, useParams } from "react-router-dom";
-// import {formatters} from "../../../../services/utils";
-// import {time} from '../../../../services/time'
 import {Avatar,Span, IsInvalid,ActionDropDown} from '../../VSX/components/prisoners-components'
 import {ReactComponent as User} from '../../../assets/icons/outsidedisibleuser.svg'
 import {ReactComponent as Boshqa} from '../../../assets/icons/boshqa.svg'
@@ -27,7 +17,8 @@ import {ReactComponent as MaxsusPalata} from '../../../assets/icons/maxsusPalata
 import {ReactComponent as Tergovdisibel} from '../../../assets/icons/tergovdisibel.svg'
 import {ReactComponent as Food} from '../../../assets/icons/outsidedisiblefood.svg'
 import '../styles/prisoners.scss'
-import userimg from '../../../assets/images/user.png'
+import {httpClient} from "../../../services";
+import {PrisonersPlaceNow} from "../components/camera-compronents";
 const iconRender =  (name) => {
     let iconName = {
         'Sayrga olib chiqish': User,
@@ -48,18 +39,36 @@ const CameraInsedeReverese = () => {
     const {region, id} = useParams()
     const { getLanguageValue } = useGetLanguage();
     const [checkedList , setcheckedList] = useState([])
+    const userData = JSON.parse(localStorage.getItem('userData'))
     const [filters, setFilters] = useState({
         start: '',
         end: '',
         search: '',
         region_id: null
     })
-    // const removePrisonerModal = useOverlay({ uniqueName: "removePrisoner" });
-
+    let filter = {};
+    if(userData.vsx){
+        filter = {
+            vsx: {
+                id: userData?.vsx?.id
+            }
+        }
+    }
+    if (userData.region) {
+        filter = {
+            ...filter,
+            vsx: {
+                region: {
+                    id: userData?.region?.id
+                }
+            }
+        }
+    }
     const StatusList = useFetchList({
         url: `/prisoner-room-leave-reasons`,
         urlSearchParams:{
-            sort: {id: 'asc'}
+            sort: {id: 'asc'},
+            // filters:filter
         }
     });
     const [reason,setReason] = useState(1)
@@ -68,13 +77,17 @@ const CameraInsedeReverese = () => {
         urlSearchParams:{
             pageSize: 10,
             filters: {
-                roomLeave:{reason}
-            }
+                roomLeave:{reason},
+                room:{
+                    ...filter
+                }
+            },
+            populate: 'person, room, search, roomLeave, roomLeave.reason,basisDocument,basisDocumentPart, medExam'
         },
 
     });
     useEffect(() =>{} ,[StatusList.data])
-
+    const [isHeaderChecked, setIsHeaderCheaked] = useState(false)
     const tabLabels =[StatusList?.data];
     const [currentLables, setCurrentTabLabel]= useState('Sayrga olib chiqish')
     const prisonerDelete = useDeleteWithConfirm({
@@ -87,14 +100,45 @@ const CameraInsedeReverese = () => {
         tableCheckItemClick(items)
 
     }
+    const handeleReversToRoom = async () => {
+      try {
+          const reversToRoomData = await httpClient.post('/prisoner/leave-room',{data: {prisoners:checkedList}})
+          if(reversToRoomData) {
+              prisonerList.refetch()
+          }
+          return  reversToRoomData
+      } catch (err) {
+          throw new Error(err)
+      }
+    }
     const remove = (id) => {
         prisonerDelete.setId(id);
         prisonerDelete.handleOverlayOpen();
 
     }
-    let setItemsEmptiy;
-    const handelchecked =  (items) => {
-        setcheckedList(items)
+    const handelchecked = (items) => {
+        // console.log(prisonerList.data);
+        const prisoners = prisonerList.data
+        if(items.isCheckedAll && items.id === 'all') {
+            setIsHeaderCheaked(true)
+            setcheckedList(prisoners.map(el=> el.id))
+        }
+        else if (!items.isCheckedAll && items.id === 'all') {
+            setIsHeaderCheaked(false)
+            setcheckedList([])
+        }
+        else if (items.isCheckedAll && items.id) {
+            setcheckedList(old => [...old, items.id])
+        }
+        else if (!items.isCheckedAll && items.id) {
+            setcheckedList(checkedList.filter(el => el !== items.id))
+        }
+        else {
+            setIsHeaderCheaked(false)
+            setcheckedList([])
+        }
+
+
     }
     const handleTab =  (items) => {
         // console.log(items)
@@ -146,6 +190,9 @@ const CameraInsedeReverese = () => {
                 emptyUiText={t('camera-list-emptey')}
                 isLoading={prisonerList.isLoading}
                 isCheckedSee
+                isHeaderChecked={isHeaderChecked}
+                setIsHeaderCheaked={setIsHeaderCheaked}
+                checkedList={checkedList}
                 setChecked={handelchecked}
                 columns={[
                     {
@@ -160,7 +207,9 @@ const CameraInsedeReverese = () => {
                         title: t('photo'),
                         dataKey: "attributes",
                         className: "white-space_no-wrap",
-                        render: (value, item) => Avatar(item.image)
+                        render: (value, item) => {
+                            return Avatar(item.person.image)
+                        }
                         // time?.timeFormater(item?.attributes?.createdAt, "DD.MM.YYYY"),
                     },
                     {
@@ -207,8 +256,8 @@ const CameraInsedeReverese = () => {
                     {
                         title: t("where-is-now"),
                         dataKey: "camera",
-                        render: (value, items) => {
-                            return items?.room?.name
+                        render: (value, items, index) => {
+                            return <PrisonersPlaceNow key={index+1} text={items.roomLeave.reason.name}/>
                         },
                     },
                     // {
@@ -218,7 +267,7 @@ const CameraInsedeReverese = () => {
                     //     render: (value, items) => <ActionDropDown setMethod={handlaAction}  itemdata={items}/>,
                     // },
                 ]}
-                items={prisonerList?.data}
+                items={prisonerList?.data?.length ? prisonerList.data : []}
             />
             {/*<span>salom</span>*/}
             {/*<span>{get(prisonerList, "meta.pagination.pageCount")}</span>*/}
@@ -228,7 +277,7 @@ const CameraInsedeReverese = () => {
                 onPageChange={(newPage) => prisonerList.setPage(newPage + 1)}
             />
             <div className='d-flex justify-content-end mt_20'>
-                <Button className='btn' design='greey' text={'Belgilanganlarni qaytarish'}/>
+                <Button isDisabled={checkedList.length <= 0} onClick={handeleReversToRoom} className='btn' design='greey' text={'Belgilanganlarni qaytarish'}/>
             </div>
         </>
     );

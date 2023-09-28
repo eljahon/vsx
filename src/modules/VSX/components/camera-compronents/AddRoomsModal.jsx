@@ -35,16 +35,16 @@ const {t } = useTranslation()
                         name: "capacity",
                         validations: [{ type: "required" }],
                         onSubmitValue: (value) => {
-                            return value
+                            return Number(value)
                         },
                     },
-                    {
-                        name: "freePlace",
-                        validations: [{ type: "required" }],
-                        onSubmitValue: (value) => {
-                            return value
-                        },
-                    },
+                    // {
+                    //     name: "freePlace",
+                    //     validations: [{ type: "required" }],
+                    //     onSubmitValue: (value) => {
+                    //         return value
+                    //     },
+                    // },
                     // {
                     //     name: "prisoners",
                     //     validations: [{ type: "required" }],
@@ -78,40 +78,35 @@ const {t } = useTranslation()
                     },
                 ]}
             >
-                {({ isSubmitting }) => (
-                    <>
+                {({isSubmitting, values, ...rest}) => {
+                    console.log(rest)
+                    return <>
                         <div className="row g-4">
                             <div className="col-6">
                                 <FastField
                                     name="name"
                                     component={Fields.InputText}
                                     label={t('room-name')}
-                                    placeholder="room-name"
+                                    placeholder={t('room-name')}
                                 />
                             </div>
                             <div className="col-6">
                                 <FastField
                                     name="capacity"
                                     component={Fields.InputText}
-                                    label={t('capacity')}
-                                    placeholder={t('capacity')}
+                                    label={t('room-size')}
+                                    placeholder={t('room-size')}
                                 />
                             </div>
-                            <div className="col-6">
-                                <FastField
-                                    name="freePlace"
-                                    component={Fields.InputText}
-                                    label={t('freePlace')}
-                                    placeholder={t('freePlace')}
-                                />
-                            </div>
+
                             <div className="col-6">
                                 <FastField
                                     name="vsx"
                                     component={Fields.AsyncSelect}
                                     loadOptionsUrl={'/vsxes'}
-                                    loadOptionsKey={(data) => data?.data?.map((el) => ({label: el.name, value:el.id}))}
-                                    label="vsx"
+                                    loadOptionsKey={(data) => data?.data?.map((el) => ({label: el.name, value: el.id}))}
+                                    label={t('VSX-name')}
+                                    placeholder={t('VSX-name')}
                                 />
                             </div>
                             <div className="col-6">
@@ -119,7 +114,7 @@ const {t } = useTranslation()
                                     name="responsibleUser"
                                     loadOptionsUrl={'/users'}
                                     component={Fields.AsyncSelect}
-                                    loadOptionsKey={(data) => data?.map((el) => ({label: el.username, value:el.id}))}
+                                    loadOptionsKey={(data) => data?.map((el) => ({label: el.username, value: el.id}))}
                                     label={t('responsible-employees')}
                                     placeholder={t('responsible-employees')}
                                 />
@@ -152,11 +147,12 @@ const {t } = useTranslation()
                             design="primary"
                             type="submit"
                             className="modal-btn fz_16 btn mt_40"
-                            text="Сохранить"
+                            text={t('camera-add')}
                             isLoading={isSubmitting}
                         />
                     </>
-                )}
+                }
+                }
             </Containers.Form>
         </ModalDefault>
     );

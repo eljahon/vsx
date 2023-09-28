@@ -57,13 +57,6 @@ const BarChart = ({data, colors,bottom, radius,size, type, text, ...rest}) => {
           }
         }
   };
-// if(bottom) {
-//           chartData.options.plotOptions.radialBar['track'] =  {
-//                                 background: '#E8E8E8',
-//                                 startAngle: -150,
-//                                 endAngle: 150,
-//                               }
-// }
   return (
     <div>
       <ReactApexChart options={chartData.options} series={chartData.series} type={type} height={300} {...rest}/>

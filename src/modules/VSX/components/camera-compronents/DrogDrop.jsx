@@ -116,7 +116,7 @@ export const DrogDrop = (props) => {
                             }
                         </Droppable>
                         {isNewPrsonerAdd &&
-                            <Button className="bnt" design={'primary'} onClick={() => itemAddUser(board)}>Add+</Button>}
+                            <Button className="bnt mt_20 btn__primary" style={{borderRadios: 12+"px"}} design={'primary'} onClick={() => itemAddUser(board)}>Add+</Button>}
                     </div>
                 })}
             </div>

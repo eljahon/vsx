@@ -21,6 +21,17 @@ const Login = () => {
   const dispatch = useDispatch();
   const notifier = useNotification();
   const {t} = useTranslation();
+  const checkList = (roleName, id) => {
+      console.log(roleName, id)
+      switch (roleName) {
+          case 'Superadmin': return navigate(`/${id}/dashboard`)
+          case 'VsxManager': return navigate(`/${id}/dashboard`)
+          case 'VsxInspector': return navigate(`/${id}/cameras`)
+          case 'RegionalManager': return navigate(`/${id}/dashboard`)
+          case 'SuperDuperAdmin': return navigate(`/${id}/dashboard`)
+          // default: return navigate(`/${id}/dashboard`)
+      }
+  }
   return (
     <>
       <div className="auth__heading d-flex align-items-center flex-column">
@@ -38,12 +49,14 @@ const Login = () => {
     <Containers.Form
         url="/users-permissions/login"
         className="row g-3 "
-        onSuccess={(user) => {
+        onSuccess={ async (user) => {
+            console.log(user)
           dispatch(auth.success(get(user, "user")));
           storage.set("token", get(user, "jwt"));
           storage.set('roleName', get(user, "user.role.name"))
           storage.set('userData', JSON.stringify(get(user, 'user')))
-          navigate("/");
+          // navigate(`/${user.user.id}/dashboard`);
+            await checkList(user?.user?.role?.name, user.user.id)
         }}
         onError={(user) => {
             // console.log(user)

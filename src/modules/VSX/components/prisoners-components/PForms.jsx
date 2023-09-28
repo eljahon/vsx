@@ -508,15 +508,23 @@ export const PForms = (props) => {
                                             // placeholder="Отасининг исми"
                                         />
                                     </div>
-
-                                    {/*passport*/}
+                                    {/*sureName*/}
                                     <div className="col-4 col-sm-6 col-md-4">
                                         <FastField
-                                            name="passport"
+                                            name="sureName"
                                             component={Fields.InputText}
-                                            label={t('passport')}
-                                            // placeholder="Серия ва рақам *"
-                                            required
+                                            label={t('sure-name')}
+                                            // placeholder="Фамилия"
+                                        />
+                                    </div>
+
+                                    {/*firstname*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
+                                        <FastField
+                                            name="firstName"
+                                            component={Fields.InputText}
+                                            label={t('first-name')}
+                                            // placeholder="Исми"
                                         />
                                     </div>
                                     {/*birthdate*/}
@@ -530,25 +538,19 @@ export const PForms = (props) => {
                                             placeholder={t('birthdate')+"*"}
                                         />
                                     </div>
+                                    {/*passport*/}
+                                    <div className="col-4 col-sm-6 col-md-4">
+                                        <FastField
+                                            name="passport"
+                                            component={Fields.InputText}
+                                            label={t('passport')}
+                                            // placeholder="Серия ва рақам *"
+                                            required
+                                        />
+                                    </div>
 
-                                    {/*firstname*/}
-                                    <div className="col-4 col-sm-6 col-md-4">
-                                        <FastField
-                                            name="firstName"
-                                            component={Fields.InputText}
-                                            label={t('first-name')}
-                                            // placeholder="Исми"
-                                        />
-                                    </div>
-                                    {/*sureName*/}
-                                    <div className="col-4 col-sm-6 col-md-4">
-                                        <FastField
-                                            name="sureName"
-                                            component={Fields.InputText}
-                                            label={t('sure-name')}
-                                            // placeholder="Фамилия"
-                                        />
-                                    </div>
+
+
                                     <div className="col-4 col-sm-6 col-md-4">
                                         <Button
                                             className="btn btn-primary mt_20"
@@ -961,9 +963,9 @@ export const PForms = (props) => {
                         <div className='d-flex justify-content-end'>
                             <Button
                                 design="cancel"
-                                type="submit"
                                 className="modal-btn-end fz_16 btn mt_40"
                                 text={t('cansel')}
+                                onClick={() => navLink(-1)}
                                 isLoading={isSubmitting}
                             /> <Button
                             design="primary"

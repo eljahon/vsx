@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes,Redirect} from "react-router-dom";
 
 import { constants } from "services";
 
@@ -14,6 +14,7 @@ const appRoutes = [
     path: "/",
     layout: <AuthLayout />,
     subRoutes: [...AuthRoutes],
+    redirect: '/login',
     // access: constants.UNAUTHORIZED,
     access: constants.AUTHORIZED,
   },
@@ -35,12 +36,12 @@ const appRoutes = [
     subRoutes: [...VSXRoutes],
     access: constants.AUTHORIZED,
   },
-  {
-    path: "/",
-    layout: <MenuLayout />,
-    subRoutes: [...MainRoutes],
-    access: constants.AUTHORIZED,
-  },
+  // {
+  //   path: "/",
+  //   layout: <MenuLayout />,
+  //   subRoutes: [...MainRoutes],
+  //   access: constants.AUTHORIZED,
+  // },
   // {
   //   path: "/region",
   //   layout: <MenuLayout />,
@@ -50,7 +51,7 @@ const appRoutes = [
 ];
 const roleName = localStorage.getItem('roleName')
 const AllRoutes = ({ routes }) => {
-  // console.log(routes)
+  console.log(routes)
   return (
       <Routes>
         {routes.map((route, index) => (
@@ -64,7 +65,7 @@ const AllRoutes = ({ routes }) => {
                               key={subRoute}
                               {...subRoute}
                               element={
-                                <Suspense fallback={<Spinner />}>{subRoute.element}</Suspense>
+                                <Suspense>{subRoute.element}</Suspense>
                               }
                           />
                       )

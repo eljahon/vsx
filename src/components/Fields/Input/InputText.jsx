@@ -6,7 +6,6 @@ import { InputBase } from "./InputBase";
 export const InputText = ({
 	placeholder = "",
 	type = "",
-
 	label = "",
 	isDisabled = false,
 	size = "sm",

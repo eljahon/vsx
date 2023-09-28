@@ -7,9 +7,10 @@ import { SubMenu } from "./SubMenu";
 import { SidbarMenu } from "../helpers/menu";
 import { formatters } from "services/utils";
 
-import userAva from "../../assets/images/user.png";
+import userAva from "../../assets/images/user-default.png";
 import { ReactComponent as ArrowLeft } from "assets/icons/arrow.svg";
 import { ReactComponent as ArrowRight } from "assets/icons/arrow-right.svg";
+import {useTranslation} from "react-i18next";
 
 export const Sidebar = ({ setMini, mini }) => {
   const getWidth = () => {
@@ -26,6 +27,9 @@ export const Sidebar = ({ setMini, mini }) => {
   const { pathname } = useLocation();
   const menuKey = pathname.split("/")[1];
   const roleName = localStorage.getItem("roleName");
+  const userData =  JSON.parse(localStorage.getItem('userData'))
+  const filerUrl = process.env.REACT_APP_IMAGE_BASE_URL
+  const {t} = useTranslation()
   return (
     <aside className={`sidebar scroll-style ${mini ? "sidebar__mini" : ""} `}>
       <Button
@@ -36,18 +40,19 @@ export const Sidebar = ({ setMini, mini }) => {
         onClick={() => setMini(!mini)}
       />
       <div className="sidebar__admin d-flex align-items-center">
-        <Avatar size="md" borderColor="white" className="mr_10" src={userAva} />
+        { !userData.image &&<Avatar size="md" borderColor="white" className="mr_10" src={userAva} />}
+        {userData.image &&<Avatar size="md" borderColor="white" className="mr_10" src={filerUrl+userData.image} />}
         <div className="sidebar__admin-info">
-          <Typography Type="p" className="sidebar__role" text={"Инспектор"} />
+          <Typography Type="p" className="sidebar__role" text={t(localStorage.getItem('roleName').toLowerCase())} />
           <Typography
             Type="h5"
             className="sidebar__admin-name"
-            text={"Маърупов Олимжон"}
+            text={userData.firstName ? userData.firstName : ''+ " " +userData.sureName ? userData.sureName : ''}
           />
           <Typography
             Type="p"
             className="sidebar__admin-pnfl "
-            text={"ПИНФЛ: 131231242312542341234"}
+            text={t("pinifl")+(userData.JSHSHIR ?? 0)}
           />
         </div>
       </div>

@@ -7,13 +7,21 @@ import {useFetchList} from "../../../../hooks";
 function PrisonerMadicalForms(props) {
     const {t} = useTranslation()
     const {isUpdata} = props;
+    const userData = JSON.parse(localStorage.getItem('userData'));
     const tabLabels =[t('prisoner-medical'),t('prisoner-serach'),t('prisoner-camera')];
     const [currentLables, setLables] = useState(tabLabels[0])
+    const filter={}
+
+    if(userData.vsx) {
+        filter['vsx'] =userData.vsx.id
+    }
     const cameraList = useFetchList({
         url: "/rooms",
-        urlSearchParams:{
-            populate: "prisoners,prisoners.person"
-        }
+        urlSearchParams: {
+            sort: { id: "desc" },
+            populate: "prisoners, prisoners.person",
+            filters:filter
+        },
     });
     return (
         <div>
