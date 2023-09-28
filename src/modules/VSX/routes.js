@@ -13,7 +13,7 @@ const Sanitaion = lazy(() => import("./pages/Sanitaion"));
 const Inspection = lazy(() => import("./pages/Inspection"));
 const Reports = lazy(() => import("./pages/Reports"));
 const CameraReverese = lazy(() => import("./pages/Camera-insede-reverese"));
-const ItemCamera = lazy(() => import("./sub-pages/Camera/ItemCamera"));
+const ItemCamer = lazy(() => import("./sub-pages/Camera/ItemCamera"));
 const Prisoners = lazy(() => import("./pages/Prisoners"));
 const PrisonerDetail = lazy(() => import("./sub-pages/Prisoner/Prisoner-detail"))
 const PrisonerForms = lazy(() => import("./sub-pages/Prisoner/PrisonerForms"))
@@ -132,7 +132,7 @@ export const VSXRoutes = [
     id:24,
     path: "/:region/cameras/:id/:name",
     // element: <CashboxOrders />,
-    element: <ItemCamera/>,
+    element: <><ItemCamer/></>,
     roles: new Set(["Superadmin"])
   },
   {
