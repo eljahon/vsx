@@ -80,10 +80,10 @@ const ItemCamer = () => {
     const tabLabels = [StatusList?.data];
     console.log(StatusList?.data)
     const handelchecked = (items) => {
-        const {data:{prisoners}} = ItemCameraData?.data;
+        const prisoners = ItemCameraData?.data;
         if(items.isCheckedAll && items.id === 'all') {
             setIsHeaderCheaked(true)
-             setcheckedList(prisoners.map(el=> el.id))
+             setcheckedList(prisoners.map(el=> el.person.id))
         } else if (!items.isCheckedAll && items.id === 'all') {
             setIsHeaderCheaked(false)
             setcheckedList([])
