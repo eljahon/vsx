@@ -32,11 +32,6 @@ function FormAdvakat(props) {
                         validations: [{type: "required"}],
                         value: get(values, 'birthdate'),
                         onSubmitValue: (value) => time.timeFormater(value, 'YYYY-MM-DD'),
-                    }, {
-                        name: "medicalDiagnosis",
-                        validations: [{type: "required"}],
-                        value: get(values, 'medicalDiagnosis'),
-                        onSubmitValue: (value) => value,
                     },
                     {
                         name: "worker",
@@ -63,7 +58,7 @@ function FormAdvakat(props) {
 
             >
                 {({isSubmitting, values, setFieldValue, ...rest}) => {
-                    // console.log(values, rest)
+                    console.log(values, rest)
                     return <>
                         <div className="row g-4">
                             <div className="col-xl-10 col-lg-10 col-md-12 col-sm-12">
