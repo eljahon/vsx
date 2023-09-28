@@ -25,9 +25,8 @@ export const App = () => {
   // 		onSuccess: (response) => dispatch(system.changeLanguages(response)),
   // 	},
   // });
-
-  useFetchOne({
-  	url: "/users/me",
+	const data = useFetchOne({
+  	url: "/users",
   	urlSearchParams: {
   		populate: "position,userDetail,userDetail.avatar",
   	},

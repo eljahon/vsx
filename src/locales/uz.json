@@ -127,6 +127,7 @@
   "responsible-person": "Yo'qlovni qabul qiladigan hodim",
   "reason": "Boshqa sababni yozing",
   "is-reason": "Boshqa",
+  "visit-time": "Yo'qlovga kelgan vaqti",
   "user-reason": "Sabablari",
   "select-reason": "Sababni tanlang",
   "choose": "Tanlang...",
@@ -167,6 +168,8 @@
   "reports": "Xisobotlar",
   "event-name": "",
   "prisoners-list-add": "Yangi maxbus qo'shish",
-  "room-size": "Kamera sig'mi"
+  "room-size": "Kamera sig'mi",
+  "who-prisoner": "Kimni yo'qlashga kelgan",
+  "products-give": "Beriladingan narsalari"
 
 }

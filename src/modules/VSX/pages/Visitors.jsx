@@ -36,16 +36,17 @@ const Vsitors = () => {
         filter = {
             ...filter,
             vsx: {
-                region: {
-                    id: userData?.region?.id
-                }
+                // region: {
+                    id: userData?.vsx?.id
+                // }
             }
         }
     }
     const visitorsList = useFetchList({
         url: "/visits",
         urlSearchParams:{
-            filters:filter
+            filters:filter,
+            populate: 'responsibleOfficer,visitor,vsx,prisoner,prisoner.person,prisoner.room'
 
         }
     });
@@ -69,8 +70,6 @@ const Vsitors = () => {
             case 'delete': return remove(itemdata.id)
         }
     }
-    //   const visitorsList = fetchPrisonersList({pagination:{page:1, pageSize:10}})
-    // console.log(visitorsList)
     const regionList = useFetchList({url:'/regions'});
     return (
         <>
@@ -125,13 +124,13 @@ const Vsitors = () => {
                     {
                         title: t('number'),
                         dataKey: "id",
-                        render: (value, item) => {
-                            return ++count;
+                        render: (value, item, index) => {
+                            return index+1;
                         },
                     },
                     {
                         title: t('photo'),
-                        dataKey: "attributes",
+                        dataKey: "",
                         className: "white-space_no-wrap",
                         render: (value, item) => Avatar(item?.image)
                         // time?.timeFormater(item?.attributes?.createdAt, "DD.MM.YYYY"),
@@ -142,42 +141,42 @@ const Vsitors = () => {
                         dataKey: "attributes.sureName",
                         render: (value, item) =>
                         {
-                            return Span(item)
+                            return Span({sureName:item?.visitor?.sureName, firstName:item?.visitor?.firstName, middleName:item?.visitor?.middleName})
                         }
                     },
+
                     {
-                        title: t('birthdate'),
+                        title: t('who-prisoner'),
                         dataKey: "amount",
                         className: "white-space_no-wrap",
-                        render: (value,items) => time.timeFormater(items?.birthdate, "DD.MM.YYYY"),
+                        render: (value,item) => {
+                            return Span({sureName:item?.prisoner?.person?.sureName, firstName:item?.prisoner?.person?.firstName, middleName:item?.prisoner?.person?.middleName})
+                        },
+
                     },
                     {
                         title: t("passport"),
                         dataKey: "currency",
-                        render: (value,items) => items?.passport,
+                        render: (value,item) => item?.prisoner?.person?.passport,
                     },
                     {
-                        title: t("to-account"),
+                        title: t("visit-time"),
                         dataKey: "patient",
                         className: "white-space_no-wrap",
-                        render: (value) =>
-                            formatters.formatPhoneView(get(value, "phone")),
+                        render: (value, item) =>
+                            time.timeFormater(item.date, 'YYYY-MM-DD HH:mm:ss'),
                     },
-                    //
-                    // {
-                    //   title: "Комментарий",
-                    //   dataKey: "comment",
-                    //   render: (value) => value,
-                    // },
+
+
                     {
-                        title: t('isInvalid'),
+                        title: t('products-give'),
                         dataKey: "user",
-                        render: (value,item) => IsInvalid(item?.isInvalid),
+                        render: (value,item) => item.items.length > 0 ? t('yes') : t('no'),
                     },
                     {
                         title: t("camera"),
                         dataKey: "camera",
-                        render: (value) => formatters.showDegree(value),
+                        render: (value, item) => item?.prisoner?.room?.name ,
                     }
                 ]}
                 items={visitorsList.data}

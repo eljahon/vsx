@@ -61,6 +61,17 @@ export const VForms = (props) => {
   const { values, handleOverlayClose, onAddedNewRecord } = props;
   // console.log(get(values, 'responsibleUser.data.attributes.username'), isUpdate)
   const { getLanguageValue } = useGetLanguage();
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const filter={};
+  let maxbus;
+  if(userData.region) {
+      filter['region'] =userData.region.id
+  }
+  if(userData.vsx) {
+    filter['vsx'] =userData.vsx.id
+    maxbus=userData.vsx.id
+  }
+
   const user = useSelector(userSelector);
   const navLink = useNavigate();
   const { t } = useTranslation();
@@ -184,6 +195,7 @@ export const VForms = (props) => {
                   <FastField
                     name="responsibleOfficer"
                     component={Fields.AsyncSelect}
+                    loadOptionsParams={() => ({filters: {...filter}})}
                     loadOptionsUrl={"/users"}
                     loadOptionsKey={(data) =>
                       data?.map((el) => ({
@@ -203,8 +215,10 @@ export const VForms = (props) => {
                     name="prisoner"
                     component={Fields.AsyncSelect}
                     loadOptionsUrl={"/prisoners"}
+
                     loadOptionsParams={(searchText) => ({
-                      populate: "*",
+                      filters:{room:{vsx:{id: maxbus}}},
+                      populate: '*'
                     })}
                     loadOptionsKey={(data) =>
                       data?.data?.map((el) => ({
