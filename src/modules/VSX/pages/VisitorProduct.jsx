@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import get from "lodash";
 import {PageHeading, Table, Pagination, InputSearch, HeaderFilters, ConfirmModal} from "components";
 import {useTranslation} from "react-i18next";
@@ -26,7 +26,8 @@ const Vsitors = () => {
         region_id: null
     })
     let count =0;
-    let filter = {};
+    let filter = {
+    };
     if(userData.vsx){
         filter = {
             vsx: {
@@ -47,11 +48,12 @@ const Vsitors = () => {
     const visitorsList = useFetchList({
         url: "/visits",
         urlSearchParams:{
-            filters:filter,
+            filters:{...filter, isNew:true},
             populate: 'responsibleOfficer,visitor,vsx,prisoner,prisoner.person,prisoner.room'
 
         }
     });
+    const [valueList, setValueList] = useState(null)
     const addProduct = useOverlay({ uniqueName: "addProduct" });
     const visitorsDelete = useDeleteWithConfirm({
         uniqueName: "removeVisitorsModal",
@@ -82,6 +84,9 @@ const Vsitors = () => {
 
 
     }
+    useEffect(() =>{
+        setValueList(visitorsList?.data?.find(el => checkedList?.includes(el.id)))
+    } ,[checkedList])
     const regionList = useFetchList({url:'/regions'});
     return (
         <>
@@ -89,7 +94,9 @@ const Vsitors = () => {
                 isOpen={addProduct.isOverlayOpen}
                 handleOverlayOpen={addProduct.handleOverlayOpen}
                 handleOverlayClose={addProduct.handleOverlayClose}
-                onSuccess={visitorsList.refetch}/>
+                values={valueList ? valueList : {} }
+                refetch={visitorsList.refetch}
+                setValueClear={setcheckedList}
             />
             <ConfirmModal
                 cancelText={t('cancel-text')}

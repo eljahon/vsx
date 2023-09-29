@@ -64,6 +64,7 @@
   "updataing" : "O'zgartrish",
   "see": "Ko'rish",
   "file": "Yuklash",
+  "reject": "Yo'qlovni rad etish",
   "minutes": "Bayonnoma",
   "camera-add": "Yangi kamera qo'shish",
   "room-add": "Kamera qo'shish",
@@ -170,6 +171,10 @@
   "prisoners-list-add": "Yangi maxbus qo'shish",
   "room-size": "Kamera sig'mi",
   "who-prisoner": "Kimni yo'qlashga kelgan",
-  "products-give": "Beriladingan narsalari"
+  "products-give": "Beriladingan narsalari",
+  "visit-give-emploer": "Yo'qlovni topshiradigan xodim",
+  "visit-give-person": "Yo'qlovni olib kelgan shaxs",
+  "give-product": "Olib kelinga buyum va maxsulatlarni berish",
+  "give-product-time": "Yo'qlovni berish vaqti"
 
 }

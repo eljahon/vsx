@@ -284,21 +284,21 @@ export const VForms = (props) => {
                     />
                   </div>
                   {/*courted person*/}
-                  <div className="col-4">
-                    <FastField
-                      name="conviction"
-                      component={Fields.AsyncSelect}
-                      loadOptionsUrl={"/convictions"}
-                      loadOptionsKey={(data) =>
-                        data?.data?.map((el) => ({
-                          label: el.name,
-                          value: el.id,
-                        }))
-                      }
-                      label="Sudlanganligi*"
-                      // placeholder="Миллати"
-                    />
-                  </div>
+                  {/*<div className="col-4">*/}
+                  {/*  <FastField*/}
+                  {/*    name="conviction"*/}
+                  {/*    component={Fields.AsyncSelect}*/}
+                  {/*    loadOptionsUrl={"/convictions"}*/}
+                  {/*    loadOptionsKey={(data) =>*/}
+                  {/*      data?.data?.map((el) => ({*/}
+                  {/*        label: el.name,*/}
+                  {/*        value: el.id,*/}
+                  {/*      }))*/}
+                  {/*    }*/}
+                  {/*    label="Sudlanganligi*"*/}
+                  {/*    // placeholder="Миллати"*/}
+                  {/*  />*/}
+                  {/*</div>*/}
                   {/*birthAddress*/}
                   <div className="col-4">
                     <FastField

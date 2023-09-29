@@ -18,14 +18,6 @@ export const App = () => {
     const userData = JSON.parse(localStorage.getItem('userData'))
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // useFetchOne({
-  // 	url: "/language",
-  // 	queryOptions: {
-  // 		onSuccess: (response) => dispatch(system.changeLanguages(response)),
-  // 	},
-  // });
-	//
 	useFetchOneAuth({
   	url: "/users/me",
   	urlSearchParams: {
