@@ -85,7 +85,8 @@ const Vsitors = () => {
 
     }
     useEffect(() =>{
-        setValueList(visitorsList?.data?.find(el => checkedList?.includes(el.id)))
+        const data = visitorsList?.data?.length ? visitorsList?.data :[]
+        setValueList(data?.find(el => checkedList?.includes(el.id)))
     } ,[checkedList])
     const regionList = useFetchList({url:'/regions'});
     return (

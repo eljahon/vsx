@@ -44,7 +44,7 @@ export const ProductModal = ({
         <ModalDefault
             isOpen={isOpen}
             handleModalClose={handleOverlayClose}
-            title={t('system-access')}
+            title={t('give-access')}
             innerClass="max-width_500"
         >
             <Containers.Form

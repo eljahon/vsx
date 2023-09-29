@@ -59,6 +59,7 @@
   "conviction": "Sudlanganligi *",
   "livingAddress": "Yashash Joyi *",
   "save": "Malumotlarni saqlash",
+  "give-access": "Yo'qlovni berish yoki rad etish",
   "updata": "Malumotlarni yangilash",
   "remove": "O'chirish",
   "updataing" : "O'zgartrish",
@@ -174,7 +175,7 @@
   "products-give": "Beriladingan narsalari",
   "visit-give-emploer": "Yo'qlovni topshiradigan xodim",
   "visit-give-person": "Yo'qlovni olib kelgan shaxs",
-  "give-product": "Olib kelinga buyum va maxsulatlarni berish",
+  "give-product": "Olib kelingan buyum va maxsulatlar",
   "give-product-time": "Yo'qlovni berish vaqti"
 
 }

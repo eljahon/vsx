@@ -164,14 +164,14 @@ const Vsitors = () => {
                         dataKey: "patient",
                         className: "white-space_no-wrap",
                         render: (value, item) =>
-                            time.timeFormater(item.date, 'YYYY-MM-DD HH:mm:ss'),
+                            time.timeFormater(item?.date, 'YYYY-MM-DD HH:mm:ss'),
                     },
 
 
                     {
                         title: t('products-give'),
                         dataKey: "user",
-                        render: (value,item) => item.items.length > 0 ? t('yes') : t('no'),
+                        render: (value,item) => item?.items?.length > 0 ? t('yes') : t('no'),
                     },
                     {
                         title: t("camera"),
