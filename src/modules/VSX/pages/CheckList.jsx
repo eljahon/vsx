@@ -71,7 +71,7 @@ let count=0;
         <InputSearch
             setValue={setFilters}
             placeholder={t('search')}
-            text={t('prisoners-list-get')}
+            text={t('inspection')}
         />
       <PageHeading
         links={[

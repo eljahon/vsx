@@ -48,7 +48,7 @@ const Vsitors = () => {
     const visitorsList = useFetchList({
         url: "/visits",
         urlSearchParams:{
-            filters:{...filter, isNew:true},
+            filters:{...filter},
             populate: 'responsibleOfficer,visitor,vsx,prisoner,prisoner.person,prisoner.room'
 
         }

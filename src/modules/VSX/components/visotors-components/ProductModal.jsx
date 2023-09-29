@@ -166,13 +166,6 @@ export const ProductModal = ({
                         </div>
 
                         <div className='d-flex g_10'>
-                            {!isRej &&  <Button
-                                design="cancel"
-                                onClick={handleReject}
-                                className="modal-btn fz_16 btn mt_40"
-                                text={t('reject')}
-                                isLoading={isSubmitting}
-                            />}
                             <Button
                             design="primary"
                             type="submit"

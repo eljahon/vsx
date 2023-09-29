@@ -119,7 +119,7 @@ const Vsitors = () => {
                 deleteAction={remove}
                 // seeAction={(row) => { navLink(`/${region}/prisoner/detail/${row.id}`)}}
                 emptyUiText="Afsuski hozirda shaxslarni ro'yxatga olish bo'yicha ma'lumot yo'q"
-                isLoading={visitorsList.isLoading}
+                isLoading={visitorsList?.isLoading}
                 columns={[
                     {
                         title: t('number'),
