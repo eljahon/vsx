@@ -7,7 +7,7 @@ import { utils } from "../../services";
 import "./PageHeading.scss";
 
 export const PageHeading = (props) => {
-	const {links,btnText,mainAction,headerTile,statistics,isFilter,isRegion} = props;
+	const {links,btnText,mainAction,headerTile,statistics,isFilter,isRegion,isDisabled} = props;
 	return (
 		<div className="page-heading">
 			<div className="page-heading__inner">
@@ -19,6 +19,7 @@ export const PageHeading = (props) => {
 						className="btn page-heading__btn"
 						design="primary"
 						text={btnText}
+						isDisabled={isDisabled}
 						onClick={mainAction}
 					/>
 				)}
