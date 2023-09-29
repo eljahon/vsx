@@ -52,14 +52,13 @@ const Login = () => {
     <Containers.Form
         url="/users-permissions/login"
         className="row g-3 "
-        onSuccess={ async (user) => {
-            console.log(user)
-          dispatch(auth.success(get(user, "user")));
+        onSuccess={  (user) => {
+            checkList(user?.user?.role?.name, user.user.id)
           storage.set("token", get(user, "jwt"));
           storage.set('roleName', get(user, "user.role.name"))
           storage.set('userData', JSON.stringify(get(user, 'user')))
-          // navigate(`/${user.user.id}/dashboard`);
-            await checkList(user?.user?.role?.name, user.user.id)
+            dispatch(auth.success(get(user, "user")));
+
         }}
         onError={(user) => {
             // console.log(user)
@@ -102,13 +101,13 @@ const Login = () => {
               />
             </div>
 
-            <div className="col-12 mb_20 text-align_left">
-              <AppLink
-                link="/forgot-password"
-                className="color_brand-blue text-decoration_underline"
-                text={t('auth-forgot-password')}
-              />
-            </div>
+            {/*<div className="col-12 mb_20 text-align_left">*/}
+            {/*  <AppLink*/}
+            {/*    link="/forgot-password"*/}
+            {/*    className="color_brand-blue text-decoration_underline"*/}
+            {/*    text={t('auth-forgot-password')}*/}
+            {/*  />*/}
+            {/*</div>*/}
 
             <div className="col-12 mb_15">
               <Button

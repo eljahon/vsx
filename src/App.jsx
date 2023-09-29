@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { get, isEmpty } from "lodash";
 
 import { constants, storage } from "services";
-import { useFetchOne } from "hooks";
+import { useFetchOneAuth } from "hooks";
 import { auth, system } from "store/actions";
 import { userSelector } from "store/selectors";
 
@@ -15,7 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const App = () => {
   const user = useSelector(userSelector);
-
+    const userData = JSON.parse(localStorage.getItem('userData'))
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,29 +25,27 @@ export const App = () => {
   // 		onSuccess: (response) => dispatch(system.changeLanguages(response)),
   // 	},
   // });
-	const data = useFetchOne({
-  	url: "/users",
+	//
+	useFetchOneAuth({
+  	url: "/users/me",
   	urlSearchParams: {
-  		populate: "position,userDetail,userDetail.avatar",
+  		populate: "*",
   	},
   	queryOptions: {
   		onSuccess: (user) => {
-  			dispatch(auth.success(user));
-  			storage.set("token", get(user, "token"));
-  			if (get(user, "step") <= constants.STEP_PHONE_CONFIRMED) navigate("/profile");
+			console.log(user)
+  			dispatch(auth.success({user}));
+  			storage.set("token", get(user, "token"))
   		},
   		onError: (error) => {
-  			dispatch(auth.success(user));
-
-  			// dispatch(auth.failure(error));
-  			// navigate("/login");
+  			dispatch(auth.failure(error));
+  			navigate("/login");
   		},
   	},
   });
-
   return (
     <>
-      {(!isEmpty(user) && get(user, "step") >= constants.STEP_REGISTRATION_END) || true ? (<AuthorizedRoutes />) : (<UnAuthorizedRoutes />)}
+      {!isEmpty(user) ? <AuthorizedRoutes /> : <UnAuthorizedRoutes />}
 
       <ToastContainer className="app-toast" />
     </>

@@ -1,5 +1,6 @@
 export { useFetchList } from "./useFetchList";
 export { useFetchOne } from "./useFetchOne";
+export { useFetchOneAuth } from "./useFetchOneAuth";
 export { useFetchInfinite } from "./useFetchInfinite";
 export { useDelete } from "./useDelete";
 export { useDeleteWithConfirm } from "./useDeleteWithConfirm";

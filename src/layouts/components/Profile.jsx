@@ -25,6 +25,8 @@ export const Profile = () => {
   console.log(user)
   const handleLogout = (event) => {
     storage.remove("token");
+    storage.remove("userData");
+    storage.remove("roleName");
     dispatch(auth.failure());
     navigate("/login");
   };
@@ -77,17 +79,17 @@ export const Profile = () => {
         </>
       )}
     >
-      <Button
-        className="btn drop-down__btn table__actions-edit"
-        prepend={<EditIcon />}
-        text="Редактировать"
-        onClick={redirectEditPage}
-      />
+      {/*<Button*/}
+      {/*  className="btn drop-down__btn table__actions-edit"*/}
+      {/*  prepend={<EditIcon />}*/}
+      {/*  text="Редактировать"*/}
+      {/*  onClick={redirectEditPage}*/}
+      {/*/>*/}
 
       <Button
         className="btn drop-down__btn table__actions-delete"
         prepend={<LogoutIcon />}
-        text="Выйти"
+        text={t('Logout')}
         onClick={handleLogout}
       />
     </DropDown>

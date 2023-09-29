@@ -2,6 +2,7 @@ const SUCCESS = "AUTH_SUCCESS";
 const FAILURE = "AUTH_FAILURE";
 
 const success = (payload) =>{
+  console.log(payload)
   return {
     type: SUCCESS,
     payload,

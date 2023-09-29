@@ -14,22 +14,23 @@ export const AuthRoutes = [
 	// },
 	{
 		path: "/login",
+		index:true,
 		element: <Login />,
 		// roles: new Set(['Superadmin'])
 	},
-	{
-		path: "/forgot-password",
-		element: <ForgotPassword />,
-		// roles: new Set(['Superadmin'])
-	},
-	{
-		path: "/confirm-password/:phone",
-		element: <ConfirmPassword />,
-		// roles: new Set(['Superadmin'])
-	},
-	{
-		path: "/new-password",
-		element: <NewPassword />,
-		// roles: new Set(['Superadmin'])
-	},
+	// {
+	// 	path: "/forgot-password",
+	// 	element: <ForgotPassword />,
+	// 	// roles: new Set(['Superadmin'])
+	// },
+	// {
+	// 	path: "/confirm-password/:phone",
+	// 	element: <ConfirmPassword />,
+	// 	// roles: new Set(['Superadmin'])
+	// },
+	// {
+	// 	path: "/new-password",
+	// 	element: <NewPassword />,
+	// 	// roles: new Set(['Superadmin'])
+	// },
 ];
